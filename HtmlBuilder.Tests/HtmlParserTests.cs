@@ -28,7 +28,7 @@ public class HtmlParserTests
 		var parser = new HtmlParser();
 		var parsed = parser.Parse(html);
 
-		parsed.Head.ShouldBeOfType<Head>();
-		parsed.Body.ShouldBeOfType<Body>();
+		parsed.Head().ShouldBeOfType<Head>();
+		parsed.Body().ShouldBeOfType<Body>();
 	}
 }

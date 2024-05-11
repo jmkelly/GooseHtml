@@ -1,58 +1,70 @@
 using System.Text;
 
 namespace HtmlBuilder.Tests;
+public record Class(string Name);
 
 public abstract class Element
 {
 	internal string TagEnd;
 	internal string TagStart;
 
-	private bool AutoClose;
+	private bool SelfClosing;
 	private HtmlFormatter HtmlFormatter;
 	private string Name;
-	private List<Attr> Attrs;
+	private List<Attribute> Attributes;
 	private List<Element> Elements; 
 	private Text Text;
-	public Element(Text value, bool autoClose=false)
+
+	public Element (Class @class, bool selfClosing=false)
 	{
 		this.Name = this.GetType().Name.ToLowerInvariant();
-		Init(this.Name, autoClose, value);
+		Init(this.Name, selfClosing, new EmptyValue());
+		if (Attributes != null)
+		{
+			Attributes.Add(new Attribute("class", @class.Name));
+		}
 	}
 
-	public Element(bool autoClose=false)
+	public Element(Text value, bool selfClosing=false)
 	{
 		this.Name = this.GetType().Name.ToLowerInvariant();
-		Init(this.Name, autoClose, new EmptyValue());
+		Init(this.Name, selfClosing, value);
 	}
 
-	public Element(string name, bool autoClose=false)
+	public Element(bool selfClosing=false)
 	{
-		Init(name, autoClose, new EmptyValue());
+		this.Name = this.GetType().Name.ToLowerInvariant();
+		Init(this.Name, selfClosing, new EmptyValue());
 	}
 
-	private void Init(string name, bool autoClose, Text value)
+	public Element(string name, bool selfClosing=false)
+	{
+		Init(name, selfClosing, new EmptyValue());
+	}
+
+	private void Init(string name, bool selfClosing, Text value)
 	{
 
 		this.Text = value;
-		if (autoClose)
-		{
-			TagEnd = $"</{name}>";
-		}
-		else
+		if (selfClosing)
 		{
 			TagEnd = "/>";
 		}
+		else
+		{
+			TagEnd = $"</{name}>";
+		}
 		TagStart = $"<{name}";
-		AutoClose = autoClose;
+		SelfClosing = selfClosing;
 		this.Name = name;
-		this.Attrs = new List<Attr>();
+		this.Attributes = new List<Attribute>();
 		this.Elements = new List<Element>();
 		HtmlFormatter = new HtmlFormatter();
 	}
 
-	public void Add(Attr attr) 
+	public void Add(Attribute attribute) 
 	{
-		Attrs.Add(attr);
+		Attributes.Add(attribute);
 	}
 	public void Add(Element element)
 	{
@@ -69,7 +81,7 @@ public abstract class Element
 		var sb = new StringBuilder();
 		StartTag(sb);
 		AddAttrs(sb);
-		if (AutoClose)
+		if (!SelfClosing)
 		{
 			CloseTag(sb);
 		}
@@ -104,7 +116,7 @@ public abstract class Element
 
 	private void AddAttrs(StringBuilder sb)
 	{
-		foreach (var attr in Attrs)
+		foreach (var attr in Attributes)
 		{
 			sb.Append(" ");
 			sb.Append(attr.ToString());

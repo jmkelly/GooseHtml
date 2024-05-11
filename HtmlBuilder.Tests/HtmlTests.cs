@@ -1,9 +1,7 @@
-using System.Text;
-using System.Text.RegularExpressions;
 using Shouldly;
 namespace HtmlBuilder.Tests;
 
-public partial class HtmlTests
+public class HtmlTests
 {
 	static string template = @"<html lang=""en-US""><head><meta charset=""utf-8""/><title></title></head><body></body></html>";
 
@@ -13,7 +11,7 @@ public partial class HtmlTests
 		var html = new Html();
 		var head = new Head();
 		var meta = new Meta();
-		meta.Add(new CharsetAttr());
+		meta.Add(new Charset());
 
 		head.Add(meta);
 		head.Add(new Title());
@@ -22,7 +20,7 @@ public partial class HtmlTests
 
 		html.Add(head);
 		html.Add(body);
-		html.Add(new LangAttr());
+		html.Add(new Lang());
 
 		html.ToString().ShouldBe(template);
 	}
@@ -69,8 +67,8 @@ public partial class HtmlTests
 	{
 		string result = "<meta http-equiv=\"refresh\" content=\"3;url=https://www.mozilla.org\"/>";
 		var meta = new Meta();
-		meta.Add(new Attr("http-equiv", "refresh"));
-		meta.Add(new Attr("content", "3;url=https://www.mozilla.org"));
+		meta.Add(new Attribute("http-equiv", "refresh"));
+		meta.Add(new Attribute("content", "3;url=https://www.mozilla.org"));
 		meta.ToString().ShouldBe(result);
 	}
 
@@ -79,72 +77,9 @@ public partial class HtmlTests
 	{
 		var head = new Head();
 		var meta = new Meta();
-		meta.Add(new Attr("http-equiv", "refresh"));
-		meta.Add(new Attr("content", "3;url=https://www.mozilla.org"));
+		meta.Add(new Attribute("http-equiv", "refresh"));
+		meta.Add(new Attribute("content", "3;url=https://www.mozilla.org"));
 		head.Add(meta);
 		head.ToString().ShouldBe("<head><meta http-equiv=\"refresh\" content=\"3;url=https://www.mozilla.org\"/></head>");
 	}
 }
-
-	public record Text(string Value);
-	public record EmptyValue(): Text("");
-
-
-	public class H1 : Element
-	{
-		public H1(Text value) : base(value, autoClose:true )
-		{
-		}
-	}
-
-	public class Body : Element
-	{
-		public Body() : base( autoClose:true)
-		{
-		}
-	}
-
-	public class Title : Element
-	{
-		public Title() : base(autoClose:true)
-		{
-		}
-	}
-
-	public class Meta : Element
-	{
-
-		public Meta() : base()
-		{
-		}
-	}
-
-	public record LangAttr(): Attr("lang", "en-US")
-	{
-		public override string ToString()
-		{
-			return base.ToString();
-		}
-	}
-	public record CharsetAttr():Attr("charset", "utf-8")
-	{
-		public override string ToString()
-		{
-			return base.ToString();
-		}
-	}
-
-	public record Attr(string Name, string Value)
-	{
-		public override string ToString()
-		{
-			return $"{Name}=\"{Value}\"";
-		}
-	}
-
-	public class Head : Element
-	{
-		public Head() : base("head", true)
-		{
-		}
-	}
