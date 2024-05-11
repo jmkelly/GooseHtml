@@ -2,13 +2,15 @@ namespace HtmlBuilder.Tests;
 
 //wire up some layout template code to see how it feels
 //
-public class Layout : Html
+public class ExampleLayout : Html
 {
-    public Layout()
+    public ExampleLayout(): base("html")
     {
+		this.Add(Head());
+		this.Add(Body());
     }
 
-    public Body Body()
+    public virtual Body Body()
     {
 		var body = new Body();
 		body.Add(new Nav(new Class("nav navbar")));
@@ -17,8 +19,9 @@ public class Layout : Html
 		return body;
     }
 
-    public Head Head()
+    public virtual Head Head()
     {
-		return new Head();
+		var head = new Head();
+		return head;
     }
 }

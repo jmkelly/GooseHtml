@@ -6,5 +6,10 @@ public class Html : Element
 	{
 	}
 
+	public Html(string name): base(name)
+	{
+
+	}
+
 }
 
