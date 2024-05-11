@@ -8,7 +8,7 @@ public class Layout : Html
     {
     }
 
-    public override Body Body()
+    public Body Body()
     {
 		var body = new Body();
 		body.Add(new Nav(new Class("nav navbar")));
@@ -17,7 +17,7 @@ public class Layout : Html
 		return body;
     }
 
-    public override Head Head()
+    public Head Head()
     {
 		return new Head();
     }

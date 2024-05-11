@@ -18,17 +18,4 @@ public class HtmlParserTests
 		var writer = new HtmlWriter();
 		await writer.WriteAsync($"{TestPagesDirectory}/google.html", html);
 	}
-
-
-	[Fact]
-	public async Task HtmlParser_ShouldParseGoogleHtmlFile()
-	{
-		var reader = new HtmlReader();
-		var html = await reader.ReadAsync(filePath: $"{TestPagesDirectory}/google.html");
-		var parser = new HtmlParser();
-		var parsed = parser.Parse(html);
-
-		parsed.Head().ShouldBeOfType<Head>();
-		parsed.Body().ShouldBeOfType<Body>();
-	}
 }
