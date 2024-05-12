@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
+
+using Microsoft.AspNetCore.Mvc;
+
 namespace HtmlBuilder.Tests;
 
 //wire up some layout template code to see how it feels
@@ -10,6 +14,26 @@ public class ExampleLayout : Html
 		this.Add(Body());
     }
 
+
+	public ExampleLayout(Element element) : base("html")
+	{
+		this.Add(Head());
+		this.Add(Body(element));
+	}
+
+
+	public Body Body(Element element)
+	{
+
+		var body = new Body();
+		body.Add(new Nav(new Class("nav navbar")));
+		body.Add(new Div(new Class("sidebar")));
+		var content = new Div(new Class("content"));
+		content.Add(element);
+		body.Add(content);
+		body.Add(new Footer(new Class("footer")));
+		return body;
+	}
     public virtual Body Body()
     {
 		var body = new Body();
@@ -22,6 +46,12 @@ public class ExampleLayout : Html
     public virtual Head Head()
     {
 		var head = new Head();
+
 		return head;
+    }
+
+    public IActionResult ToActionResult()
+    {
+        throw new NotImplementedException();
     }
 }

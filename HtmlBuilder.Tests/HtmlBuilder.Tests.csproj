@@ -24,5 +24,8 @@
 	<ItemGroup>
 		<Content Include="TestPages/*.html" CopyToOutputDirectory="Always" />
 	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\GooseHtml\GooseHtml.csproj" />
+	</ItemGroup>
 
 </Project>

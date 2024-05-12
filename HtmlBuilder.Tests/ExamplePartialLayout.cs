@@ -32,7 +32,7 @@ public class ViewModelTests
 
 		var layout = new ViewModelLayout(vm);
 
-		layout.ToString().ShouldBe("something");
+		layout.ToString().ShouldBe("<html><head></head><body><nav class=\"nav navbar\"></nav><div class=\"sidebar\"></div><footer class=\"footer\"></footer></body></html>");
 
 	}
 }
@@ -55,11 +55,5 @@ public class TestViewModel : IViewModel
 		div.Add(sp3);
 		return div;
     }
-}
-
-
-public interface IViewModel
-{
-	Element AsElement();
 }
 
