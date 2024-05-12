@@ -1,0 +1,6 @@
+@HtmlBuilder.Sample_HostAddress = http://localhost:5065
+
+GET {{HtmlBuilder.Sample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
