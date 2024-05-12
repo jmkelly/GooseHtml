@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HtmlBuilder.Tests\HtmlBuilder.Tests.csproj" />
     <ProjectReference Include="..\GooseHtml\GooseHtml.csproj" />
   </ItemGroup>
 

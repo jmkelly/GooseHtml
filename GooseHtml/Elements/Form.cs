@@ -1,4 +1,4 @@
-namespace HtmlBuilder.Tests;
+namespace GooseHtml;
 
 public class Form : Element
 {

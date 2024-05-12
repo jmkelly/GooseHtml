@@ -1,6 +1,6 @@
 using Shouldly;
 
-namespace HtmlBuilder.Tests;
+namespace GooseHtml.Tests;
 
 public class ExampleLayoutTests
 {

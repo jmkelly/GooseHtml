@@ -1,7 +1,7 @@
-using HtmlBuilder.Tests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-namespace HtmlBuilder.Samples.Controllers;
+
+namespace GooseHtml;
 
 public class ElementResult : IActionResult
 {

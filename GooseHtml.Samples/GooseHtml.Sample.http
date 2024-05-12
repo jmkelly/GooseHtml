@@ -1,0 +1,6 @@
+@GooseHtml.Sample_HostAddress = http://localhost:5065
+
+GET {{GooseHtml.Sample_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace HtmlBuilder.Tests;
+namespace GooseHtml;
 public record Class(string Name);
 
 public abstract class Element

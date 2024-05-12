@@ -1,7 +1,5 @@
-using HtmlBuilder.Tests;
 using Microsoft.AspNetCore.Mvc;
-using Type = HtmlBuilder.Tests.Type;
-namespace HtmlBuilder.Samples.Controllers;
+namespace GooseHtml.Samples.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -16,7 +14,7 @@ public class SampleController : Controller
 	{
 		//create a view model
 		var vm = new ViewModel("james", "james@james");
-		return new ExampleLayout(vm.AsElement()).ToActionResult();
+		return new Samples.ExampleLayout(vm.AsElement()).ToActionResult();
 	}
 }
 

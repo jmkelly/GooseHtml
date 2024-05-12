@@ -2,7 +2,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace HtmlBuilder.Tests;
+namespace GooseHtml;
 
 public class HtmlFormatter
 {

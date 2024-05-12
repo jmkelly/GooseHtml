@@ -1,6 +1,6 @@
 using Blend.Html.Lexer;
 
-namespace HtmlBuilder.Tests;
+namespace GooseHtml.Tests;
 
 
 //not quite sure what to do with this class.....going to leave it for the

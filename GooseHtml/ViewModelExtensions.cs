@@ -1,7 +1,6 @@
-using HtmlBuilder.Tests;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HtmlBuilder.Samples.Controllers;
+namespace GooseHtml;
 
 public static class ActionResultExtensions
 {
@@ -12,5 +11,4 @@ public static class ActionResultExtensions
 		return result;
 	}
 }
-
 

@@ -1,4 +1,4 @@
-namespace HtmlBuilder.Tests;
+namespace GooseHtml.Tests;
 
 public class HtmlWriter
 {

@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
-using Microsoft.AspNetCore.Mvc;
 
-namespace HtmlBuilder.Tests;
+namespace GooseHtml.Samples;
 
 //wire up some layout template code to see how it feels
 //

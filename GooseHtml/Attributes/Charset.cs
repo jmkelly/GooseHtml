@@ -1,4 +1,4 @@
-namespace HtmlBuilder.Tests;
+namespace GooseHtml;
 
 public record Charset():Attribute("charset", "utf-8")
 	{
