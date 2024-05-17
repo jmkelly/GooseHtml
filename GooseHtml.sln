@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooseHtml.Sample", "GooseHt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooseHtml", "GooseHtml\GooseHtml.csproj", "{36244C1A-B941-4AF4-87BD-3DD3C1C5D880}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooseHtml.Docs", "GooseHtml.Docs\GooseHtml.Docs.csproj", "{D102A1AF-23DE-4A04-8C1C-26F700FB2FCD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{36244C1A-B941-4AF4-87BD-3DD3C1C5D880}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36244C1A-B941-4AF4-87BD-3DD3C1C5D880}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36244C1A-B941-4AF4-87BD-3DD3C1C5D880}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D102A1AF-23DE-4A04-8C1C-26F700FB2FCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D102A1AF-23DE-4A04-8C1C-26F700FB2FCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D102A1AF-23DE-4A04-8C1C-26F700FB2FCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D102A1AF-23DE-4A04-8C1C-26F700FB2FCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
