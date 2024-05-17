@@ -28,6 +28,7 @@ public abstract class Element
 	public Element(Text value, bool selfClosing=false)
 	{
 		this.Name = this.GetType().Name.ToLowerInvariant();
+		this.Text = value;
 		Init(this.Name, selfClosing, value);
 	}
 
@@ -62,6 +63,11 @@ public abstract class Element
 		HtmlFormatter = new HtmlFormatter();
 	}
 
+	public void Add(Class @class)
+	{
+		Attributes.Add(new Attribute("class", @class.Name));
+	}
+
 	public void Add(Attribute attribute) 
 	{
 		Attributes.Add(attribute);
@@ -87,11 +93,20 @@ public abstract class Element
 		}
 
 		AddElements(sb);
+		AddText(sb);
 		EndTag(sb);
 		return sb.ToString();
 	}
 
-	private void EndTag(StringBuilder sb)
+    private void AddText(StringBuilder sb)
+    {
+		if (Text != null && Text.Value != "")//todo replace with a type check
+		{
+			sb.Append(Text.Value.ToString());
+		}
+    }
+
+    private void EndTag(StringBuilder sb)
 	{
 		sb.Append(TagEnd);
 	}
