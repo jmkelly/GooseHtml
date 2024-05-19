@@ -43,6 +43,15 @@ public abstract class Element
 		Init(name, selfClosing, new EmptyValue());
 	}
 
+	public Element(string name, Attribute[] attributes)
+	{
+		Init(name, false, new EmptyValue());
+		foreach (var attribute in attributes)
+		{
+			Attributes.Add(attribute);
+		}
+	}
+
 	private void Init(string name, bool selfClosing, Text value)
 	{
 
