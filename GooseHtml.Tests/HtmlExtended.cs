@@ -1,4 +1,5 @@
 namespace GooseHtml.Tests;
+using GooseHtml.Attributes;
 
 public class HtmlExtended : Html
 {
