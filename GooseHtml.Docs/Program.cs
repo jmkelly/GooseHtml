@@ -5,6 +5,7 @@
      private static async Task Main(string[] args)
      {
 		var app = WebApplication.Create(args);
+		app.UseStaticFiles();
 		app.MapGet("/", async (context) =>
         {
             await WritePage(context);
@@ -19,8 +20,7 @@
         var page = new Page();
         var formatter = new HtmlFormatter();
 		var unformatted = page.ToString();
-        var html = formatter.Pretty(page.ToString());
-        await writer.WriteAsync("docs.html", html);
+        await writer.WriteAsync("docs.html", unformatted);
         context.Response.ContentType = "text/html";
         await context.Response.WriteAsync(unformatted);
     }
