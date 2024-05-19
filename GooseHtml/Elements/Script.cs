@@ -1,5 +1,7 @@
 namespace GooseHtml;
 
+using GooseHtml.Attributes;
+
 public class Script : Element
 {
 	public Script() : base("script")
@@ -9,11 +11,9 @@ public class Script : Element
 	public Script(string src) : base("script", new [] {new Attribute("src", src)})
 	{
 	}
-}
 
-public class Link : Element
-{
-	public Link(string src) : base("link", new [] {new Attribute("href", src)})
+	public Script(Attribute[] attributes) : base("script", attributes)
 	{
 	}
 }
+
