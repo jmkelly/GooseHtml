@@ -1,6 +1,7 @@
-using System.Text;
-
 namespace GooseHtml;
+using System.Text;
+using GooseHtml.Attributes;
+
 public record Class(string Name);
 
 public abstract class Element
