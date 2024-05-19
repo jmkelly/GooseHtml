@@ -1,14 +1,27 @@
-﻿using System.Threading.Tasks;
-using GooseHtml;
-namespace GooseHtml.Docs;
+﻿namespace GooseHtml.Docs;
 
-internal class Program
-{
-    private static async Task Main(string[] args)
+ public class Program
+ {
+     private static async Task Main(string[] args)
+     {
+		var app = WebApplication.Create(args);
+		app.MapGet("/", async (context) =>
+        {
+            await WritePage(context);
+        });
+
+		await app.RunAsync();
+	 }
+
+    private static async Task WritePage(HttpContext context)
     {
         var writer = new HtmlWriter();
         var page = new Page();
-		var formatter = new HtmlFormatter();
-        await writer.WriteAsync("docs.html", formatter.Pretty(page.ToString()));
+        var formatter = new HtmlFormatter();
+		var unformatted = page.ToString();
+        var html = formatter.Pretty(page.ToString());
+        await writer.WriteAsync("docs.html", html);
+        context.Response.ContentType = "text/html";
+        await context.Response.WriteAsync(unformatted);
     }
 }
