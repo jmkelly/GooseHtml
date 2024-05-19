@@ -3,7 +3,14 @@ namespace GooseHtml.Tests;
 
 public class HtmlTests
 {
-	static string template = @"<html lang=""en-US""><head><meta charset=""utf-8""/><title></title></head><body></body></html>";
+	static string template = @"<!DOCTYPE html><html lang=""en-US""><head><meta charset=""utf-8""/><title></title></head><body></body></html>";
+
+	[Fact]
+	public void Html_ExtendedShouldReturnHtml()
+	{
+		var example = new HtmlExtended();
+		example.ToString().ShouldBe(template);
+	}
 
 	[Fact]
 	public void Html_ShouldReturnHtml()

@@ -32,7 +32,7 @@ public class ViewModelTests
 
 		var layout = new ViewModelLayout(vm);
 
-		layout.ToString().ShouldBe("<html><head></head><body><nav class=\"nav navbar\"></nav><div class=\"sidebar\"></div><footer class=\"footer\"></footer></body></html>");
+		layout.ToString().ShouldBe("<!DOCTYPE html><html><head></head><body><nav class=\"nav navbar\"></nav><div class=\"sidebar\"></div><footer class=\"footer\"></footer></body></html>");
 
 	}
 }
