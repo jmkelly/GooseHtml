@@ -6,4 +6,6 @@ public class Nav : Element
 	public Nav(Class @class) : base(@class)
 	{
 	}
+
+	public Nav(): base(){}
 }	

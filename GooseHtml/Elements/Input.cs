@@ -25,5 +25,17 @@ public class Input : Element
     }
 }
 
+public class Button : Element
+{
+
+	public Button(): base(selfClosing:false)
+	{
+
+	}
+
+	public Button(Text text): base(text, selfClosing:false){}
+
+}
+
 
 

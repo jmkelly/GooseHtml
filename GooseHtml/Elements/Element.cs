@@ -53,6 +53,15 @@ public abstract class Element
 		}
 	}
 
+	public Element(string name, Attribute[] attributes, Text text)
+	{
+		Init(name, false, text);
+		foreach (var attribute in attributes)
+		{
+			Attributes.Add(attribute);
+		}
+	}
+
 	private void Init(string name, bool selfClosing, Text value)
 	{
 
@@ -73,6 +82,11 @@ public abstract class Element
 		HtmlFormatter = new HtmlFormatter();
 	}
 
+	public void Add(Text text)
+	{
+		Text = text;
+	}
+
 	public void Add(Class @class)
 	{
 		Attributes.Add(new Attribute("class", @class.Name));
@@ -85,6 +99,11 @@ public abstract class Element
 	public void Add(Element element)
 	{
 		Elements.Add(element);
+	}
+
+	public void AddRange(Element[] elements)
+	{
+		Elements.AddRange(elements);
 	}
 
 	public string Pretty()

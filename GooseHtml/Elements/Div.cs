@@ -17,3 +17,14 @@ public class Div : Element
 		AddRange(elements);
 	}
 }	
+
+public class Code : Element
+{
+
+
+}
+
+public class Pre: Element
+{
+
+}
