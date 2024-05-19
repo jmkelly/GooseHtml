@@ -1,5 +1,7 @@
-using Shouldly;
 namespace GooseHtml.Tests;
+
+using GooseHtml.Attributes;
+using Shouldly;
 
 public class HtmlTests
 {
