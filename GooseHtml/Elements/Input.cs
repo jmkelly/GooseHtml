@@ -1,4 +1,5 @@
 namespace GooseHtml;
+using GooseHtml.Attributes;
 
 public class Input : Element
 {
@@ -12,15 +13,15 @@ public class Input : Element
     {
 		if (type == Type.Text)
 		{
-			this.Add(new Attribute("type", "text"));
+			Add(new Attribute("type", "text"));
 		}
 		else 
 		{
 			throw new NotImplementedException("type not implemented");
 		}
 
-		this.Add(new Attribute("name", name));
-		this.Add(new Attribute("value", value));
+		Add(new Attribute("name", name));
+		Add(new Attribute("value", value));
     }
 }
 
