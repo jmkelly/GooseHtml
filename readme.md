@@ -4,19 +4,21 @@
 
 ## Warning: Expirimental and not ready for production
 
+
 ### Todo: 
- - Introduction
  - How to use
- - Why? 
+ 
+ - ci/cd pipeline to build and release to nuget
+ - setup github page for docs
+ - ci/cd to push doc updates
+ - tidy up docs more, make it really nice
+ - tidy up readme to match the style of the docs.. 
+ - try more apis to see if we can get something less verbose and nicer to use while remaining strongly typed
 
- - more strongly typed elements
- - more strongly typed attributes
- - handle mixed text / element features
- - try more apis to see if we can get something
-   less verbose and nicer to use while remaining strongly typed
-
- - ci/cd 
- - nuget package
+###Done:
+- Introduction - done see docs
+- Why? - done see docs
+ 
 
 
 
