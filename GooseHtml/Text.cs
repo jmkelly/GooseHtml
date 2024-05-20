@@ -1,12 +1,15 @@
-using System.Text.Encodings.Web;
+//using System.Text.Encodings.Web;
 
 namespace GooseHtml;
 
-public record Text(string Value)
+public record Text(string Value, bool EscapeHtml = true)
 {
     public override string? ToString()
     {
-		return Value.EscapeHtml();
+		if (EscapeHtml)
+			return Value.EscapeHtml();
+		else
+			return Value;
     }
 }
 
@@ -15,7 +18,8 @@ public static class TextExtensions
 {
 	public static string EscapeHtml(this string value)
 	{
-		return HtmlEncoder.Create().Encode(value);
+		return System.Net.WebUtility.HtmlEncode(value);
+		//return HtmlEncoder.Create().Encode(value);
 	}
 }
 
