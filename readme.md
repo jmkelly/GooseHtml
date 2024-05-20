@@ -2,7 +2,7 @@
 
 ## A stronly typed OO HTML generator / builder for aspnet core
 
-## Warning: Expirimental and not ready for production
+## Warning: Experimental and not ready for production
 
 
 ### Todo: 
