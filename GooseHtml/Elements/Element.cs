@@ -14,58 +14,41 @@ public abstract class Element
 	private string Name;
 	private List<Attribute> Attributes;
 	private List<Element> Elements; 
-	private Text Text;
 
 	public Element (Class @class, bool selfClosing=false)
 	{
 		this.Name = this.GetType().Name.ToLowerInvariant();
-		Init(this.Name, selfClosing, new EmptyValue());
+		Init(this.Name, selfClosing);
 		if (Attributes != null)
 		{
 			Attributes.Add(new Attribute("class", @class.Name));
 		}
 	}
 
-	public Element(Text value, bool selfClosing=false)
-	{
-		this.Name = this.GetType().Name.ToLowerInvariant();
-		this.Text = value;
-		Init(this.Name, selfClosing, value);
-	}
-
 	public Element(bool selfClosing=false)
 	{
 		this.Name = this.GetType().Name.ToLowerInvariant();
-		Init(this.Name, selfClosing, new EmptyValue());
+		Init(this.Name, selfClosing );
 	}
 
 	public Element(string name, bool selfClosing=false)
 	{
-		Init(name, selfClosing, new EmptyValue());
+		Init(name, selfClosing);
 	}
 
 	public Element(string name, Attribute[] attributes)
 	{
-		Init(name, false, new EmptyValue());
+		Init(name, false);
 		foreach (var attribute in attributes)
 		{
 			Attributes.Add(attribute);
 		}
 	}
 
-	public Element(string name, Attribute[] attributes, Text text)
-	{
-		Init(name, false, text);
-		foreach (var attribute in attributes)
-		{
-			Attributes.Add(attribute);
-		}
-	}
 
-	private void Init(string name, bool selfClosing, Text value)
+	private void Init(string name, bool selfClosing)
 	{
 
-		this.Text = value;
 		if (selfClosing)
 		{
 			TagEnd = "/>";
@@ -84,7 +67,7 @@ public abstract class Element
 
 	public void Add(Text text)
 	{
-		Text = text;
+		this.Elements.Add(new TextElement(text.Value));
 	}
 
 	public void Add(Class @class)
@@ -122,18 +105,10 @@ public abstract class Element
 		}
 
 		AddElements(sb);
-		AddText(sb);
 		EndTag(sb);
 		return sb.ToString();
 	}
 
-    private void AddText(StringBuilder sb)
-    {
-		if (Text != null && Text.Value != "")//todo replace with a type check
-		{
-			sb.Append(Text.Value.ToString());
-		}
-    }
 
     private void EndTag(StringBuilder sb)
 	{

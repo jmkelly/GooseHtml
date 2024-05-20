@@ -33,7 +33,10 @@ public class Button : Element
 
 	}
 
-	public Button(Text text): base(text, selfClosing:false){}
+	public Button(Text text): base()
+	{
+		Add(text);
+	}
 
 }
 

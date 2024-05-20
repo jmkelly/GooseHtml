@@ -12,8 +12,9 @@ public class Span : Element
 
 	}
 
-	public Span(Text value): base(value)
+	public Span(Text value): base()
 	{
+		Add(value);
 	}
 }
 
