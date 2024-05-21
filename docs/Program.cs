@@ -20,7 +20,7 @@
         var page = new Page();
         var formatter = new HtmlFormatter();
 		var unformatted = page.ToString();
-        await writer.WriteAsync("docs.html", unformatted);
+        await writer.WriteAsync("index.html", unformatted);
         context.Response.ContentType = "text/html";
         await context.Response.WriteAsync(unformatted);
     }
