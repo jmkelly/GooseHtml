@@ -1,1 +1,66 @@
-style.css
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+	font-size: 16px; /* Adjust the base font size as needed */
+	line-height: 1.5; /* Improve readability with a good line height */
+	color: #333; /* Set a default text color */
+}
+
+nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #333;
+	padding: 20px 0px;
+}
+
+nav .navbrand {
+	text-decoration: none;
+	margin-left: 20px;
+	font-size: 1.5em;
+	color: #fff;
+}
+
+nav .navbrand:hover {
+	color: #ffffe0;
+}
+
+nav .navlink {
+	text-decoration: none;
+	margin-right: 20px;
+	font-size: 1.2em;
+	color: #fff;
+}
+
+nav .navlink:hover {
+	color: #ffffe0;
+}
+
+section  {
+	padding: 20px;
+}
+
+section.hero {
+	display: flex;
+}
+
+section div {
+	flex: 1;
+	padding: 20px;
+	margin: 20px;
+}
+
+section .codeSample {
+	flex: 2;
+	font-size: 0.8em;
+	line-height: 1.0;
+	padding: 20px;
+	margin: 20px;
+	height: 400px;
+	/* very faint yellow background */
+	background-color: #ffffe0;
+	overflow-y: scroll;
+}
+
+
