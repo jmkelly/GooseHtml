@@ -27,14 +27,12 @@ namespace GooseHtml.Docs
 			var nav = new Nav();
 			var brandLink = new A(new Href("#"), new Text("GooseHtml"));
 			brandLink.Add(new Class("navbrand"));
-
 			var docLink = new A(new Href("#"), new Text("Docs"));
 			docLink.Add(new Class("navlink"));
 			nav.Add(brandLink);
 			nav.Add(docLink);
 			return nav;
 		}
-
 
 		Section Hero()
 		{
@@ -134,16 +132,25 @@ namespace GooseHtml.Docs
 			var h2 = new H2(new Text("Get Started with GooseHtml Today!"));
 			var p = new P(new Text("Transform your C# projects with type-safe, maintainable, and elegant HTML generation."));
 			var list = new Ul();
-			list.Add(new Li(new Text("Install the Library: Add GooseHtml via NuGet: <code>Install-Package GooseHtml</code>")));
-			list.Add(new Li(new Text("Check the Documentation: Visit our documentation to see examples and detailed guides.")));
-			list.Add(new Li(new Text("Join the Community: Become a part of our vibrant community on GitHub and contribute to the evolution of the library.")));
+
+			var li = new Li();
+			li.Add(new Text("Install the Library: Add GooseHtml via NuGet:"));	
+			li.Add(new Code("Install-Package GooseHtml"));
+			li.Add(new TextElement(" or "));
+			li.Add(new Code("dotnet add package GooseHtml"));
+			list.Add(li);
+
+			var li2 = new Li();
+			var link = new A(new Href("https://github.com/jmkelly/GooseHtml"), new Text("GooseHtml on GitHub"));
+			link.Add(new Class("btn btn-large"));
+			li2.Add(link);
+			list.Add(li2);
+
 			var p2 = new P(new Text("Don't let HTML generation be a source of bugs and frustration.  Elevate your coding experience with GooseHtml!"));
-			var button = new Button(new Text("Download GooseHtml Now"));
 			div.Add(h2);
 			div.Add(p);
 			div.Add(list);
 			div.Add(p2);
-			div.Add(button);
 			return div;
 		}
 	}
