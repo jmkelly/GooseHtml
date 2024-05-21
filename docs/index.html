@@ -27,14 +27,12 @@ namespace GooseHtml.Docs
 			var nav = new Nav();
 			var brandLink = new A(new Href(&quot;#&quot;), new Text(&quot;GooseHtml&quot;));
 			brandLink.Add(new Class(&quot;navbrand&quot;));
-
 			var docLink = new A(new Href(&quot;#&quot;), new Text(&quot;Docs&quot;));
 			docLink.Add(new Class(&quot;navlink&quot;));
 			nav.Add(brandLink);
 			nav.Add(docLink);
 			return nav;
 		}
-
 
 		Section Hero()
 		{
@@ -134,19 +132,28 @@ namespace GooseHtml.Docs
 			var h2 = new H2(new Text(&quot;Get Started with GooseHtml Today!&quot;));
 			var p = new P(new Text(&quot;Transform your C# projects with type-safe, maintainable, and elegant HTML generation.&quot;));
 			var list = new Ul();
-			list.Add(new Li(new Text(&quot;Install the Library: Add GooseHtml via NuGet: &lt;code&gt;Install-Package GooseHtml&lt;/code&gt;&quot;)));
-			list.Add(new Li(new Text(&quot;Check the Documentation: Visit our documentation to see examples and detailed guides.&quot;)));
-			list.Add(new Li(new Text(&quot;Join the Community: Become a part of our vibrant community on GitHub and contribute to the evolution of the library.&quot;)));
+
+			var li = new Li();
+			li.Add(new Text(&quot;Install the Library: Add GooseHtml via NuGet:&quot;));	
+			li.Add(new Code(&quot;Install-Package GooseHtml&quot;));
+			li.Add(new TextElement(&quot; or &quot;));
+			li.Add(new Code(&quot;dotnet add package GooseHtml&quot;));
+			list.Add(li);
+
+			var li2 = new Li();
+			var link = new A(new Href(&quot;https://github.com/jmkelly/GooseHtml&quot;), new Text(&quot;GooseHtml on GitHub&quot;));
+			link.Add(new Class(&quot;btn btn-large&quot;));
+			li2.Add(link);
+			list.Add(li2);
+
 			var p2 = new P(new Text(&quot;Don&#39;t let HTML generation be a source of bugs and frustration.  Elevate your coding experience with GooseHtml!&quot;));
-			var button = new Button(new Text(&quot;Download GooseHtml Now&quot;));
 			div.Add(h2);
 			div.Add(p);
 			div.Add(list);
 			div.Add(p2);
-			div.Add(button);
 			return div;
 		}
 	}
 
 }
-</code></pre></div></section><section><h1>Create Type-Safe HTML with Ease using GooseHtml!</h1><p>Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects? Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!</p></section><section><h2>Why Choose GooseHtml?</h2><ul><li>Type Safety: Leverage the power of C#&#39;s strong typing to ensure your HTML is error-free at compile time.</li><li>It&#39;s just C#: No templating syntax or libary to learn, your html views are c# classes. Leverage object oriented design principles to create typesafe modular html components.</li><li>Intuitive API: Create complex HTML structures with a clean and readable syntax.</li><li>Seamless Integration: Easily integrate with your existing C# projects and start generating HTML right away.</li><li>Enhanced Testing: Because your html views are c# classes, you can easily unit test them without requiring any additional libraries</li></ul></section><section><h2>Key Features</h2><ul><li><strong>Fluent API: </strong>Chain methods together to build HTML elements intuitively.</li><li><strong>Comprehensive Coverage: </strong>Support for all standard HTML5 elements and attributes.</li><li><strong>Custom Extensions: </strong>Easily extend the library with your own custom components.</li><li><strong>Custom Extensions: </strong>Performance Optimized: Generate HTML quickly without sacrificing performance.</li><li><strong>Comprehensive Coverage: </strong>Support for all standard HTML5 elements and attributes.</li><li><strong>Custom Extensions: </strong>Easily extend the library with your own custom components.</li><li><strong>Custom Extensions: </strong>Performance Optimized: Generate HTML quickly without sacrificing performance.</li></ul></section><section><h2>Get Started with GooseHtml Today!</h2><p>Transform your C# projects with type-safe, maintainable, and elegant HTML generation.</p><ul><li>Install the Library: Add GooseHtml via NuGet: &lt;code&gt;Install-Package GooseHtml&lt;/code&gt;</li><li>Check the Documentation: Visit our documentation to see examples and detailed guides.</li><li>Join the Community: Become a part of our vibrant community on GitHub and contribute to the evolution of the library.</li></ul><p>Don&#39;t let HTML generation be a source of bugs and frustration.  Elevate your coding experience with GooseHtml!</p><button>Download GooseHtml Now</button></section></body></html>
+</code></pre></div></section><section><h1>Create Type-Safe HTML with Ease using GooseHtml!</h1><p>Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects? Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!</p></section><section><h2>Why Choose GooseHtml?</h2><ul><li>Type Safety: Leverage the power of C#&#39;s strong typing to ensure your HTML is error-free at compile time.</li><li>It&#39;s just C#: No templating syntax or libary to learn, your html views are c# classes. Leverage object oriented design principles to create typesafe modular html components.</li><li>Intuitive API: Create complex HTML structures with a clean and readable syntax.</li><li>Seamless Integration: Easily integrate with your existing C# projects and start generating HTML right away.</li><li>Enhanced Testing: Because your html views are c# classes, you can easily unit test them without requiring any additional libraries</li></ul></section><section><h2>Key Features</h2><ul><li><strong>Fluent API: </strong>Chain methods together to build HTML elements intuitively.</li><li><strong>Comprehensive Coverage: </strong>Support for all standard HTML5 elements and attributes.</li><li><strong>Custom Extensions: </strong>Easily extend the library with your own custom components.</li><li><strong>Custom Extensions: </strong>Performance Optimized: Generate HTML quickly without sacrificing performance.</li><li><strong>Comprehensive Coverage: </strong>Support for all standard HTML5 elements and attributes.</li><li><strong>Custom Extensions: </strong>Easily extend the library with your own custom components.</li><li><strong>Custom Extensions: </strong>Performance Optimized: Generate HTML quickly without sacrificing performance.</li></ul></section><section><h2>Get Started with GooseHtml Today!</h2><p>Transform your C# projects with type-safe, maintainable, and elegant HTML generation.</p><ul><li>Install the Library: Add GooseHtml via NuGet:<code>Install-Package GooseHtml</code> or <code>dotnet add package GooseHtml</code></li><li><a href="https://github.com/jmkelly/GooseHtml" class="btn btn-large">GooseHtml on GitHub</a></li></ul><p>Don&#39;t let HTML generation be a source of bugs and frustration.  Elevate your coding experience with GooseHtml!</p></section></body></html>
