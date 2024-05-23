@@ -1,4 +1,3 @@
-
 using GooseHtml.Attributes;
 
 namespace GooseHtml.Docs
@@ -19,6 +18,7 @@ namespace GooseHtml.Docs
 			body.Add(WhyChoose());
 			body.Add(KeyFeatures());
 			body.Add(GetStarted());
+			body.Add(Footer());
 			Add(body);
 		}
 
@@ -79,11 +79,13 @@ namespace GooseHtml.Docs
 			var div = new Section();
 			var h2 = new H2(new Text("Why Choose GooseHtml?"));
 			var list = new Ul();
-			list.Add(new Li(new Text("Type Safety: Leverage the power of C#'s strong typing to ensure your HTML is error-free at compile time.")));
-			list.Add(new Li(new Text("It's just C#: No templating syntax or libary to learn, your html views are c# classes. Leverage object oriented design principles to create typesafe modular html components.")));
-			list.Add(new Li(new Text("Intuitive API: Create complex HTML structures with a clean and readable syntax.")));
-			list.Add(new Li(new Text("Seamless Integration: Easily integrate with your existing C# projects and start generating HTML right away.")));
-			list.Add(new Li(new Text("Enhanced Testing: Because your html views are c# classes, you can easily unit test them without requiring any additional libraries")));
+
+			list.Add(BuildListItem("Type Safety: ", "Leverage the power of C#'s strong typing to ensure your HTML is error-free at compile time."));
+			list.Add(BuildListItem("It's just C#: ", "No templating syntax or libary to learn, your html views are c# classes. Leverage object oriented design principles to create typesafe modular html components."));
+			list.Add(BuildListItem("Intuitive API: ", "Create complex HTML structures with a clean and readable syntax."));
+			list.Add(BuildListItem("Seamless Integration: ", "Easily integrate with your existing C# projects and start generating HTML right away."));
+			list.Add(BuildListItem("Enhanced Testing: ", "Because your html views are c# classes, you can easily unit test them without requiring any additional libraries"));
+
 			div.Add(h2);
 			div.Add(list);
 			return div;
@@ -103,55 +105,57 @@ namespace GooseHtml.Docs
 			var div = new Section();
 			var h2 = new H2(new Text("Key Features"));
 			var list = new Ul();
-			var vals = new List<HeaderAndDescription>();
-
-			vals.Add(new HeaderAndDescription{Header="Fluent API: ", Description="Chain methods together to build HTML elements intuitively."});
-			vals.Add(new HeaderAndDescription{Header="Comprehensive Coverage: ", Description="Support for all standard HTML5 elements and attributes."});
-			vals.Add(new HeaderAndDescription{Header="Custom Extensions: ", Description="Easily extend the library with your own custom components."});
-			vals.Add(new HeaderAndDescription{Header="Custom Extensions: ", Description="Performance Optimized: Generate HTML quickly without sacrificing performance."});
-
-			vals.ForEach(val => list.Add(BuildListItem(val.Header, val.Description)));
-			vals.Clear();
-
-
-
-			vals.Add(new HeaderAndDescription{Header="Comprehensive Coverage: " , Description="Support for all standard HTML5 elements and attributes."});
-			vals.Add(new HeaderAndDescription{Header="Custom Extensions: ", Description = "Easily extend the library with your own custom components."});
-			vals.Add(new HeaderAndDescription{Header="Custom Extensions: ", Description = "Performance Optimized: Generate HTML quickly without sacrificing performance."});
-			vals.ForEach(val => list.Add(BuildListItem(val.Header, val.Description)));
-
+			list.Add(BuildListItem("Fluent API: ", "Chain methods together to build HTML elements intuitively."));
+			list.Add(BuildListItem("Comprehensive Coverage: ", "Support for all standard HTML5 elements and attributes."));
+			list.Add(BuildListItem("Custom Extensions: ", "Easily extend the library with your own custom components."));
 			div.Add(h2);
 			div.Add(list);
-
 			return div;
 		}
 
 		Section GetStarted()
 		{
-			var div = new Section();
+			var section = new Section();
 			var h2 = new H2(new Text("Get Started with GooseHtml Today!"));
 			var p = new P(new Text("Transform your C# projects with type-safe, maintainable, and elegant HTML generation."));
-			var list = new Ul();
 
-			var li = new Li();
-			li.Add(new Text("Install the Library: Add GooseHtml via NuGet:"));	
-			li.Add(new Code("Install-Package GooseHtml"));
-			li.Add(new TextElement(" or "));
-			li.Add(new Code("dotnet add package GooseHtml"));
-			list.Add(li);
+			var p2 = new P();
+			p2.Add(new Text("Install the Library: Add GooseHtml via NuGet:"));	
+			p2.Add(new Code("Install-Package GooseHtml"));
+			p2.Add(new TextElement(" or "));
+			p2.Add(new Code("dotnet add package GooseHtml"));
 
-			var li2 = new Li();
-			var link = new A(new Href("https://github.com/jmkelly/GooseHtml"), new Text("GooseHtml on GitHub"));
+
+			section.Add(h2);
+			section.Add(p);
+			section.Add(p2);
+			return section;
+		}
+
+		Footer Footer()
+		{
+
+			var section = new Footer();
+			var div = new Div();
+			div.Add(new Class("bottombar"));
+
+			var link = new A(new Href("https://github.com/jmkelly/Goose"), new Text("")); 
 			link.Add(new Class("btn btn-large"));
-			li2.Add(link);
-			list.Add(li2);
+			var svg = new Svg();
+			svg.Add(new Attributes.Attribute("xmlns", "http://www.w3.org/2000/svg"));
+			svg.Add(new Attributes.Attribute("viewBox", "0 0 32 32"));
+			svg.Add(new Attributes.Attribute("width", "36"));
+			svg.Add(new Attributes.Attribute("aria-hidden", "true"));
+			var path = new Path();
+			path.Add(new Fill("currentColor"));
+			path.Add(new D("M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"));
+			svg.Add(path);
+			link.Add(svg);
 
-			var p2 = new P(new Text("Don't let HTML generation be a source of bugs and frustration.  Elevate your coding experience with GooseHtml!"));
-			div.Add(h2);
-			div.Add(p);
-			div.Add(list);
-			div.Add(p2);
-			return div;
+			div.Add(link);
+
+			section.Add(div);
+			return section;
 		}
 	}
 
