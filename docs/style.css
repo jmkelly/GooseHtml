@@ -63,9 +63,50 @@ section .codeSample {
 	overflow-y: scroll;
 }
 
-.btn {
+code {
+	background-color: #ffffe0;
+}
+
+footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: #fff;
+	font-size: 1.2em;
+}
+
+
+/*
+* a bar stuck to bottom of page */
+footer .bottombar {
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: #fff;
+	background-color: #333;
+	font-size: 1.2em;
+	height: 50px;
+	overflow: hidden;
+	width: 100%;
+}
+
+
+/*
+* a button that is black with white text and 
+* curved edges
+* */
+
+
+.btn.btn-large {
+	padding: 20px;
 	margin: 20px;
-	color: red;
+	color: #fff;
+	background-color: #333;
+	font-size: 1.2em;
+	border-radius: 10px;
 }
 
 
