@@ -2,8 +2,6 @@ namespace GooseHtml;
 using System.Text;
 using GooseHtml.Attributes;
 
-public record Class(string Name);
-
 public abstract class Element
 {
 	internal string TagEnd;
@@ -14,6 +12,7 @@ public abstract class Element
 	private string Name;
 	private List<Attribute> Attributes;
 	private List<Element> Elements; 
+
 
 	public Element (Class @class, bool selfClosing=false)
 	{
