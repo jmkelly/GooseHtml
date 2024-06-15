@@ -7,7 +7,6 @@ namespace GooseHtml.Tests;
 public class HtmlParserTests
 {
 	const string TestPagesDirectory = "TestPages";
-	[Fact(Skip="used to generate html files")]
 	//[Fact]
 	public async Task HtmlParser_ShouldGetTheGoogleSearchPageAsync()
 	{
