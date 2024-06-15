@@ -7,9 +7,11 @@
 - See [GooseHtml.Docs](GooseHtml.Docs)
 - also see [GooseHtml.Samples](GooseHtml.Samples)
 
+### Prior to release:
+- [ ] fix build warnings
+
 ### Todo: 
 
-- [ ] ci/cd pipeline to build and release to nuget
 - [ ] tidy up docs more, make it really nice
 - [ ] ci/cd to push doc updates
 - [ ] link in readme to docs
@@ -23,4 +25,5 @@
 - [x] Why? - done see docs
 - [x] setup github page for docs
 - [x] How to use in readme
+- [x] ci/cd pipeline to build and release to nuget
 
