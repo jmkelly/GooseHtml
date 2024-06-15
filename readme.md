@@ -10,6 +10,7 @@
 
 ### Todo: 
 
+- [ ] make only GooseHtml the nuget library (fix up the release.yml)
 - [ ] tidy up docs more, make it really nice
 - [ ] tidy up readme to match the style of the docs.. 
 - [ ] try more apis to see if we can get something less verbose and nicer to use while remaining strongly typed
