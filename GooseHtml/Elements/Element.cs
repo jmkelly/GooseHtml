@@ -4,17 +4,17 @@ using GooseHtml.Attributes;
 
 public abstract class Element
 {
-	internal string TagEnd;
-	internal string TagStart;
+	internal string TagEnd = string.Empty;
+	internal string TagStart = string.Empty;
 
-	private bool SelfClosing;
-	private HtmlFormatter HtmlFormatter;
+	private bool SelfClosing = false;
+	private HtmlFormatter HtmlFormatter = new HtmlFormatter();
 	private string Name;
-	private List<Attribute> Attributes;
-	private List<Element> Elements; 
+	private List<Attribute> Attributes = new List<Attribute>();
+	private List<Element> Elements = new List<Element>(); 
 
 
-	public Element (Class @class, bool selfClosing=false)
+	public Element(Class @class, bool selfClosing=false)
 	{
 		this.Name = this.GetType().Name.ToLowerInvariant();
 		Init(this.Name, selfClosing);
@@ -32,11 +32,13 @@ public abstract class Element
 
 	public Element(string name, bool selfClosing=false)
 	{
+		this.Name = name;
 		Init(name, selfClosing);
 	}
 
 	public Element(string name, Attribute[] attributes)
 	{
+		this.Name = name;
 		Init(name, false);
 		foreach (var attribute in attributes)
 		{
@@ -47,7 +49,6 @@ public abstract class Element
 
 	private void Init(string name, bool selfClosing)
 	{
-
 		if (selfClosing)
 		{
 			TagEnd = "/>";
@@ -58,10 +59,6 @@ public abstract class Element
 		}
 		TagStart = $"<{name}";
 		SelfClosing = selfClosing;
-		this.Name = name;
-		this.Attributes = new List<Attribute>();
-		this.Elements = new List<Element>();
-		HtmlFormatter = new HtmlFormatter();
 	}
 
 	public void Add(Text text)

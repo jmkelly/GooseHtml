@@ -25,10 +25,11 @@ public class ViewModelTests
 	[Fact]
 	public void ViewModel_ShouldBeAddedIntoLayout()
 	{
-		var vm = new TestViewModel();
-		vm.Name = "test name";
-		vm.Address = "1 test way, test city, test postcode";
-		vm.Phone = "01234 567890";
+		var vm = new TestViewModel(
+			Name : "test name",
+			Address : "1 test way, test city, test postcode",
+			Phone : "01234 567890"
+		);
 
 		var layout = new ViewModelLayout(vm);
 
@@ -37,11 +38,8 @@ public class ViewModelTests
 	}
 }
 
-public class TestViewModel : IViewModel
+public record TestViewModel(string Name, string Address, string Phone) : IViewModel
 {
-	public string Name {get;set;}  
-	public string Address {get;set;}
-	public string Phone {get;set;}
 
     public Element AsElement()
     {
