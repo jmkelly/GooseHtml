@@ -9,13 +9,11 @@
 
 ### Todo: 
 
-[] tidy up docs more, make it really nice
 [] ci/cd pipeline to build and release to nuget
-[] setup github page for docs
-[] link in readme to docs
-[x] How to use in readme
-[] tidy up readme to match the style of the docs.. 
+[] tidy up docs more, make it really nice
 [] ci/cd to push doc updates
+[] link in readme to docs
+[] tidy up readme to match the style of the docs.. 
 [] try more apis to see if we can get something less verbose and nicer to use while remaining strongly typed
 [] add dark mode toggle to docs (and default to OS default)
 
@@ -23,7 +21,6 @@
 
 [x] Introduction - done see docs
 [x] Why? - done see docs
- 
-
-
+[x] setup github page for docs
+[x] How to use in readme
 
