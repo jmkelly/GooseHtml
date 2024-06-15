@@ -4,8 +4,9 @@
 
 ### How to use
 
-- See [GooseHtml.Docs](GooseHtml.Docs)
-- also see [GooseHtml.Samples](GooseHtml.Samples)
+- [GooseHtml.Docs](docs)
+- [GooseHtml.Samples](GooseHtml.Samples)
+- [GitHub pages](https://jmkelly.github.io/goose/)
 
 ### Prior to release:
 - [ ] fix build warnings
@@ -13,7 +14,6 @@
 ### Todo: 
 
 - [ ] tidy up docs more, make it really nice
-- [ ] link in readme to docs
 - [ ] tidy up readme to match the style of the docs.. 
 - [ ] try more apis to see if we can get something less verbose and nicer to use while remaining strongly typed
 - [ ] add dark mode toggle to docs (and default to OS default)
@@ -26,4 +26,5 @@
 - [x] How to use in readme
 - [x] ci/cd to push doc updates
 - [x] ci/cd pipeline to build and release to nuget
+- [x] link in readme to docs
 
