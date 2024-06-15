@@ -8,9 +8,6 @@
 - [GooseHtml.Samples](GooseHtml.Samples)
 - [GitHub pages](https://jmkelly.github.io/goose/)
 
-### Prior to release:
-- [ ] fix build warnings
-
 ### Todo: 
 
 - [ ] tidy up docs more, make it really nice
@@ -27,4 +24,5 @@
 - [x] ci/cd to push doc updates
 - [x] ci/cd pipeline to build and release to nuget
 - [x] link in readme to docs
+- [x] fix build warnings
 
