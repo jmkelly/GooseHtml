@@ -2,7 +2,8 @@ namespace GooseHtml;
 
 public enum Type
 {
-	Text
+	Text,
+	Submit
 }
 
 
