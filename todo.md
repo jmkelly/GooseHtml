@@ -5,3 +5,4 @@
 - [] new project for htmx specific attributes
 - [] implement htmx extension attributes
 - [] prototype creating htmx components where all markup and code is stored in one file
+
