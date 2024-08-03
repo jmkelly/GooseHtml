@@ -7,6 +7,7 @@ internal class Program
         builder.Services.AddComponents();
         var app = builder.Build();
         app.UseComponents();
+		var form = Form.Create();
 
 
         app.MapGet("/", () => "Hello World!");

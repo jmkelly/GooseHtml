@@ -1,5 +1,5 @@
-- [] find out all known attributes
-- [] implement all known attributes 
+- [x] find out all known attributes
+- [x] implement all known attributes 
 - [] find out all known elements
 - [] implement all known elements
 - [] new project for htmx specific attributes
