@@ -1,11 +1,9 @@
 namespace GooseHtml;
 
-public class H1 : Element
+public class H1 : H
 {
-	public H1(Text value) : base()
-	{
-		Add(value);
-	}
-
+    public H1(Text value) : base(value)
+    {
+    }
 }
 
