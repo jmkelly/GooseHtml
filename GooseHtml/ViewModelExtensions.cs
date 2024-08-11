@@ -10,5 +10,10 @@ public static class ActionResultExtensions
 		var result = new ElementResult(vm.AsElement());
 		return result;
 	}
+
+	public static IActionResult ToActionResult(this Element element)
+	{
+		return new ElementResult(element);
+	}
 }
 

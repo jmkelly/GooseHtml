@@ -12,6 +12,7 @@ public class HtmlExtended : Html
 		head.Add(meta);
 		head.Add(new Title());
 
+
 		var body = new Body();
 
 		Add(head);
