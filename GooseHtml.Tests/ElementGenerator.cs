@@ -24,7 +24,8 @@ string[] elements = {
     "figcaption", "output"
 };
 
-	[Fact]
+	[Fact(Skip="ignore")]
+	//[Fact]
 	public void Generate()
 	{
 		//generate all the elements as classes
@@ -36,9 +37,10 @@ string[] elements = {
 			string fileName = $"{titleCased}.cs";
 			string fullPath = System.IO.Path.Join(folder, fileName);
 			StringBuilder sb = new StringBuilder();
-			sb.AppendLine("namespace GooseHtml.Elements;");
-			sb.AppendLine($"public class {titleCased} : Element(\"{el}\")");
-			sb.AppendLine("{}");
+			sb.AppendLine("namespace GooseHtml;");
+			sb.AppendLine($"public class {titleCased} : Element");
+			sb.AppendLine("{");
+			sb.AppendLine("}");
 
 			//check if the file already exists
 			if (!File.Exists(fullPath)) 
