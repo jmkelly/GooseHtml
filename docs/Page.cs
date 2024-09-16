@@ -9,6 +9,9 @@ namespace GooseHtml.Docs
 			var head = new Head();
 
 			head.Add(new Link(href: "style.css", rel: "stylesheet"));
+			head.Add(new Link(href: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css", rel: "stylesheet"));
+			head.Add(new Script(src: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"));
+			head.Add(new Script(src: "site.js"));
 			Add(head);
 
 			var body = new Body();
@@ -55,6 +58,7 @@ namespace GooseHtml.Docs
 			codeSample.Add(new Class("codeSample"));
 			var codeWrapper = new Pre();
 			var code = new Code();
+			code.Add(new Class("hljs language-csharp"));
 			//read the Page.cs file into text 
 			code.Add(new Text(File.ReadAllText("Page.cs")));
 			codeWrapper.Add(code);
@@ -62,15 +66,25 @@ namespace GooseHtml.Docs
 			return codeSample;
 		}
 
+		Div CreateFlexItem()
+		{
+			var div = new Div();
+			div.Add(new Class("flexitem"));
+			return div;
+		}
+
 		Section CallToAction()
 		{
 
-			var div = new Section();
-			var h1 = new H1(new Text("Create Type-Safe HTML with Ease using GooseHtml!"));
+			var section = new Section();
+			var div = CreateFlexItem();
+			section.Add(new Class("calltoaction"));
+			var h2 = new H2(new Text("Create Type-Safe HTML with Ease"));
 			var p = new P(new Text("Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects? Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!"));
-			div.Add(h1);
+			div.Add(h2);
 			div.Add(p);
-			return div;
+			section.Add(div);
+			return section;
 
 		}
 

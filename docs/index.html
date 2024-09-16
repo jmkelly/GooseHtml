@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><link href="style.css" rel="stylesheet"></link></head><body><nav><a href="#" class="navbrand">GooseHtml</a><a href="#" class="navlink">Docs</a></nav><section class="hero"><div><h1>GooseHtml</h1><p>Create Type-Safe HTML with ease using C# and GooseHtml!</p></div><div class="codeSample"><pre><code>using GooseHtml.Attributes;
+<!DOCTYPE html><html><head><link href="style.css" rel="stylesheet"></link><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" rel="stylesheet"></link><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script><script src="site.js"></script></head><body><nav><a href="#" class="navbrand">GooseHtml</a><a href="#" class="navlink">Docs</a></nav><section class="hero"><div><h1>GooseHtml</h1><p>Create Type-Safe HTML with ease using C# and GooseHtml!</p></div><div class="codeSample"><pre><code class="hljs language-csharp">using GooseHtml.Attributes;
 
 namespace GooseHtml.Docs
 {
@@ -9,6 +9,9 @@ namespace GooseHtml.Docs
 			var head = new Head();
 
 			head.Add(new Link(href: &quot;style.css&quot;, rel: &quot;stylesheet&quot;));
+			head.Add(new Link(href: &quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css&quot;, rel: &quot;stylesheet&quot;));
+			head.Add(new Script(src: &quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js&quot;));
+			head.Add(new Script(src: &quot;site.js&quot;));
 			Add(head);
 
 			var body = new Body();
@@ -55,6 +58,7 @@ namespace GooseHtml.Docs
 			codeSample.Add(new Class(&quot;codeSample&quot;));
 			var codeWrapper = new Pre();
 			var code = new Code();
+			code.Add(new Class(&quot;hljs language-csharp&quot;));
 			//read the Page.cs file into text 
 			code.Add(new Text(File.ReadAllText(&quot;Page.cs&quot;)));
 			codeWrapper.Add(code);
@@ -62,15 +66,25 @@ namespace GooseHtml.Docs
 			return codeSample;
 		}
 
+		Div CreateFlexItem()
+		{
+			var div = new Div();
+			div.Add(new Class(&quot;flexitem&quot;));
+			return div;
+		}
+
 		Section CallToAction()
 		{
 
-			var div = new Section();
-			var h1 = new H1(new Text(&quot;Create Type-Safe HTML with Ease using GooseHtml!&quot;));
+			var section = new Section();
+			var div = CreateFlexItem();
+			section.Add(new Class(&quot;calltoaction&quot;));
+			var h2 = new H2(new Text(&quot;Create Type-Safe HTML with Ease&quot;));
 			var p = new P(new Text(&quot;Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects? Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!&quot;));
-			div.Add(h1);
+			div.Add(h2);
 			div.Add(p);
-			return div;
+			section.Add(div);
+			return section;
 
 		}
 
@@ -160,4 +174,4 @@ namespace GooseHtml.Docs
 	}
 
 }
-</code></pre></div></section><section><h1>Create Type-Safe HTML with Ease using GooseHtml!</h1><p>Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects? Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!</p></section><section><h2>Why Choose GooseHtml?</h2><ul><li><strong>Type Safety: </strong>Leverage the power of C#&#39;s strong typing to ensure your HTML is error-free at compile time.</li><li><strong>It&#39;s just C#: </strong>No templating syntax or libary to learn, your html views are c# classes. Leverage object oriented design principles to create typesafe modular html components.</li><li><strong>Intuitive API: </strong>Create complex HTML structures with a clean and readable syntax.</li><li><strong>Seamless Integration: </strong>Easily integrate with your existing C# projects and start generating HTML right away.</li><li><strong>Enhanced Testing: </strong>Because your html views are c# classes, you can easily unit test them without requiring any additional libraries</li></ul></section><section><h2>Key Features</h2><ul><li><strong>Fluent API: </strong>Chain methods together to build HTML elements intuitively.</li><li><strong>Comprehensive Coverage: </strong>Support for all standard HTML5 elements and attributes.</li><li><strong>Custom Extensions: </strong>Easily extend the library with your own custom components.</li></ul></section><section><h2>Get Started with GooseHtml Today!</h2><p>Transform your C# projects with type-safe, maintainable, and elegant HTML generation.</p><p>Install the Library: Add GooseHtml via NuGet:<code>Install-Package GooseHtml</code> or <code>dotnet add package GooseHtml</code></p></section><footer><div class="bottombar"><a href="https://github.com/jmkelly/Goose" class="btn btn-large"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="36" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a></div></footer></body></html>
+</code></pre></div></section><section class="calltoaction"><div class="flexitem"><h2>Create Type-Safe HTML with Ease</h2><p>Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects? Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!</p></div></section><section><h2>Why Choose GooseHtml?</h2><ul><li><strong>Type Safety: </strong>Leverage the power of C#&#39;s strong typing to ensure your HTML is error-free at compile time.</li><li><strong>It&#39;s just C#: </strong>No templating syntax or libary to learn, your html views are c# classes. Leverage object oriented design principles to create typesafe modular html components.</li><li><strong>Intuitive API: </strong>Create complex HTML structures with a clean and readable syntax.</li><li><strong>Seamless Integration: </strong>Easily integrate with your existing C# projects and start generating HTML right away.</li><li><strong>Enhanced Testing: </strong>Because your html views are c# classes, you can easily unit test them without requiring any additional libraries</li></ul></section><section><h2>Key Features</h2><ul><li><strong>Fluent API: </strong>Chain methods together to build HTML elements intuitively.</li><li><strong>Comprehensive Coverage: </strong>Support for all standard HTML5 elements and attributes.</li><li><strong>Custom Extensions: </strong>Easily extend the library with your own custom components.</li></ul></section><section><h2>Get Started with GooseHtml Today!</h2><p>Transform your C# projects with type-safe, maintainable, and elegant HTML generation.</p><p>Install the Library: Add GooseHtml via NuGet:<code>Install-Package GooseHtml</code> or <code>dotnet add package GooseHtml</code></p></section><footer><div class="bottombar"><a href="https://github.com/jmkelly/Goose" class="btn btn-large"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="36" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a></div></footer></body></html>
