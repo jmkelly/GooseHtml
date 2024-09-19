@@ -1,4 +1,4 @@
-namespace GooseHtml.Elements;
+namespace GooseHtml;
 
 public class H3 : H
 {
