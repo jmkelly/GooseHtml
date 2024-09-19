@@ -51,7 +51,6 @@ namespace GooseHtml.Docs
 			div.Add(h1);
 			div.Add(h2);
 			hero.Add(div);
-			//hero.Add(CodeSample());
 			return hero;
 		}
 
@@ -84,11 +83,14 @@ namespace GooseHtml.Docs
 
 			var section = new Section();
 			section.Add(new Class("calltoaction"));
-			var p = new P(new Text("Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects?")); 
-			var p2 = new P(new Text("Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!"));
-			//div.Add(h2);
+			var p = new P(new Text("The library for compile time checking of your html in C#"));
+
+			var button = new Button();
+			button.Add(new Text("Get Started"));
+			button.Add(new Class("btn btn-large"));
+
 			section.Add(p);
-			section.Add(p2);
+			section.Add(button);
 			return section;
 
 		}

@@ -51,7 +51,6 @@ namespace GooseHtml.Docs
 			div.Add(h1);
 			div.Add(h2);
 			hero.Add(div);
-			//hero.Add(CodeSample());
 			return hero;
 		}
 
@@ -84,9 +83,14 @@ namespace GooseHtml.Docs
 
 			var section = new Section();
 			section.Add(new Class(&quot;calltoaction&quot;));
-			var p = new P(new Text(&quot;Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects? Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!&quot;));
-			//div.Add(h2);
+			var p = new P(new Text(&quot;The library for compile time checking of your html in C#&quot;));
+
+			var button = new Button();
+			button.Add(new Text(&quot;Get Started&quot;));
+			button.Add(new Class(&quot;btn btn-large&quot;));
+
 			section.Add(p);
+			section.Add(button);
 			return section;
 
 		}
@@ -183,7 +187,7 @@ namespace GooseHtml.Docs
 	}
 
 }
-</code></pre></div></section><section class="middle"><section class="calltoaction"><p>Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects? Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!</p></section><section><div class="code-sample-in-page"><pre><code class="hljs language-csharp atom-one-dark">using GooseHtml.Attributes;
+</code></pre></div></section><section class="middle"><section class="calltoaction"><p>The library for compile time checking of your html in C#</p><button class="btn btn-large">Get Started</button></section><section><div class="code-sample-in-page"><pre><code class="hljs language-csharp atom-one-dark">using GooseHtml.Attributes;
 
 namespace GooseHtml.Docs
 {
@@ -236,7 +240,6 @@ namespace GooseHtml.Docs
 			div.Add(h1);
 			div.Add(h2);
 			hero.Add(div);
-			//hero.Add(CodeSample());
 			return hero;
 		}
 
@@ -269,9 +272,14 @@ namespace GooseHtml.Docs
 
 			var section = new Section();
 			section.Add(new Class(&quot;calltoaction&quot;));
-			var p = new P(new Text(&quot;Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects? Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!&quot;));
-			//div.Add(h2);
+			var p = new P(new Text(&quot;The library for compile time checking of your html in C#&quot;));
+
+			var button = new Button();
+			button.Add(new Text(&quot;Get Started&quot;));
+			button.Add(new Class(&quot;btn btn-large&quot;));
+
 			section.Add(p);
+			section.Add(button);
 			return section;
 
 		}

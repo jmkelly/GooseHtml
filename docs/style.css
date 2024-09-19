@@ -113,8 +113,15 @@ section .code-sample-in-page {
 	font-size: 0.6em;
 }
 
+.border-radius {
+	border-radius: 10px;
+}
+
+.calltoaction p {
+	padding-bottom: 20px;
+}
+
 section.calltoaction {
-	display: flex;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
@@ -173,9 +180,13 @@ footer .bottombar {
 	padding: 20px;
 	margin: 20px;
 	color: #fff;
-	background-color: #333;
+	background-color: #444;
 	font-size: 1.2em;
 	border-radius: 10px;
+}
+
+.btn.btn-large:hover {
+	background-color: #555;
 }
 
 
