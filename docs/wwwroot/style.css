@@ -7,6 +7,17 @@ body {
 	color: #333; /* Set a default text color */
 }
 
+section .codeSample {
+	z-index: -1;
+	position: absolute;
+	left:0;
+	top:0;
+	opacity: 0.7;
+	font-size: 0.8em;
+	height: 400px;
+	overflow-y: scroll;
+}
+
 h1 {
 	font-size: 3.0em;
 	margin: 0;
@@ -18,7 +29,6 @@ h2 {
 }
 
 p {
-	font-size: 1.3em;
 	margin: 0;
 }
 
@@ -52,16 +62,6 @@ nav .navlink:hover {
 	color: #ffffe0;
 }
 
-section.calltoaction {
-	display: flex;
-	margin-left: 20%;
-	margin-right: 20%;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-}
-
-
 section div.flexitem {
 	margin: 0px
 	width: 20%;
@@ -83,38 +83,58 @@ section  {
 }
 
 section.hero {
-	display: flex;
+	text-align: center;
+	color:white;
 }
 
 section.hero h1 {
+	padding-top: 20px;
+	padding-bottom: 60px;
 	font-size: 5.0em;
 	font-weight: bold;
-	margin-top: 20%;
-	text-align: left;
-	margin-left: 15%;
 }
 
 section.hero p {
-	text-align: left;
-	margin-left: 15%;
+	padding-bottom: 20px;
 }
 
-section .codeSample {
-	flex: 1;
-	font-size: 0.8em;
-	line-height: 1.0;
-	padding-left: 20px;
-	padding-right: 20px;
-	margin-left: 20px;
-	margin-right: 20px;
-	height: 400px;
-	/* very faint yellow background */
-	/* background-color: #ffffe0; */
-	overflow-y: scroll;
+.middle {
+	display: flex;
+	flex-direction: column;
+	margin-left: 20%;
+	margin-right: 20%;
+	font-size: 16pt;
 }
+
+section .code-sample-in-page {
+	display: flex;
+	height: 400px;
+	overflow-y: scroll;
+	font-size: 0.6em;
+}
+
+section.calltoaction {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+section h2 {
+	padding-bottom: 20px;
+}
+
+section li {
+	padding-bottom: 20px;
+}
+
+.calltoaction p {
+	font-size: 1.8em;
+}
+
 
 code {
-	/* background-color: #ffffe0; */
+	background-color: #ffffe0;
 }
 
 footer {
@@ -142,7 +162,6 @@ footer .bottombar {
 	overflow: hidden;
 	width: 100%;
 }
-
 
 /*
 * a button that is black with white text and 

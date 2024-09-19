@@ -9,18 +9,22 @@ namespace GooseHtml.Docs
 			var head = new Head();
 
 			head.Add(new Link(href: "style.css", rel: "stylesheet"));
-			head.Add(new Link(href: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css", rel: "stylesheet"));
-			head.Add(new Script(src: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"));
+			head.Add(new Link(href: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-dark.min.css", rel: "stylesheet"));
+			head.Add(new Script(src: "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js"));
 			head.Add(new Script(src: "site.js"));
 			Add(head);
 
 			var body = new Body();
 			body.Add(Nav());
 			body.Add(Hero());
-			body.Add(CallToAction());
-			body.Add(WhyChoose());
-			body.Add(KeyFeatures());
-			body.Add(GetStarted());
+			body.Add(CodeSample("codeSample"));
+			var middle = new Section(new Class("middle"));
+			middle.Add(CallToAction());
+			middle.Add(CodeSample("code-sample-in-page"));
+			middle.Add(WhyChoose());
+			middle.Add(KeyFeatures());
+			middle.Add(GetStarted());
+			body.Add(middle);
 			body.Add(Footer());
 			Add(body);
 		}
@@ -43,27 +47,29 @@ namespace GooseHtml.Docs
 			hero.Add(new Class("hero"));
 			var div = new Div();
 			var h1 = new H1(new Text("GooseHtml"));
-			var p = new P(new Text("Create Type-Safe HTML with ease using C# and GooseHtml!"));
+			var h2 = new H2(new Text("Create Type-Safe HTML With Ease"));
 			div.Add(h1);
-			div.Add(p);
+			div.Add(h2);
 			hero.Add(div);
-			hero.Add(CodeSample());
+			//hero.Add(CodeSample());
 			return hero;
 		}
 
 
-		Div CodeSample()
+		Section CodeSample(string className)
 		{
+			var section = new Section();
 			var codeSample = new Div();
-			codeSample.Add(new Class("codeSample"));
+			codeSample.Add(new Class(className));
 			var codeWrapper = new Pre();
 			var code = new Code();
-			code.Add(new Class("hljs language-csharp"));
+			code.Add(new Class("hljs language-csharp atom-one-dark"));
 			//read the Page.cs file into text 
 			code.Add(new Text(File.ReadAllText("Page.cs")));
 			codeWrapper.Add(code);
 			codeSample.Add(codeWrapper);
-			return codeSample;
+			section.Add(codeSample);
+			return section;
 		}
 
 		Div CreateFlexItem()
@@ -77,13 +83,10 @@ namespace GooseHtml.Docs
 		{
 
 			var section = new Section();
-			var div = CreateFlexItem();
 			section.Add(new Class("calltoaction"));
-			var h2 = new H2(new Text("Create Type-Safe HTML with Ease"));
 			var p = new P(new Text("Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects? Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!"));
-			div.Add(h2);
-			div.Add(p);
-			section.Add(div);
+			//div.Add(h2);
+			section.Add(p);
 			return section;
 
 		}
@@ -135,14 +138,20 @@ namespace GooseHtml.Docs
 
 			var p2 = new P();
 			p2.Add(new Text("Install the Library: Add GooseHtml via NuGet:"));	
-			p2.Add(new Code("Install-Package GooseHtml"));
-			p2.Add(new TextElement(" or "));
-			p2.Add(new Code("dotnet add package GooseHtml"));
+			var p3 = new P();
+			p3.Add(new Code("Install-Package GooseHtml"));
+			var p4 = new P();
+			p4.Add(new TextElement("Add GooseHtml via dotnet tool:"));
+			var p5 = new P();
+			p5.Add(new Code("dotnet add package GooseHtml"));
 
 
 			section.Add(h2);
 			section.Add(p);
 			section.Add(p2);
+			section.Add(p3);
+			section.Add(p4);
+			section.Add(p5);
 			return section;
 		}
 
