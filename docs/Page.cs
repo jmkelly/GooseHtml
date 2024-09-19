@@ -84,9 +84,11 @@ namespace GooseHtml.Docs
 
 			var section = new Section();
 			section.Add(new Class("calltoaction"));
-			var p = new P(new Text("Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects? Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!"));
+			var p = new P(new Text("Are you tired of dealing with fragile strings and runtime errors when generating HTML in your C# projects?")); 
+			var p2 = new P(new Text("Say goodbye to those hassles with GooseHtml, the powerful C# HTML generation library!"));
 			//div.Add(h2);
 			section.Add(p);
+			section.Add(p2);
 			return section;
 
 		}
