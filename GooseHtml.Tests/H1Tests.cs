@@ -22,7 +22,7 @@ public class HTests
 	[Fact]
 	public void H3_ShouldReturnH3()
 	{
-		var h3 = new Elements.H3(new Text("GooseHtml"));
+		var h3 = new H3(new Text("GooseHtml"));
 		h3.ToString().ShouldBe("<h3>GooseHtml</h3>");
 	}
 }
