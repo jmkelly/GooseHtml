@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record DataCustomAttribute(string key, string value): Attribute($"data-{key}", value); 
+public record DataCustomAttribute(string Key, string Value): Attribute($"data-{Key}", Value); 
 

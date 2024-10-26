@@ -14,19 +14,14 @@ public class SampleController : Controller
 	{
 		//create a view model
 		var vm = new ViewModel("james", "james@james");
-		return new Samples.ExampleLayout(vm.AsElement()).ToActionResult();
+		return new ExampleLayout(vm.AsElement()).ToActionResult();
 	}
 }
 
-public class ViewModel : IViewModel
+public class ViewModel(string name, string email) : IViewModel
 {
-	public ViewModel(string name, string email)
-	{
-		Name = name;
-		Email = email;
-	}
-	public string Name {get;}
-	public string Email {get;}
+    public string Name { get; } = name;
+    public string Email { get; } = email;
 
     public Element AsElement()
     {

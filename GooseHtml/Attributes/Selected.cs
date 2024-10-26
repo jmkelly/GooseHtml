@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Selected(string value): Attribute("selected", value);
+public record Selected(string Value): Attribute("selected", Value);
 

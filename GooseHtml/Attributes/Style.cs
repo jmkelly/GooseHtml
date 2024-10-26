@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Style(string value): Attribute("style", value);
+public record Style(string Value): Attribute("style", Value);
 

@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Alt(string value) : Attribute("alt", value);
+public record Alt(string Value) : Attribute("alt", Value);
 

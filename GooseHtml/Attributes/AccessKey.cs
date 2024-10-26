@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record AccessKey(string value) : Attribute("accesskey", value);
+public record AccessKey(string Value) : Attribute("accesskey", Value);
 

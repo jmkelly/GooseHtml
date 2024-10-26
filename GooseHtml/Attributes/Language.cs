@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Language(string value): Attribute("language", value);
+public record Language(string Value): Attribute("language", Value);
 

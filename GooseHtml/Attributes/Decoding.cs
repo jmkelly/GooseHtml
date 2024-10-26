@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Decoding(string value): Attribute("decoding", value);
+public record Decoding(string Value): Attribute("decoding", Value);
 

@@ -6,14 +6,15 @@ public static class ActionResultExtensions
 {
 	public static IActionResult AsActionResult(this IViewModel vm)
 	{
-
-		var result = new ElementResult(vm.AsElement());
+		ArgumentNullException.ThrowIfNull(vm);
+        var result = new ElementResult(vm.AsElement());
 		return result;
 	}
 
 	public static IActionResult ToActionResult(this Element element)
 	{
-		return new ElementResult(element);
+		ArgumentNullException.ThrowIfNull(element);
+        return new ElementResult(element);
 	}
 }
 

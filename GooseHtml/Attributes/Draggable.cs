@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Draggable(string value): Attribute("draggable", value);
+public record Draggable(string Value): Attribute("draggable", Value);
 

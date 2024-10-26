@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Formnovalidate(string value): Attribute("formnovalidate", value);
+public record FormnoValidate(string Value): Attribute("formnoValidate", Value);
 

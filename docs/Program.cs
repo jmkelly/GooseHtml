@@ -6,10 +6,7 @@
      {
 		var app = WebApplication.Create(args);
 		app.UseStaticFiles();
-		app.MapGet("/", async (context) =>
-        {
-            await WritePage(context);
-        });
+		app.MapGet("/", WritePage);
 
 		await app.RunAsync();
 	 }
@@ -18,7 +15,6 @@
     {
         var writer = new HtmlWriter();
         var page = new Page();
-        var formatter = new HtmlFormatter();
 		var unformatted = page.ToString();
         await writer.WriteAsync("index.html", unformatted);
         context.Response.ContentType = "text/html";

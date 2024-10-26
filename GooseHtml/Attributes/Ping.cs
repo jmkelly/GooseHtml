@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Ping(string value): Attribute("ping", value);
+public record Ping(string Value): Attribute("ping", Value);
 

@@ -1,5 +1,5 @@
 namespace GooseHtml.Attributes;
 
-public record Action(string value) : Attribute("action", value)
+public record Action(string Value) : Attribute("action", Value)
 {
 }

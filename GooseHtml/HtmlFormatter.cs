@@ -10,11 +10,13 @@ public class HtmlFormatter
 	{
 		var sb = new StringBuilder();
 		var element = XElement.Parse(html);
-		var settings = new XmlWriterSettings();
-		settings.OmitXmlDeclaration = true;
-		settings.Indent = true;
+        var settings = new XmlWriterSettings
+        {
+            OmitXmlDeclaration = true,
+            Indent = true
+        };
 
-		using (var xmlWriter = XmlWriter.Create(sb, settings))
+        using (var xmlWriter = XmlWriter.Create(sb, settings))
 		{
 			element.Save(xmlWriter);
 		}

@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Hreflang(string value): Attribute("hreflang", value);
+public record Hreflang(string Value): Attribute("hreflang", Value);
 

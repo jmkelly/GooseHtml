@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Disabled(string value): Attribute("disabled", value);
+public record Disabled(string Value): Attribute("disabled", Value);
 

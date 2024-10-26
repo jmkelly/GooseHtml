@@ -8,37 +8,34 @@ public abstract class Element
 	internal string TagStart = string.Empty;
 
 	private bool SelfClosing = false;
-	private HtmlFormatter HtmlFormatter = new HtmlFormatter();
-	private string Name;
-	private List<Attribute> Attributes = new List<Attribute>();
-	private List<Element> Elements = new List<Element>(); 
+	private readonly HtmlFormatter HtmlFormatter = new();
+	private readonly string Name;
+	private readonly List<Attribute> Attributes = [];
+	private readonly List<Element> Elements = []; 
 
 
 	public Element(Class @class, bool selfClosing=false)
 	{
-		this.Name = this.GetType().Name.ToLowerInvariant();
-		Init(this.Name, selfClosing);
-		if (Attributes != null)
-		{
-			Attributes.Add(new Attribute("class", @class.Name));
-		}
+		Name = GetType().Name.ToLowerInvariant();
+		Init(Name, selfClosing);
+		Attributes?.Add(new Attribute("class", @class.Name));
 	}
 
 	public Element(bool selfClosing=false)
 	{
-		this.Name = this.GetType().Name.ToLowerInvariant();
-		Init(this.Name, selfClosing );
+		Name = GetType().Name.ToLowerInvariant();
+		Init(Name, selfClosing );
 	}
 
 	public Element(string name, bool selfClosing=false)
 	{
-		this.Name = name;
+		Name = name;
 		Init(name, selfClosing);
 	}
 
 	public Element(string name, Attribute[] attributes)
 	{
-		this.Name = name;
+		Name = name;
 		Init(name, false);
 		foreach (var attribute in attributes)
 		{
@@ -63,7 +60,7 @@ public abstract class Element
 
 	public void Add(Text text)
 	{
-		this.Elements.Add(new TextElement(text.Value));
+		Elements.Add(new TextElement(text.Value));
 	}
 
 	public void Add(Class @class)
@@ -87,7 +84,7 @@ public abstract class Element
 
 	public string Pretty()
 	{ 
-		return HtmlFormatter.Pretty(this.ToString());
+		return HtmlFormatter.Pretty(ToString());
 	}
 
 	public override string ToString()
@@ -119,9 +116,9 @@ public abstract class Element
 		}
 	}
 
-	private void CloseTag(StringBuilder sb)
+	private static void CloseTag(StringBuilder sb)
 	{
-		sb.Append(">");	
+		sb.Append('>');	
 	}
 
 	private void StartTag(StringBuilder sb)
@@ -133,7 +130,7 @@ public abstract class Element
 	{
 		foreach (var attr in Attributes)
 		{
-			sb.Append(" ");
+			sb.Append(' ');
 			sb.Append(attr.ToString());
 		}
 	}

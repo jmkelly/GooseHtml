@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Href(string value) : Attribute("href", value);
+public record Href(string Value) : Attribute("href", Value);
 

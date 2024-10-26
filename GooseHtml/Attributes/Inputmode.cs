@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Inputmode(string value): Attribute("inputmode", value);
+public record Inputmode(string Value): Attribute("inputmode", Value);
 

@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Wrap(string value): Attribute("wrap", value);
+public record Wrap(string Value): Attribute("wrap", Value);
 

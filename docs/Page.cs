@@ -185,5 +185,4 @@ namespace GooseHtml.Docs
 			return section;
 		}
 	}
-
 }

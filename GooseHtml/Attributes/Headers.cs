@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Headers(string value): Attribute("headers", value);
+public record Headers(string Value): Attribute("headers", Value);
 

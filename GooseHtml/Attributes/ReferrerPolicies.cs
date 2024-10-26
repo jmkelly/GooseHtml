@@ -12,14 +12,14 @@ public record UnsafeUrl(): ReferrerPolicy("unsafe-url");
 
 public static class ReferrerPolicies
 {
-	public static NoReferrer NoReferrer() => new NoReferrer();
-	public static NoReferrerWhenDowngrade NoReferrerWhenDowngrade() => new NoReferrerWhenDowngrade();
-	public static Origin Origin() => new Origin();
-	public static OriginWhenCrossOrigin OriginWhenCrossOrigin() => new OriginWhenCrossOrigin();
-	public static SameOrigin SameOrigin() => new SameOrigin();
-	public static StrictOrigin StrictOrigin() => new StrictOrigin();
-	public static StrictOriginWhenCrossOrigin StrictOriginWhenCrossOrigin() => new StrictOriginWhenCrossOrigin();
-	public static UnsafeUrl UnsafeUrl() => new UnsafeUrl();
+	public static NoReferrer NoReferrer() => new();
+	public static NoReferrerWhenDowngrade NoReferrerWhenDowngrade() => new();
+	public static Origin Origin() => new();
+	public static OriginWhenCrossOrigin OriginWhenCrossOrigin() => new();
+	public static SameOrigin SameOrigin() => new();
+	public static StrictOrigin StrictOrigin() => new();
+	public static StrictOriginWhenCrossOrigin StrictOriginWhenCrossOrigin() => new();
+	public static UnsafeUrl UnsafeUrl() => new();
 }
 
 

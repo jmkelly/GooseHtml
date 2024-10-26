@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Formaction(string value): Attribute("formaction", value);
+public record Formaction(string Value): Attribute("formaction", Value);
 

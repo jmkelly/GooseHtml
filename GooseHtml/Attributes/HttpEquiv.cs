@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record HttpEquiv(string value): Attribute("http-equiv", value);
+public record HttpEquiV(string Value): Attribute("http-equiV", Value);
 

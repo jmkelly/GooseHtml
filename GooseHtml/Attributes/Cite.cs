@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Cite(string value): Attribute("cite", value);
+public record Cite(string Value): Attribute("cite", Value);
 

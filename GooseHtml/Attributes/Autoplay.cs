@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Autoplay(string value): Attribute("autoplay", value);
+public record Autoplay(string Value): Attribute("autoplay", Value);
 

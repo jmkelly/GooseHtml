@@ -1,6 +1,6 @@
 
 namespace GooseHtml.Attributes;
 
-public record Integrity(string value) : Attribute("integrity", value);
+public record Integrity(string Value) : Attribute("integrity", Value);
 
 

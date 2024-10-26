@@ -6,7 +6,7 @@ namespace GooseHtml.Tests;
 public class ElementGenerator
 {
 
-string[] elements = {
+    readonly string[] elements = [
     "html", "head", "title", "base", "link", "meta", "style", "body",
     "article", "section", "nav", "aside", "h1", "h2", "h3", "h4", "h5", "h6",
     "header", "footer", "address", "p", "hr", "pre", "blockquote", "ol", "ul",
@@ -22,7 +22,7 @@ string[] elements = {
     "noscript", "template", "canvas", "svg", "math", "cite", "aside", 
     "section", "nav", "article", "address", "header", "footer", "figure", 
     "figcaption", "output"
-};
+];
 
 	[Fact(Skip="ignore")]
 	//[Fact]

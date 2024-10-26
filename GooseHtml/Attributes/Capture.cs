@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Capture(string value): Attribute("capture", value);
+public record Capture(string Value): Attribute("capture", Value);
 

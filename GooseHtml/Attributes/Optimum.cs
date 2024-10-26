@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Optimum(string value): Attribute("optimum", value);
+public record Optimum(string Value): Attribute("optimum", Value);
 

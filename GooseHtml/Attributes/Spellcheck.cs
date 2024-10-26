@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Spellcheck(string value): Attribute("spellcheck", value);
+public record Spellcheck(string Value): Attribute("spellcheck", Value);
 

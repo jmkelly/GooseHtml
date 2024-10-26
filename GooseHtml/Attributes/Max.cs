@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Max(string value): Attribute("max", value);
+public record Max(string Value): Attribute("max", Value);
 

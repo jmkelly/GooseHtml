@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Formenctype(string value): Attribute("formenctype", value);
+public record Formenctype(string Value): Attribute("formenctype", Value);
 

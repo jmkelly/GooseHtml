@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Coords(string value): Attribute("coords", value);
+public record Coords(string Value): Attribute("coords", Value);
 

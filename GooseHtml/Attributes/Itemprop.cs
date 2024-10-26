@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Itemprop(string value): Attribute("itemprop", value);
+public record Itemprop(string Value): Attribute("itemprop", Value);
 

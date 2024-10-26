@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record DeferAttribute(string value): Attribute("defer", value);
+public record DeferAttribute(string Value): Attribute("defer", Value);
 

@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Start(string value): Attribute("start", value);
+public record Start(string Value): Attribute("start", Value);
 

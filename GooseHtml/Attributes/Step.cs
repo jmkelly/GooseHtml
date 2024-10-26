@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Step(string value): Attribute("step", value);
+public record Step(string Value): Attribute("step", Value);
 

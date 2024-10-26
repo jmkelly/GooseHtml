@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Colspan(string value): Attribute("colspan", value);
+public record Colspan(string Value): Attribute("colspan", Value);
 

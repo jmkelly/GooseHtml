@@ -1,3 +1,3 @@
 namespace GooseHtml.Attributes;
 
-public record Src(string value) : Attribute("src", value);
+public record Src(string Value) : Attribute("src", Value);

@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Contenteditable(string value): Attribute("contenteditable", value);
+public record Contenteditable(string Value): Attribute("contenteditable", Value);
 

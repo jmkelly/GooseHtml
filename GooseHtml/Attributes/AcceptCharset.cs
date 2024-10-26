@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record AcceptCharset(string value) : Attribute("accept-charset", value);
+public record AcceptCharset(string Value) : Attribute("accept-charset", Value);
 

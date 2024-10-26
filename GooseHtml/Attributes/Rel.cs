@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Rel(string value): Attribute("rel", value);
+public record Rel(string Value): Attribute("rel", Value);
 

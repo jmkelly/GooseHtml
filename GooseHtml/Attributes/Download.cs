@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Download(string value): Attribute("download", value);
+public record Download(string Value): Attribute("download", Value);
 

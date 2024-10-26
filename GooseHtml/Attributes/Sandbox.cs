@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Sandbox(string value): Attribute("sandbox", value);
+public record Sandbox(string Value): Attribute("sandbox", Value);
 

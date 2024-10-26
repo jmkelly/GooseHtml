@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Muted(string value): Attribute("muted", value);
+public record Muted(string Value): Attribute("muted", Value);
 

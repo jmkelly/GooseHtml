@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Datetime(string value): Attribute("datetime", value);
+public record Datetime(string Value): Attribute("datetime", Value);
 

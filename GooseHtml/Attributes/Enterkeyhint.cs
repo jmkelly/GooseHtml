@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Enterkeyhint(string value): Attribute("enterkeyhint", value);
+public record Enterkeyhint(string Value): Attribute("enterkeyhint", Value);
 

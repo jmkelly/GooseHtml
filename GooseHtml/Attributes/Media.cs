@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Media(string value): Attribute("media", value);
+public record Media(string Value): Attribute("media", Value);
 

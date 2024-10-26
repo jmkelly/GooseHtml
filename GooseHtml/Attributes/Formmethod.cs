@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Formmethod(string value): Attribute("formmethod", value);
+public record Formmethod(string Value): Attribute("formmethod", Value);
 

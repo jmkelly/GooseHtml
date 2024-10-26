@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Enctype(string value): Attribute("enctype", value);
+public record Enctype(string Value): Attribute("enctype", Value);
 

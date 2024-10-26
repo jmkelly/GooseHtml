@@ -7,11 +7,7 @@ public class ElementResult : IActionResult
 {
     public ElementResult(Element element)
     {
-        if (element is null)
-        {
-            throw new ArgumentNullException(nameof(element));
-        }
-
+		ArgumentNullException.ThrowIfNull(element);
 		Element = element;
     }
 

@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record As(string value) : Attribute("as", value);
+public record As(string Value) : Attribute("as", Value);
 
