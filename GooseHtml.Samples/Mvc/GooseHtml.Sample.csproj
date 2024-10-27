@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GooseHtml\GooseHtml.csproj" />
+    <ProjectReference Include="..\..\GooseHtml\GooseHtml.csproj" />
   </ItemGroup>
 
 </Project>

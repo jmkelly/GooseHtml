@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace GooseHtml.Samples;
+namespace GooseHtml.Samples.Mvc;
 
 //wire up some layout template code to see how it feels
 //
@@ -47,10 +47,5 @@ public class ExampleLayout : Html
 		var head = new Head();
 
 		return head;
-    }
-
-    public IActionResult ToActionResult()
-    {
-        throw new NotImplementedException();
     }
 }
