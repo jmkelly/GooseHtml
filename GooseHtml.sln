@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooseHtml.Tests", "GooseHtml.Tests\GooseHtml.Tests.csproj", "{0722ABE8-B69F-402F-B5E3-29FE615EF984}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooseHtml.Sample", "GooseHtml.Samples\GooseHtml.Sample.csproj", "{2368C9B1-8B9C-4301-AE08-027E5B852A30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooseHtml.Samples.Mvc", "GooseHtml.Samples\Mvc\GooseHtml.Sample.csproj", "{2368C9B1-8B9C-4301-AE08-027E5B852A30}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooseHtml", "GooseHtml\GooseHtml.csproj", "{36244C1A-B941-4AF4-87BD-3DD3C1C5D880}"
 EndProject
@@ -40,5 +40,3 @@ Global
 		{09B154C2-A740-4678-B726-F0D0CF64524F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09B154C2-A740-4678-B726-F0D0CF64524F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09B154C2-A740-4678-B726-F0D0CF64524F}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-EndGlobal
