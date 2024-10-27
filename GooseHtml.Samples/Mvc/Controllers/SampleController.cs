@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-namespace GooseHtml.Samples.Controllers;
+namespace GooseHtml.Samples.Mvc.Controllers;
 
 [ApiController]
 [Route("[controller]")]
