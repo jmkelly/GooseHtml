@@ -63,6 +63,11 @@ public abstract class Element
 		Elements.Add(new TextElement(text.Value));
 	}
 
+	public void Remove(Element element)
+	{
+		Elements.Remove(element);
+	}
+
 	public void Add(Class @class)
 	{
 		Attributes.Add(new Attribute("class", @class.Name));

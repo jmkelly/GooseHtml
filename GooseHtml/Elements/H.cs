@@ -6,6 +6,11 @@ public abstract class H : Element
 	{
 		Add(value);
 	}
+
+	public H(string value): base()
+	{
+		Add(new Text(value));
+	}
 }
 
 

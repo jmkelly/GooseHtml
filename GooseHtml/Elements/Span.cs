@@ -16,5 +16,10 @@ public class Span : Element
 	{
 		Add(value);
 	}
+
+	public Span(string value): base()
+	{
+		Add(new Text(value));
+	}
 }
 
