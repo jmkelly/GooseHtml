@@ -52,7 +52,7 @@ class Program
             var trend = newPrice > existingPrice ? Trend.Up : newPrice < existingPrice ? Trend.Down : Trend.Flat;
             var currentAt = DateTime.UtcNow;
 
-            replacementCodes.Add(StockCode.Create(code.Code, price, trend, currentAt));
+            replacementCodes.Add(new StockCode(Code: code.Code, Price: price, Trend: trend, CurrentAt: currentAt));
         }
 
         return replacementCodes;
