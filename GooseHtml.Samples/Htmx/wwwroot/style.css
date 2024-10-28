@@ -1,0 +1,113 @@
+/*body {*/
+/*	margin: 0;*/
+/*	padding: 0;*/
+/*	font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;*/
+/*	font-size: 16px; /* Adjust the base font size as needed */*/
+/*	line-height: 1.5; /* Improve readability with a good line height */*/
+/*	color: #333; /* Set a default text color */*/
+/*}*/
+
+/*<!DOCTYPE html>*/
+/*<html>*/
+/*<head>*/
+/*    <style>*/
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .grid-item {
+            aspect-ratio: 1;
+            background-color: #3498db;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .grid-item:hover {
+            transform: scale(1.05);
+            background-color: #2980b9;
+        }
+
+		.stock-code {
+			text-align: center;
+			color: white;
+			font-size: 1rem;
+			font-weight: bold;
+			margin-top: 0.5rem;
+		}
+
+		.stock-price {
+			text-align: center;
+			color: yellow;
+			font-size: 2rem;
+			font-weight: bold;
+		}
+
+		.stock-trend {
+			text-align: center;
+			color: aqua; 
+			font-size: 1rem;
+		}
+
+		.Up {
+			background-color: green;
+		}
+
+		.Down {
+			background-color: orange;
+		}
+
+		.Flat {
+			background-color: grey;
+		}
+
+
+
+
+        @media (max-width: 768px) {
+            .grid-container {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid-container {
+                grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+                gap: 5px;
+            }
+        }
+/*    </style>*/
+/*</head>*/
+/*<body>*/
+/*    <div class="grid-container">*/
+/*        <!-- JavaScript will insert 100 boxes -->*/
+/*    </div>*/
+/**/
+/*    <script>*/
+/*        const container = document.querySelector('.grid-container');*/
+/*        for (let i = 0; i < 100; i++) {*/
+/*            const box = document.createElement('div');*/
+/*            box.className = 'grid-item';*/
+/*            container.appendChild(box);*/
+/*        }*/
+/*    </script>*/
+/*</body>*/
+/*</html>*/
