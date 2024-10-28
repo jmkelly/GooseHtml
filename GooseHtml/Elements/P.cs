@@ -7,4 +7,9 @@ public class P: Element
 	{
 		Add(value);
 	}
+
+	public P(string value): base()
+	{
+		Add(new Text(value));
+	}
 }

@@ -21,5 +21,9 @@ public class Script : Element
 	{
 	}
 
+	public Script(string src, string integrity, string crossorigin) : base("script", [new Attribute("src", src), new Attribute("integrity", integrity), new Attribute("crossorigin", crossorigin)])
+	{
+	}
+
 }
 
