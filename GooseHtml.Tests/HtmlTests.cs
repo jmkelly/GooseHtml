@@ -5,7 +5,7 @@ using Shouldly;
 
 public class HtmlTests
 {
-	static string template = @"<!DOCTYPE html><html lang=""en-US""><head><meta charset=""utf-8""/><title></title></head><body></body></html>";
+	static readonly string template = @"<!DOCTYPE html><html lang=""en-US""><head><meta charset=""utf-8""/><title></title></head><body></body></html>";
 
 	[Fact]
 	public void Html_ExtendedShouldReturnHtml()
