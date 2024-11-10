@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooseHtml.Tests", "GooseHtm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooseHtml.Docs", "docs\GooseHtml.Docs.csproj", "{1E17765F-32CC-4996-AD07-C936E19B54FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple", "GooseHtml.Samples\Simple\GooseHtml.Simple.csproj", "{1952A2F9-E43C-4CF2-9397-DEA9830E6056}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple", "GooseHtml.Samples\Simple\GooseHtml.Samples.Simple.csproj", "{1952A2F9-E43C-4CF2-9397-DEA9830E6056}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
