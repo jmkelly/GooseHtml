@@ -1,0 +1,17 @@
+using GooseHtml;
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+//make a very simple html page
+
+var page = new Html();
+var head = new Head();
+page.Add(head);
+var body = new Body();
+body.Add(new H1("Hello World!"));
+page.Add(body);
+
+app.MapGet("/", () => page.ToHtmlResult());
+
+app.Run();
