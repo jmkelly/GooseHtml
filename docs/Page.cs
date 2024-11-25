@@ -20,16 +20,18 @@ namespace GooseHtml.Docs
 			body.Add(CodeSample("codeSample"));
 			var middle = new Section(new Class("middle"));
 			middle.Add(CallToAction());
-			middle.Add(CodeSample("code-sample-in-page"));
+			middle.Add(CodeSample("code-sample-in-page", "MinimumSample.txt"));
 			middle.Add(WhyChoose());
 			middle.Add(KeyFeatures());
+			middle.Add(Samples());
 			middle.Add(GetStarted());
 			body.Add(middle);
 			body.Add(Footer());
 			Add(body);
 		}
 
-		Nav Nav()
+		//make these method static, but if we wished to use this as a template, we could make them non-static to enable extension
+        static Nav Nav()
 		{
 			var nav = new Nav();
 			var brandLink = new A(new Href("#"), new Text("GooseHtml"));
@@ -41,7 +43,7 @@ namespace GooseHtml.Docs
 			return nav;
 		}
 
-		Section Hero()
+        static Section Hero()
 		{
 			var hero = new Section();
 			hero.Add(new Class("hero"));
@@ -54,8 +56,7 @@ namespace GooseHtml.Docs
 			return hero;
 		}
 
-
-		Section CodeSample(string className)
+        static Section CodeSample(string className, string fileName = "Page.cs")
 		{
 			var section = new Section();
 			var codeSample = new Div();
@@ -64,21 +65,14 @@ namespace GooseHtml.Docs
 			var code = new Code();
 			code.Add(new Class("hljs language-csharp atom-one-dark"));
 			//read the Page.cs file into text 
-			code.Add(new Text(File.ReadAllText("Page.cs")));
+			code.Add(new Text(File.ReadAllText(fileName)));
 			codeWrapper.Add(code);
 			codeSample.Add(codeWrapper);
 			section.Add(codeSample);
 			return section;
 		}
 
-		Div CreateFlexItem()
-		{
-			var div = new Div();
-			div.Add(new Class("flexitem"));
-			return div;
-		}
-
-		Section CallToAction()
+        static Section CallToAction()
 		{
 
 			var section = new Section();
@@ -95,7 +89,7 @@ namespace GooseHtml.Docs
 
 		}
 
-		Section WhyChoose()
+        static Section WhyChoose()
 		{
 			var div = new Section();
 			var h2 = new H2(new Text("Why Choose GooseHtml?"));
@@ -112,7 +106,7 @@ namespace GooseHtml.Docs
 			return div;
 		}
 
-		Li BuildListItem(string header, string description)
+        static Li BuildListItem(string header, string description)
 		{
 			var li = new Li();
 			li.Add(new Strong(new Text(header)));
@@ -120,8 +114,7 @@ namespace GooseHtml.Docs
 			return li;
 		}
 
-
-		Section KeyFeatures()
+        static Section KeyFeatures()
 		{
 			var div = new Section();
 			var h2 = new H2(new Text("Key Features"));
@@ -134,7 +127,36 @@ namespace GooseHtml.Docs
 			return div;
 		}
 
-		Section GetStarted()
+		static Li CreateListLink(string url, string text)
+		{
+                var li = new Li();
+					li.Add(new A(new Href(url), new Text(text)));
+
+					return li;
+		}
+
+		static Section Samples()
+		{
+			var section = new Section();
+			var h2 = new H2(new Text("Samples"));
+			var p = new P("For more examples of how the project can work, see ");
+			var link = new A(new Href("https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples"), new Text("here"));
+			var ul = new Ul();
+
+			ul.Add(CreateListLink("https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples/Simple", "Simple"));
+			ul.Add(CreateListLink("https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples/Mvc", "Mvc with basic templates"));
+			ul.Add(CreateListLink("https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples/Htmx", "A more complex htmx example"));
+
+
+			p.Add(link);
+
+			section.Add(h2);
+			section.Add(p);
+			section.Add(ul);
+			return section;
+		}
+
+        static Section GetStarted()
 		{
 			var section = new Section();
 			var h2 = new H2(new Text("Get Started with GooseHtml Today!"));
@@ -159,7 +181,7 @@ namespace GooseHtml.Docs
 			return section;
 		}
 
-		Footer Footer()
+        static Footer Footer()
 		{
 
 			var section = new Footer();

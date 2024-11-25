@@ -107,8 +107,7 @@ section.hero p {
 }
 
 section .code-sample-in-page {
-	display: flex;
-	height: 400px;
+	height: 600px;
 	overflow-y: scroll;
 	font-size: 0.6em;
 }
