@@ -20,16 +20,18 @@ namespace GooseHtml.Docs
 			body.Add(CodeSample(&quot;codeSample&quot;));
 			var middle = new Section(new Class(&quot;middle&quot;));
 			middle.Add(CallToAction());
-			middle.Add(CodeSample(&quot;code-sample-in-page&quot;));
+			middle.Add(CodeSample(&quot;code-sample-in-page&quot;, &quot;MinimumSample.txt&quot;));
 			middle.Add(WhyChoose());
 			middle.Add(KeyFeatures());
+			middle.Add(Samples());
 			middle.Add(GetStarted());
 			body.Add(middle);
 			body.Add(Footer());
 			Add(body);
 		}
 
-		Nav Nav()
+		//make these method static, but if we wished to use this as a template, we could make them non-static to enable extension
+        static Nav Nav()
 		{
 			var nav = new Nav();
 			var brandLink = new A(new Href(&quot;#&quot;), new Text(&quot;GooseHtml&quot;));
@@ -41,7 +43,7 @@ namespace GooseHtml.Docs
 			return nav;
 		}
 
-		Section Hero()
+        static Section Hero()
 		{
 			var hero = new Section();
 			hero.Add(new Class(&quot;hero&quot;));
@@ -54,8 +56,7 @@ namespace GooseHtml.Docs
 			return hero;
 		}
 
-
-		Section CodeSample(string className)
+        static Section CodeSample(string className, string fileName = &quot;Page.cs&quot;)
 		{
 			var section = new Section();
 			var codeSample = new Div();
@@ -64,21 +65,14 @@ namespace GooseHtml.Docs
 			var code = new Code();
 			code.Add(new Class(&quot;hljs language-csharp atom-one-dark&quot;));
 			//read the Page.cs file into text 
-			code.Add(new Text(File.ReadAllText(&quot;Page.cs&quot;)));
+			code.Add(new Text(File.ReadAllText(fileName)));
 			codeWrapper.Add(code);
 			codeSample.Add(codeWrapper);
 			section.Add(codeSample);
 			return section;
 		}
 
-		Div CreateFlexItem()
-		{
-			var div = new Div();
-			div.Add(new Class(&quot;flexitem&quot;));
-			return div;
-		}
-
-		Section CallToAction()
+        static Section CallToAction()
 		{
 
 			var section = new Section();
@@ -95,7 +89,7 @@ namespace GooseHtml.Docs
 
 		}
 
-		Section WhyChoose()
+        static Section WhyChoose()
 		{
 			var div = new Section();
 			var h2 = new H2(new Text(&quot;Why Choose GooseHtml?&quot;));
@@ -112,7 +106,7 @@ namespace GooseHtml.Docs
 			return div;
 		}
 
-		Li BuildListItem(string header, string description)
+        static Li BuildListItem(string header, string description)
 		{
 			var li = new Li();
 			li.Add(new Strong(new Text(header)));
@@ -120,8 +114,7 @@ namespace GooseHtml.Docs
 			return li;
 		}
 
-
-		Section KeyFeatures()
+        static Section KeyFeatures()
 		{
 			var div = new Section();
 			var h2 = new H2(new Text(&quot;Key Features&quot;));
@@ -134,7 +127,36 @@ namespace GooseHtml.Docs
 			return div;
 		}
 
-		Section GetStarted()
+		static Li CreateListLink(string url, string text)
+		{
+                var li = new Li();
+					li.Add(new A(new Href(url), new Text(text)));
+
+					return li;
+		}
+
+		static Section Samples()
+		{
+			var section = new Section();
+			var h2 = new H2(new Text(&quot;Samples&quot;));
+			var p = new P(&quot;For more examples of how the project can work, see &quot;);
+			var link = new A(new Href(&quot;https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples&quot;), new Text(&quot;here&quot;));
+			var ul = new Ul();
+
+			ul.Add(CreateListLink(&quot;https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples/Simple&quot;, &quot;Simple&quot;));
+			ul.Add(CreateListLink(&quot;https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples/Mvc&quot;, &quot;Mvc with basic templates&quot;));
+			ul.Add(CreateListLink(&quot;https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples/Htmx&quot;, &quot;A more complex htmx example&quot;));
+
+
+			p.Add(link);
+
+			section.Add(h2);
+			section.Add(p);
+			section.Add(ul);
+			return section;
+		}
+
+        static Section GetStarted()
 		{
 			var section = new Section();
 			var h2 = new H2(new Text(&quot;Get Started with GooseHtml Today!&quot;));
@@ -159,7 +181,7 @@ namespace GooseHtml.Docs
 			return section;
 		}
 
-		Footer Footer()
+        static Footer Footer()
 		{
 
 			var section = new Footer();
@@ -185,195 +207,24 @@ namespace GooseHtml.Docs
 			return section;
 		}
 	}
-
 }
-</code></pre></div></section><section class="middle"><section class="calltoaction"><p>The library for compile time checking of your html in C#</p><button class="btn btn-large">Get Started</button></section><section><div class="code-sample-in-page"><pre><code class="hljs language-csharp atom-one-dark">using GooseHtml.Attributes;
+</code></pre></div></section><section class="middle"><section class="calltoaction"><p>The library for compile time checking of your html in C#</p><button class="btn btn-large">Get Started</button></section><section><div class="code-sample-in-page"><pre><code class="hljs language-csharp atom-one-dark">//dotnet minimal example
 
-namespace GooseHtml.Docs
-{
-    public class Page : Html
-    {
-		public Page() : base(&quot;html&quot;) 
-		{
-			var head = new Head();
+using GooseHtml;
 
-			head.Add(new Link(href: &quot;style.css&quot;, rel: &quot;stylesheet&quot;));
-			head.Add(new Link(href: &quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/styles/atom-one-dark.min.css&quot;, rel: &quot;stylesheet&quot;));
-			head.Add(new Script(src: &quot;https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.10.0/highlight.min.js&quot;));
-			head.Add(new Script(src: &quot;site.js&quot;));
-			Add(head);
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
 
-			var body = new Body();
-			body.Add(Nav());
-			body.Add(Hero());
-			body.Add(CodeSample(&quot;codeSample&quot;));
-			var middle = new Section(new Class(&quot;middle&quot;));
-			middle.Add(CallToAction());
-			middle.Add(CodeSample(&quot;code-sample-in-page&quot;));
-			middle.Add(WhyChoose());
-			middle.Add(KeyFeatures());
-			middle.Add(GetStarted());
-			body.Add(middle);
-			body.Add(Footer());
-			Add(body);
-		}
+//make a very simple html page
 
-		Nav Nav()
-		{
-			var nav = new Nav();
-			var brandLink = new A(new Href(&quot;#&quot;), new Text(&quot;GooseHtml&quot;));
-			brandLink.Add(new Class(&quot;navbrand&quot;));
-			var docLink = new A(new Href(&quot;#&quot;), new Text(&quot;Docs&quot;));
-			docLink.Add(new Class(&quot;navlink&quot;));
-			nav.Add(brandLink);
-			nav.Add(docLink);
-			return nav;
-		}
+var page = new Html();
+var head = new Head();
+page.Add(head);
+var body = new Body();
+body.Add(new H1(&quot;Hello World!&quot;));
+page.Add(body);
 
-		Section Hero()
-		{
-			var hero = new Section();
-			hero.Add(new Class(&quot;hero&quot;));
-			var div = new Div();
-			var h1 = new H1(new Text(&quot;GooseHtml&quot;));
-			var h2 = new H2(new Text(&quot;Create Type-Safe HTML With Ease&quot;));
-			div.Add(h1);
-			div.Add(h2);
-			hero.Add(div);
-			return hero;
-		}
+app.MapGet(&quot;/&quot;, () =&gt; page.ToHtmlResult());
 
-
-		Section CodeSample(string className)
-		{
-			var section = new Section();
-			var codeSample = new Div();
-			codeSample.Add(new Class(className));
-			var codeWrapper = new Pre();
-			var code = new Code();
-			code.Add(new Class(&quot;hljs language-csharp atom-one-dark&quot;));
-			//read the Page.cs file into text 
-			code.Add(new Text(File.ReadAllText(&quot;Page.cs&quot;)));
-			codeWrapper.Add(code);
-			codeSample.Add(codeWrapper);
-			section.Add(codeSample);
-			return section;
-		}
-
-		Div CreateFlexItem()
-		{
-			var div = new Div();
-			div.Add(new Class(&quot;flexitem&quot;));
-			return div;
-		}
-
-		Section CallToAction()
-		{
-
-			var section = new Section();
-			section.Add(new Class(&quot;calltoaction&quot;));
-			var p = new P(new Text(&quot;The library for compile time checking of your html in C#&quot;));
-
-			var button = new Button();
-			button.Add(new Text(&quot;Get Started&quot;));
-			button.Add(new Class(&quot;btn btn-large&quot;));
-
-			section.Add(p);
-			section.Add(button);
-			return section;
-
-		}
-
-		Section WhyChoose()
-		{
-			var div = new Section();
-			var h2 = new H2(new Text(&quot;Why Choose GooseHtml?&quot;));
-			var list = new Ul();
-
-			list.Add(BuildListItem(&quot;Type Safety: &quot;, &quot;Leverage the power of C#&#39;s strong typing to ensure your HTML is error-free at compile time.&quot;));
-			list.Add(BuildListItem(&quot;It&#39;s just C#: &quot;, &quot;No templating syntax or libary to learn, your html views are c# classes. Leverage object oriented design principles to create typesafe modular html components.&quot;));
-			list.Add(BuildListItem(&quot;Intuitive API: &quot;, &quot;Create complex HTML structures with a clean and readable syntax.&quot;));
-			list.Add(BuildListItem(&quot;Seamless Integration: &quot;, &quot;Easily integrate with your existing C# projects and start generating HTML right away.&quot;));
-			list.Add(BuildListItem(&quot;Enhanced Testing: &quot;, &quot;Because your html views are c# classes, you can easily unit test them without requiring any additional libraries&quot;));
-
-			div.Add(h2);
-			div.Add(list);
-			return div;
-		}
-
-		Li BuildListItem(string header, string description)
-		{
-			var li = new Li();
-			li.Add(new Strong(new Text(header)));
-			li.Add(new Text(description));
-			return li;
-		}
-
-
-		Section KeyFeatures()
-		{
-			var div = new Section();
-			var h2 = new H2(new Text(&quot;Key Features&quot;));
-			var list = new Ul();
-			list.Add(BuildListItem(&quot;Fluent API: &quot;, &quot;Chain methods together to build HTML elements intuitively.&quot;));
-			list.Add(BuildListItem(&quot;Comprehensive Coverage: &quot;, &quot;Support for all standard HTML5 elements and attributes.&quot;));
-			list.Add(BuildListItem(&quot;Custom Extensions: &quot;, &quot;Easily extend the library with your own custom components.&quot;));
-			div.Add(h2);
-			div.Add(list);
-			return div;
-		}
-
-		Section GetStarted()
-		{
-			var section = new Section();
-			var h2 = new H2(new Text(&quot;Get Started with GooseHtml Today!&quot;));
-			var p = new P(new Text(&quot;Transform your C# projects with type-safe, maintainable, and elegant HTML generation.&quot;));
-
-			var p2 = new P();
-			p2.Add(new Text(&quot;Install the Library: Add GooseHtml via NuGet:&quot;));	
-			var p3 = new P();
-			p3.Add(new Code(&quot;Install-Package GooseHtml&quot;));
-			var p4 = new P();
-			p4.Add(new TextElement(&quot;Add GooseHtml via dotnet tool:&quot;));
-			var p5 = new P();
-			p5.Add(new Code(&quot;dotnet add package GooseHtml&quot;));
-
-
-			section.Add(h2);
-			section.Add(p);
-			section.Add(p2);
-			section.Add(p3);
-			section.Add(p4);
-			section.Add(p5);
-			return section;
-		}
-
-		Footer Footer()
-		{
-
-			var section = new Footer();
-			var div = new Div();
-			div.Add(new Class(&quot;bottombar&quot;));
-
-			var link = new A(new Href(&quot;https://github.com/jmkelly/Goose&quot;), new Text(&quot;&quot;)); 
-			link.Add(new Class(&quot;btn btn-large&quot;));
-			var svg = new Svg();
-			svg.Add(new Attributes.Attribute(&quot;xmlns&quot;, &quot;http://www.w3.org/2000/svg&quot;));
-			svg.Add(new Attributes.Attribute(&quot;viewBox&quot;, &quot;0 0 32 32&quot;));
-			svg.Add(new Attributes.Attribute(&quot;width&quot;, &quot;36&quot;));
-			svg.Add(new Attributes.Attribute(&quot;aria-hidden&quot;, &quot;true&quot;));
-			var path = new Path();
-			path.Add(new Fill(&quot;currentColor&quot;));
-			path.Add(new D(&quot;M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z&quot;));
-			svg.Add(path);
-			link.Add(svg);
-
-			div.Add(link);
-
-			section.Add(div);
-			return section;
-		}
-	}
-
-}
-</code></pre></div></section><section><h2>Why Choose GooseHtml?</h2><ul><li><strong>Type Safety: </strong>Leverage the power of C#&#39;s strong typing to ensure your HTML is error-free at compile time.</li><li><strong>It&#39;s just C#: </strong>No templating syntax or libary to learn, your html views are c# classes. Leverage object oriented design principles to create typesafe modular html components.</li><li><strong>Intuitive API: </strong>Create complex HTML structures with a clean and readable syntax.</li><li><strong>Seamless Integration: </strong>Easily integrate with your existing C# projects and start generating HTML right away.</li><li><strong>Enhanced Testing: </strong>Because your html views are c# classes, you can easily unit test them without requiring any additional libraries</li></ul></section><section><h2>Key Features</h2><ul><li><strong>Fluent API: </strong>Chain methods together to build HTML elements intuitively.</li><li><strong>Comprehensive Coverage: </strong>Support for all standard HTML5 elements and attributes.</li><li><strong>Custom Extensions: </strong>Easily extend the library with your own custom components.</li></ul></section><section><h2>Get Started with GooseHtml Today!</h2><p>Transform your C# projects with type-safe, maintainable, and elegant HTML generation.</p><p>Install the Library: Add GooseHtml via NuGet:</p><p><code>Install-Package GooseHtml</code></p><p>Add GooseHtml via dotnet tool:</p><p><code>dotnet add package GooseHtml</code></p></section></section><footer><div class="bottombar"><a href="https://github.com/jmkelly/Goose" class="btn btn-large"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="36" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a></div></footer></body></html>
+app.Run();
+</code></pre></div></section><section><h2>Why Choose GooseHtml?</h2><ul><li><strong>Type Safety: </strong>Leverage the power of C#&#39;s strong typing to ensure your HTML is error-free at compile time.</li><li><strong>It&#39;s just C#: </strong>No templating syntax or libary to learn, your html views are c# classes. Leverage object oriented design principles to create typesafe modular html components.</li><li><strong>Intuitive API: </strong>Create complex HTML structures with a clean and readable syntax.</li><li><strong>Seamless Integration: </strong>Easily integrate with your existing C# projects and start generating HTML right away.</li><li><strong>Enhanced Testing: </strong>Because your html views are c# classes, you can easily unit test them without requiring any additional libraries</li></ul></section><section><h2>Key Features</h2><ul><li><strong>Fluent API: </strong>Chain methods together to build HTML elements intuitively.</li><li><strong>Comprehensive Coverage: </strong>Support for all standard HTML5 elements and attributes.</li><li><strong>Custom Extensions: </strong>Easily extend the library with your own custom components.</li></ul></section><section><h2>Samples</h2><p>For more examples of how the project can work, see <a href="https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples">here</a></p><ul><li><a href="https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples/Simple">Simple</a></li><li><a href="https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples/Mvc">Mvc with basic templates</a></li><li><a href="https://github.com/jmkelly/GooseHtml/tree/main/GooseHtml.Samples/Htmx">A more complex htmx example</a></li></ul></section><section><h2>Get Started with GooseHtml Today!</h2><p>Transform your C# projects with type-safe, maintainable, and elegant HTML generation.</p><p>Install the Library: Add GooseHtml via NuGet:</p><p><code>Install-Package GooseHtml</code></p><p>Add GooseHtml via dotnet tool:</p><p><code>dotnet add package GooseHtml</code></p></section></section><footer><div class="bottombar"><a href="https://github.com/jmkelly/Goose" class="btn btn-large"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="36" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg></a></div></footer></body></html>

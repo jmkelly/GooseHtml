@@ -11,7 +11,7 @@ class HtmxPage
 		page = new Html();
 		var head = new Head();
 		body = new Body();
-		head.Add(new Script(src: "https://unpkg.com/htmx.org@2.0.3", integrity: "sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq", crossorigin: "anonymous"));
+		head.Add(new HtmxScript());
 		head.Add(new Link(href: "style.css", rel: "stylesheet"));
 		body.Add(new HxTrigger($"every {refreshRateInMs}ms"));
 		body.Add(new HxGet("/"));

@@ -1,23 +1,24 @@
-﻿namespace GooseHtml.Docs;
+﻿using GooseHtml;
+using GooseHtml.Docs;
 
- public class Program
- {
-     private static async Task Main(string[] args)
-     {
-		var app = WebApplication.Create(args);
-		app.UseStaticFiles();
-		app.MapGet("/", WritePage);
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
 
-		await app.RunAsync();
-	 }
+app.UseStaticFiles();
+app.MapGet("/", Demo.WritePage);
 
-    private static async Task WritePage(HttpContext context)
-    {
-        var writer = new HtmlWriter();
-        var page = new Page();
+app.Run();
+
+
+internal static class Demo
+{
+	internal static async Task WritePage(HttpContext context)
+	{
+		var writer = new HtmlWriter();
+		var page = new Page();
 		var unformatted = page.ToString();
-        await writer.WriteAsync("index.html", unformatted);
-        context.Response.ContentType = "text/html";
-        await context.Response.WriteAsync(unformatted);
-    }
+		await writer.WriteAsync("index.html", unformatted);
+		context.Response.ContentType = "text/html";
+		await context.Response.WriteAsync(unformatted);
+	}
 }
