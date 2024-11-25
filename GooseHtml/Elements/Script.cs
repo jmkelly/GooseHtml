@@ -27,3 +27,13 @@ public class Script : Element
 
 }
 
+public class HtmxScript : Script
+{
+	public HtmxScript() : base("https://unpkg.com/htmx.org@2.0.3", "sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq", "anonymous")
+	{
+		Version = "2.0.3";
+	}
+
+	public string Version {get;}
+}
+
