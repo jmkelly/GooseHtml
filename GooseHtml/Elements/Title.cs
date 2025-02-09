@@ -2,8 +2,9 @@ namespace GooseHtml;
 
 public class Title : Element
 {
-	public Title() : base()
+	public Title(string text)
 	{
+		Add(new Text(text));
 	}
 }
 
