@@ -1,7 +1,7 @@
 
 namespace GooseHtml.Attributes;
 
-public record Defer(): BooleanAttribute("defer");
+public class Defer(): EmptyAttribute("defer");
 
     // src — Address of the resource 
     // type — Type of script 

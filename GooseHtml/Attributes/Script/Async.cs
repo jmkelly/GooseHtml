@@ -1,7 +1,9 @@
 
 namespace GooseHtml.Attributes;
 
-public record Async(): BooleanAttribute("async");
+public class Async(): EmptyAttribute("async")
+{
+}
 
     // src — Address of the resource 
     // type — Type of script 

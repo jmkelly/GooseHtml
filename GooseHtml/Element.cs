@@ -1,8 +1,9 @@
 namespace GooseHtml;
+
 using System.Text;
 using GooseHtml.Attributes;
 
-public abstract class Element
+public class Element
 {
 	internal string TagEnd = string.Empty;
 	internal string TagStart = string.Empty;
@@ -11,8 +12,14 @@ public abstract class Element
 	private readonly HtmlFormatter HtmlFormatter = new();
 	private readonly string Name;
 	private readonly List<Attribute> Attributes = [];
+	private readonly List<EmptyAttribute> EmptyAttributes = [];
 	private readonly List<Element> Elements = []; 
 
+	public Element()
+	{
+		Name = GetType().Name.ToLowerInvariant();
+		Init(Name, false );
+	}
 
 	public Element(Class @class, bool selfClosing=false)
 	{
@@ -71,6 +78,11 @@ public abstract class Element
 	public void Add(Class @class)
 	{
 		Attributes.Add(new Attribute("class", @class.Name));
+	}
+
+	public void Add(EmptyAttribute emptyAttribute)
+	{
+		EmptyAttributes.Add(emptyAttribute);
 	}
 
 	public void Add(Attribute attribute) 
@@ -133,6 +145,14 @@ public abstract class Element
 
 	private void AddAttrs(StringBuilder sb)
 	{
+		//set the empty elements first....
+		//todo: figure out some way to add the empty and non-empty 
+		//attributes in the order added to the Element
+		foreach (var attr in EmptyAttributes)
+		{
+			sb.Append(' ');
+			sb.Append(attr.ToString());
+		}
 		foreach (var attr in Attributes)
 		{
 			sb.Append(' ');

@@ -1,7 +1,7 @@
 
 namespace GooseHtml.Attributes;
 
-public record NoModule(): BooleanAttribute("nomodule");
+public class NoModule(): EmptyAttribute("nomodule");
 
     // src — Address of the resource 
     // type — Type of script 
