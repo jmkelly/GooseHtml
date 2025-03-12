@@ -51,7 +51,11 @@ public class HtmlParser(string html)
 					element.Add(el);
             }
             else
+			{
                 innerTextBuilder.Append(ParseText());
+				element.Add(new Text(innerTextBuilder.ToString()));
+			}
+
         }
 
         Advance($"</{tagName}>".Length);
@@ -70,7 +74,7 @@ public class HtmlParser(string html)
         return _html[start.._position];
     }
 
-    private GooseHtml.Attributes.Attribute? ParseAttribute()
+    private Attributes.Attribute? ParseAttribute()
     {
         SkipWhitespace();
 
