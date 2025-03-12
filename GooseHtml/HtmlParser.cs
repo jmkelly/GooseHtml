@@ -42,7 +42,10 @@ public class HtmlParser(string html)
 
         // Parse inner text and children
         StringBuilder innerTextBuilder = new();
-        while (!Match($"</{tagName}>"))
+		int safetyCounter = 0;
+		const int maxIterations = 10000;
+
+        while (!Match($"</{tagName}>") && safetyCounter++ < maxIterations)
         {
             if (Match('<'))
             {
@@ -57,22 +60,27 @@ public class HtmlParser(string html)
 			}
 
         }
+		if (safetyCounter >= maxIterations)
+		{
+			throw new Exception($"{safetyCounter} iterations exceeded with no closing tag for {tagName} found. Cannot parse, please check supplied HTML.");
+		}
 
         Advance($"</{tagName}>".Length);
         return element;
     }
 
-    private string ParseTagName()
-    {
-        int start = _position;
-        while (_position < _html.Length && char.IsLetterOrDigit(_html[_position]))
-            _position++;
+	private string ParseTagName()
+	{
+		int start = _position;
+		while (_position < _html.Length && char.IsLetterOrDigit(_html[_position]))
+			_position++;
 
-        if (start == _position)
-            throw new Exception("Invalid tag name");
+		if (start == _position)
+			throw new Exception("Invalid tag name");
 
-        return _html[start.._position];
-    }
+		return _html.AsSpan(start, _position - start).ToString(); // ✅ Uses Span
+	}
+
 
     private Attributes.Attribute? ParseAttribute()
     {
@@ -87,16 +95,16 @@ public class HtmlParser(string html)
 
         SkipWhitespace();
         if (!Match('='))
-            return new GooseHtml.Attributes.Attribute(key, string.Empty);
+            return new Attributes.Attribute(key, string.Empty);
 
         Advance(); // Skip '='
         SkipWhitespace();
 
-        string value = ParseAttributeValue();
+        string value = ParseAttributeValue().ToString();
         return AttributeFactory.Create(key, value);
     }
 
-    private string ParseAttributeValue()
+    private ReadOnlySpan<char> ParseAttributeValue()
     {
         if (!Match('"') && !Match('\''))
             throw new Exception("Expected quote for attribute value");
@@ -108,18 +116,19 @@ public class HtmlParser(string html)
         while (_position < _html.Length && _html[_position] != quote)
             _position++;
 
-        string value = _html[start.._position];
+        //string value = _html[start.._position];
+		var value = _html.AsSpan(start, _position - start);
         Advance(); // Skip closing quote
         return value;
     }
 
-    private string ParseText()
+    private ReadOnlySpan<char> ParseText()
     {
         int start = _position;
         while (_position < _html.Length && _html[_position] != '<')
             _position++;
 
-        return _html[start.._position];
+		return _html.AsSpan(start, _position - start);
     }
 
     private void SkipWhitespace()
