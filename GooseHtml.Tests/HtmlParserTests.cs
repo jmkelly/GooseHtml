@@ -1,9 +1,7 @@
-
 using GooseHtml.Attributes;
 using Shouldly;
 
 namespace GooseHtml.Tests;
-
 
 public class HtmlParserTests
 {
@@ -37,7 +35,10 @@ public class HtmlParserTests
         element.ShouldBeOfType<Div>();
 		element.Attributes.Count.ShouldBe(2);
 		//extend test to test the attributes
-
+		element.Attributes[0].Name.ShouldBe("class");
+		element.Attributes[0].Value.ShouldBe("container");
+		element.Attributes[1].Name.ShouldBe("id");
+		element.Attributes[1].Value.ShouldBe("main");
     }
 
     [Fact]
@@ -88,7 +89,7 @@ public class HtmlParserTests
         // Act
         var element = parser.Parse();
 
-		element.ToString().ShouldContain("Hello");
+		element?.ToString().ShouldContain("Hello");
 
 	}
 
@@ -100,21 +101,23 @@ public class HtmlParserTests
         var parser = new HtmlParser(html);
 
         // Act
-        var element = parser.Parse();
+        var div = parser.Parse();
 
         // Assert
-        element.ShouldNotBeNull();
-        element.ShouldBeOfType<Div>();
+        div.ShouldNotBeNull();
+        div.ShouldBeOfType<Div>();
 
-        var divChildren = element.Elements;
-        divChildren.Count.ShouldBe(1);
-        divChildren[0].ShouldBeOfType<P>();
+        var divElements = div.Elements;
+        divElements.Count.ShouldBe(1);
+        divElements[0].ShouldBeOfType<P>();
+		divElements[0].ToString().ShouldContain("Text");
 
-        var pChildren = divChildren[0].Elements;
-        pChildren.Count.ShouldBe(1);
+        var pChildren = divElements[0].Elements;
+		//text counts as an element
+        pChildren.Count.ShouldBe(2);
         pChildren[0].ShouldBeOfType<B>();
 
-        pChildren[0].ToString().ShouldContain("Text");
+        pChildren[0].ToString().ShouldContain("Bold");
     }
 }
 
