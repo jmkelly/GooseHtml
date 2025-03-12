@@ -1,7 +1,7 @@
 
 namespace GooseHtml.Attributes;
 
-public abstract class EmptyAttribute(string Name) 
+public class EmptyAttribute(string Name) 
 {
 	public override string ToString()
 	{

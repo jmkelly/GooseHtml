@@ -7,7 +7,7 @@ public class HtmlExtended : Html
     {
 		var head = new Head();
 		var meta = new Meta();
-		meta.Add(new Charset());
+		meta.Add(new CharsetUtf8());
 
 		head.Add(meta);
 		head.Add(new Title());

@@ -11,9 +11,10 @@ public class Element
 	private bool SelfClosing = false;
 	private readonly HtmlFormatter HtmlFormatter = new();
 	private readonly string Name;
-	private readonly List<Attribute> Attributes = [];
+	public readonly List<Attribute> Attributes = [];
+	//think about removing this....and just handle with an attribute that has an empty string assigned
 	private readonly List<EmptyAttribute> EmptyAttributes = [];
-	private readonly List<Element> Elements = []; 
+	public readonly List<Element> Elements = []; 
 
 	public Element()
 	{
