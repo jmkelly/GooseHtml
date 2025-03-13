@@ -1,4 +1,13 @@
 namespace GooseHtml;
 
-public record Class(string Name);
+public class Class : Element
+{
+	public Class(string Name) : base(Name)
+	{
+
+	}
+    public Class()
+    {
+    }
+}
 

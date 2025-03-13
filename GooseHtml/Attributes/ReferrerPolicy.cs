@@ -1,7 +1,7 @@
 
 namespace GooseHtml.Attributes;
 
-public abstract record ReferrerPolicy(string Value): Attribute("referrerpolicy", Value);
+public record ReferrerPolicy(string Value): Attribute("referrerpolicy", Value);
 
 
 

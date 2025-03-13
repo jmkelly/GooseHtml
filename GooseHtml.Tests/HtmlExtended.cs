@@ -17,6 +17,6 @@ public class HtmlExtended : Html
 
 		Add(head);
 		Add(body);
-		Add(new Lang());
+		Add(new EnUsLang());
     }
 }

@@ -4,7 +4,7 @@ namespace GooseHtml.Attributes;
 //if the type is for javascript, then it is encouraged to leave out, so we are not going to provide an
 //option for this default
 //
-public abstract record Type(string Value): Attribute("type", Value);
+public record Type(string Value): Attribute("type", Value);
 
 public record ModuleType(): Type("module");
 public record ImportMapType(): Type("importmap");

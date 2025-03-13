@@ -29,7 +29,7 @@ public class HtmlTests
 
 		html.Add(head);
 		html.Add(body);
-		html.Add(new Lang());
+		html.Add(new EnUsLang());
 
 		html.ToString().ShouldBe(template);
 	}
