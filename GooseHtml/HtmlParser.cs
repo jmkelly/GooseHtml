@@ -1,73 +1,76 @@
 using System.Text;
-using GooseHtml.Attributes;
 
 namespace GooseHtml;
 
+
+//TODO:
+//keep track of line numbers and position within line for better error messages
+
 public class HtmlParser(string html)
 {
-    private readonly string _html = html;
-    private int _position = 0;
+	private readonly string _html = html;
+	private int _position = 0;
 
-    public Element? Parse()
-    {
-        SkipWhitespace();
-        return ParseElement();
-    }
+	public Element? Parse()
+	{
+		SkipWhitespace();
+		return ParseElement();
+	}
 
-    private Element? ParseElement()
-    {
-        if (!Match('<')) return null;
-        Advance(); // Skip '<'
+	private Element? ParseElement()
+	{
+		if (!Match('<')) return null;
+		Advance(); // Skip '<'
 
-        string tagName = ParseTagName();
-        Element element = ElementFactory.Create(tagName);
+		string tagName = ParseTagName();
+		Element element = ElementFactory.Create(tagName);
 
-        // Parse attributes
-        while (!Match('>') && !Match("/>") && _position < _html.Length)
-        {
-            SkipWhitespace();
-            var attr = ParseAttribute();
+		// Parse attributes
+		while (!Match('>') && !Match("/>") && _position < _html.Length)
+		{
+			SkipWhitespace();
+			var attr = ParseAttribute();
 			if (attr is not null)
-                element.Add(attr);
-        }
+				element.Add(attr);
+		}
 
-        // Handle self-closing tags
-        if (Match("/>"))
-        {
-            Advance(2);
-            return element;
-        }
+		// Handle self-closing tags
+		if (Match("/>"))
+		{
+			Advance(2);
+			return element;
+		}
 
-        Advance(); // Skip '>'
+		Advance(); // Skip '>'
 
-        // Parse inner text and children
-        StringBuilder innerTextBuilder = new();
+		// Parse inner text and children
+		StringBuilder innerTextBuilder = new();
 		int safetyCounter = 0;
 		const int maxIterations = 10000;
 
-        while (!Match($"</{tagName}>") && safetyCounter++ < maxIterations)
-        {
-            if (Match('<'))
-            {
-                var el = ParseElement();
+		while (!Match($"</{tagName}>") && safetyCounter++ < maxIterations)
+		{
+			if (Match('<'))
+			{
+				var el = ParseElement();
 				if (el is not null)
 					element.Add(el);
-            }
-            else
+			}
+			else
 			{
-                innerTextBuilder.Append(ParseText());
+				innerTextBuilder.Append(ParseText());
 				element.Add(new Text(innerTextBuilder.ToString()));
 			}
 
-        }
+		}
 		if (safetyCounter >= maxIterations)
 		{
 			throw new Exception($"{safetyCounter} iterations exceeded with no closing tag for {tagName} found. Cannot parse, please check supplied HTML.");
 		}
 
-        Advance($"</{tagName}>".Length);
-        return element;
-    }
+		Advance($"</{tagName}>".Length);
+		return element;
+	}
 
 	private string ParseTagName()
 	{
@@ -82,114 +85,75 @@ public class HtmlParser(string html)
 	}
 
 
-    private Attributes.Attribute? ParseAttribute()
-    {
-        SkipWhitespace();
+	private Attributes.Attribute? ParseAttribute()
+	{
+		SkipWhitespace();
 
-        int start = _position;
-        while (_position < _html.Length && (char.IsLetterOrDigit(_html[_position]) || _html[_position] == '-'))
-            _position++;
+		int start = _position;
+		while (_position < _html.Length && (char.IsLetterOrDigit(_html[_position]) || _html[_position] == '-'))
+			_position++;
 
-        if (start == _position) return null;
-        string key = _html[start.._position];
+		if (start == _position) return null;
+		string key = _html[start.._position];
 
-        SkipWhitespace();
-        if (!Match('='))
-            return new Attributes.Attribute(key, string.Empty);
+		SkipWhitespace();
+		if (!Match('='))
+			return new Attributes.Attribute(key, string.Empty);
 
-        Advance(); // Skip '='
-        SkipWhitespace();
+		Advance(); // Skip '='
+		SkipWhitespace();
 
-        string value = ParseAttributeValue().ToString();
-        return AttributeFactory.Create(key, value);
-    }
+		string value = ParseAttributeValue().ToString();
+		return AttributeFactory.Create(key, value);
+	}
 
-    private ReadOnlySpan<char> ParseAttributeValue()
-    {
-        if (!Match('"') && !Match('\''))
-            throw new Exception("Expected quote for attribute value");
+	private ReadOnlySpan<char> ParseAttributeValue()
+	{
+		if (!Match('"') && !Match('\''))
+			throw new Exception("Expected quote for attribute value");
 
-        char quote = _html[_position];
-        Advance(); // Skip opening quote
+		char quote = _html[_position];
+		Advance(); // Skip opening quote
 
-        int start = _position;
-        while (_position < _html.Length && _html[_position] != quote)
-            _position++;
+		int start = _position;
+		while (_position < _html.Length && _html[_position] != quote)
+			_position++;
 
-        //string value = _html[start.._position];
+		//string value = _html[start.._position];
 		var value = _html.AsSpan(start, _position - start);
-        Advance(); // Skip closing quote
-        return value;
-    }
+		Advance(); // Skip closing quote
+		return value;
+	}
 
-    private ReadOnlySpan<char> ParseText()
-    {
-        int start = _position;
-        while (_position < _html.Length && _html[_position] != '<')
-            _position++;
+	private ReadOnlySpan<char> ParseText()
+	{
+		int start = _position;
+		while (_position < _html.Length && _html[_position] != '<')
+			_position++;
 
 		return _html.AsSpan(start, _position - start);
-    }
+	}
 
-    private void SkipWhitespace()
-    {
-        while (_position < _html.Length && char.IsWhiteSpace(_html[_position]))
-            _position++;
-    }
-
-    private bool Match(char ch)
-    {
-        return _position < _html.Length && _html[_position] == ch;
-    }
-
-    private bool Match(string str)
-    {
-        return _html[_position..].StartsWith(str);
-    }
-
-    private void Advance(int count = 1)
-    {
-        _position += count;
-    }
-
-}
-internal static class ElementFactory
-{
-
-    internal static  Element Create(string tagName)
-    {
-        return tagName.ToLower() switch
-        {
-            "b" => new B(),
-			"body" => new Body(),
-            "div" => new Div(),
-			"footer" => new Footer(),
-			"head" => new Head(),
-			"html" => new Html(),
-            "img" => new Img(),
-            "p" => new P(),
-            _ => throw new ArgumentException($"element type: {tagName} unknown")
-        };
-    }
-}
-
-internal static class AttributeFactory
-{
-	internal static GooseHtml.Attributes.Attribute Create(string key, string value)
+	private void SkipWhitespace()
 	{
-        return key.ToLower() switch
-        {
-            "accept" => new Accept(value),
-			"accept-charset" => new AcceptCharset(value),
-			"charset" => new Charset(value),
-			"content" => new Content(value),
-			"href" => new Href(value),
-			"id" => new Id(value),
-			"class" => new GooseHtml.Attributes.Class(value),
-			"src" => new Src(value),
+		while (_position < _html.Length && char.IsWhiteSpace(_html[_position]))
+			_position++;
+	}
 
-            _ => throw new ArgumentException($"Attribute {key} unknown"),
-        };
-    }
+	private bool Match(char ch)
+	{
+		return _position < _html.Length && _html[_position] == ch;
+	}
+
+	private bool Match(string str)
+	{
+		return _html[_position..].StartsWith(str);
+	}
+
+	private void Advance(int count = 1)
+	{
+		_position += count;
+	}
+
 }
 
