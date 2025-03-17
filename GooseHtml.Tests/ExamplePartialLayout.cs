@@ -38,7 +38,7 @@ public class ViewModelTests
 	}
 }
 
-public record TestViewModel(string Name, string Address, string Phone) : IViewModel
+public class TestViewModel(string Name, string Address, string Phone) : IViewModel
 {
 
     public Element AsElement()
