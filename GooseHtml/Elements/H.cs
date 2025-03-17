@@ -1,5 +1,4 @@
 namespace GooseHtml;
-
 public class H : Element
 {
     public H()
