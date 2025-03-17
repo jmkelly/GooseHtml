@@ -119,5 +119,28 @@ public class HtmlParserTests
 
         pChildren[0].ToString().ShouldContain("Bold");
     }
+
+
+	[Fact]
+	[Trait("Category", "parser")]
+	public void Should_Handle_Elements_Under_Doctype()
+	{
+		var html = "<!DOCTYPE html><html></html>";
+		var parser = new HtmlParser(html);
+		var element = parser.Parse();
+		element.ShouldBeOfType<Html>();
+	}
+
+	[Fact]
+	[Trait("Category", "parser")]
+	public void Should_Handle_Elements_Under_DoctypeWhenSpaces()
+	{
+		var html = @"<!DOCTYPE html>  
+			
+			<html></html>";
+		var parser = new HtmlParser(html);
+		var element = parser.Parse();
+		element.ShouldBeOfType<Html>();
+	}
 }
 
