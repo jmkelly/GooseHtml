@@ -23,7 +23,15 @@ public class HtmlParser(string html)
 		Advance(); // Skip '<'
 
 		string tagName = ParseTagName();
-		Element element = ElementFactory.Create(tagName);
+		if (tagName.Equals("!doctype", StringComparison.InvariantCultureIgnoreCase))
+        {
+            AdvanceToStartOfNextElement();
+            if (!Match('<')) return null;
+            Advance(); // Skip '<'
+            tagName = ParseTagName();
+        }
+
+        Element element = ElementFactory.Create(tagName);
 
 		// Parse attributes
 		while (!Match('>') && !Match("/>") && _position < _html.Length)
@@ -47,6 +55,7 @@ public class HtmlParser(string html)
 		StringBuilder innerTextBuilder = new();
 		int safetyCounter = 0;
 		const int maxIterations = 10000;
+
 
 		while (!Match($"</{tagName}>") && safetyCounter++ < maxIterations)
 		{
@@ -72,14 +81,27 @@ public class HtmlParser(string html)
 		return element;
 	}
 
-	private string ParseTagName()
+    private void AdvanceToStartOfNextElement()
+    {
+        while (!Match('>'))
+        {
+            Advance();
+        }
+        //we want to skip the doctype, so start at the next element
+        Advance();
+        SkipWhitespace();
+    }
+
+    private string ParseTagName()
 	{
 		int start = _position;
-		while (_position < _html.Length && char.IsLetterOrDigit(_html[_position]))
+		while (_position < _html.Length && _html[_position].IsValidChar())
+		{
 			_position++;
+		}
 
 		if (start == _position)
-			throw new Exception("Invalid tag name");
+			throw new Exception($"Invalid tag name at position {_position}");
 
 		return _html.AsSpan(start, _position - start).ToString(); // ✅ Uses Span
 	}
@@ -98,7 +120,7 @@ public class HtmlParser(string html)
 
 		SkipWhitespace();
 		if (!Match('='))
-			return new Attributes.Attribute(key, string.Empty);
+			return new Attributes.Attribute(key);
 
 		Advance(); // Skip '='
 		SkipWhitespace();
@@ -155,5 +177,9 @@ public class HtmlParser(string html)
 		_position += count;
 	}
 
+}
+public static class HtmlParserExtensions
+{
+	public static bool IsValidChar(this char ch) => char.IsLetterOrDigit(ch) || ch == '!';
 }
 
