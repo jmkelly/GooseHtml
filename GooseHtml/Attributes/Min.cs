@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Min(string Value): Attribute("min", Value);
+public class Min(string Value): Attribute("min", Value);
 

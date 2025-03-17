@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Scope(string Value): Attribute("scope", Value);
+public class Scope(string Value): Attribute("scope", Value);
 

@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Sizes(string Value): Attribute("sizes", Value);
+public class Sizes(string Value): Attribute("sizes", Value);
 

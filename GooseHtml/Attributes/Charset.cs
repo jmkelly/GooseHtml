@@ -1,6 +1,6 @@
 namespace GooseHtml.Attributes;
 
-public record Charset(string Value):Attribute("charset", Value)
+public class Charset(string Value):Attribute("charset", Value)
 {
 }
 

@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Maxlength(string Value): Attribute("maxlength", Value);
+public class Maxlength(string Value): Attribute("maxlength", Value);
 

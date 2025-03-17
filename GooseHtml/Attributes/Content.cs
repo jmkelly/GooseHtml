@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Content(string Value): Attribute("content", Value);
+public class Content(string Value): Attribute("content", Value);
 

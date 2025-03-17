@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Default(string Value): Attribute("default", Value);
+public class Default(string Value): Attribute("default", Value);
 

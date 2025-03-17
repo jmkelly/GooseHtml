@@ -1,6 +1,6 @@
 namespace GooseHtml.Attributes;
 
-public record CharsetUtf8():Attribute("charset", "utf-8")
+public class CharsetUtf8():Attribute("charset", "utf-8")
 {
 }
 

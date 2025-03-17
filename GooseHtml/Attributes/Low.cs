@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Low(string Value): Attribute("low", Value);
+public class Low(string Value): Attribute("low", Value);
 

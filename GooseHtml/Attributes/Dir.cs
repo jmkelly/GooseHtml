@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Dir(string Value): Attribute("dir", Value);
+public class Dir(string Value): Attribute("dir", Value);
 

@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record For(string Value): Attribute("for", Value);
+public class For(string Value): Attribute("for", Value);
 

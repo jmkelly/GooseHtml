@@ -1,10 +1,10 @@
 namespace GooseHtml.Attributes;
 
-public record Lang(string Value): Attribute("lang", Value)
+public class Lang(string Value): Attribute("lang", Value)
 {
 }
 
-public record EnUsLang() : Attribute("lang", "en-US")
+public class EnUsLang() : Attribute("lang", "en-US")
 {
 }
 

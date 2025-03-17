@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Srcset(string Value): Attribute("srcset", Value);
+public class Srcset(string Value): Attribute("srcset", Value);
 

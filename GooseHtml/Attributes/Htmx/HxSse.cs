@@ -1,3 +1,3 @@
 namespace GooseHtml.Attributes.Htmx;
 
-public record HxSse() : HxExt("sse");
+public class HxSse() : HxExt("sse");

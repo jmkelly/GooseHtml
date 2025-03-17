@@ -1,5 +1,5 @@
 namespace GooseHtml.Attributes.Htmx;
 
-public record HxDelete(string Value) : Attribute("hx-delete", Value);
+public class HxDelete(string Value) : Attribute("hx-delete", Value);
 
 

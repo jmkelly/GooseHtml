@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Loop(string Value): Attribute("loop", Value);
+public class Loop(string Value): Attribute("loop", Value);
 

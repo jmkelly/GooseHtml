@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Rowspan(string Value): Attribute("rowspan", Value);
+public class Rowspan(string Value): Attribute("rowspan", Value);
 

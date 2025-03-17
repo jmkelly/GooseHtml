@@ -1,3 +1,3 @@
 namespace GooseHtml.Attributes.Htmx;
 
-public record HxGet(string Value) : Attribute("hx-get", Value);
+public class HxGet(string Value) : Attribute("hx-get", Value);

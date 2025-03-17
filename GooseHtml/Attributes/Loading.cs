@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Loading(string Value): Attribute("loading", Value);
+public class Loading(string Value): Attribute("loading", Value);
 

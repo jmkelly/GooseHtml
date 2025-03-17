@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Poster(string Value): Attribute("poster", Value);
+public class Poster(string Value): Attribute("poster", Value);
 
