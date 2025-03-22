@@ -17,7 +17,7 @@ public class HtmlParserTests
         var element = parser.Parse();
 
         // Assert
-        element.AsT1.ShouldBeOfType<Div>();
+        element.AsT0.ShouldBeOfType<Div>();
     }
 
     [Fact]
@@ -31,14 +31,14 @@ public class HtmlParserTests
         var element = parser.Parse();
 
         // Assert
-        element.AsT1.ShouldBeOfType<Div>();
+        element.AsT0.ShouldBeOfType<Div>();
 
-		element.MatchT1(e => e.Attributes.Count.ShouldBe(2));
+		element.MatchT0(e => e.Attributes.Count.ShouldBe(2));
 		//extend test to test the attributes
-		element.MatchT1(e => e.Attributes[0].Name.ShouldBe("class"));
-		element.MatchT1(e => e.Attributes[0].Value.ShouldBe("container"));
-		element.MatchT1(e => e.Attributes[1].Name.ShouldBe("id"));
-		element.MatchT1(e => e.Attributes[1].Value.ShouldBe("main"));
+		element.MatchT0(e => e.Attributes[0].Name.ShouldBe("class"));
+		element.MatchT0(e => e.Attributes[0].Value.ShouldBe("container"));
+		element.MatchT0(e => e.Attributes[1].Name.ShouldBe("id"));
+		element.MatchT0(e => e.Attributes[1].Value.ShouldBe("main"));
     }
 
     [Fact]
@@ -52,14 +52,14 @@ public class HtmlParserTests
         var element = parser.Parse();
 
         // Assert
-		var el = element.AsT1;
+		var el = element.AsT0;
 		el.ShouldBeOfType<Div>();
         /**/
 
 		var children = el.Elements;
 		children.ShouldNotBeEmpty();
         children.Count.ShouldBe(1);
-		children[0].AsT1.ShouldBeOfType<P>();
+		children[0].AsT0.ShouldBeOfType<P>();
     }
 
     [Fact]
@@ -73,11 +73,11 @@ public class HtmlParserTests
         var element = parser.Parse();
 
         // Assert
-        element.AsT2.ShouldBeOfType<Img>();
+        element.AsT1.ShouldBeOfType<Img>();
 
-        element.AsT2.Attributes[0].Value.ShouldBe("image.png");
-        element.AsT2.Attributes[0].Name.ShouldBe("src");
-        element.AsT2.Attributes[0].ShouldBeOfType<Src>();
+        element.AsT1.Attributes[0].Value.ShouldBe("image.png");
+        element.AsT1.Attributes[0].Name.ShouldBe("src");
+        element.AsT1.Attributes[0].ShouldBeOfType<Src>();
     }
 
 	[Fact]
@@ -104,17 +104,17 @@ public class HtmlParserTests
         var div = parser.Parse();
 
         // Assert
-        div.AsT1.ShouldBeOfType<Div>();
+        div.AsT0.ShouldBeOfType<Div>();
 
-        var divElements = div.AsT1.Elements;
+        var divElements = div.AsT0.Elements;
         divElements.Count.ShouldBe(1);
         divElements[0].ShouldBeOfType<P>();
 		divElements[0].ToString().ShouldContain("Text");
 
-        var pChildren = divElements[0].AsT1.Elements;
+        var pChildren = divElements[0].AsT0.Elements;
 		//text counts as an element
         pChildren.Count.ShouldBe(2);
-        pChildren[0].AsT1.ShouldBeOfType<B>();
+        pChildren[0].AsT0.ShouldBeOfType<B>();
 
         pChildren[0].ToString().ShouldContain("Bold");
     }
@@ -127,7 +127,7 @@ public class HtmlParserTests
 		var html = "<!DOCTYPE html><html></html>";
 		var parser = new HtmlParser(html);
 		var element = parser.Parse();
-		element.AsT1.ShouldBeOfType<Html>();
+		element.AsT0.ShouldBeOfType<Html>();
 	}
 
 	[Fact]
@@ -139,7 +139,7 @@ public class HtmlParserTests
 			<html></html>";
 		var parser = new HtmlParser(html);
 		var element = parser.Parse();
-		element.AsT1.ShouldBeOfType<Html>();
+		element.AsT0.ShouldBeOfType<Html>();
 	}
 
 	[Fact]
@@ -157,7 +157,7 @@ public class HtmlParserTests
 			</html>";
 		var parser = new HtmlParser(html);
 		var element = parser.Parse();
-		element.AsT1.ShouldBeOfType<Html>();
+		element.AsT0.ShouldBeOfType<Html>();
 
 	}
 }
