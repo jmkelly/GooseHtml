@@ -5,6 +5,7 @@ namespace GooseHtml.Tests;
 
 public class HtmlParserTests
 {
+	//https://html.spec.whatwg.org/multipage/syntax.html#void-elements
     [Fact]
     public void Should_Parse_Single_Element()
     {
@@ -16,8 +17,7 @@ public class HtmlParserTests
         var element = parser.Parse();
 
         // Assert
-        element.ShouldNotBeNull();
-        element.ShouldBeOfType<Div>();
+        element.AsT1.ShouldBeOfType<Div>();
     }
 
     [Fact]
@@ -31,14 +31,14 @@ public class HtmlParserTests
         var element = parser.Parse();
 
         // Assert
-        element.ShouldNotBeNull();
-        element.ShouldBeOfType<Div>();
-		element.Attributes.Count.ShouldBe(2);
+        element.AsT1.ShouldBeOfType<Div>();
+
+		element.MatchT1(e => e.Attributes.Count.ShouldBe(2));
 		//extend test to test the attributes
-		element.Attributes[0].Name.ShouldBe("class");
-		element.Attributes[0].Value.ShouldBe("container");
-		element.Attributes[1].Name.ShouldBe("id");
-		element.Attributes[1].Value.ShouldBe("main");
+		element.MatchT1(e => e.Attributes[0].Name.ShouldBe("class"));
+		element.MatchT1(e => e.Attributes[0].Value.ShouldBe("container"));
+		element.MatchT1(e => e.Attributes[1].Name.ShouldBe("id"));
+		element.MatchT1(e => e.Attributes[1].Value.ShouldBe("main"));
     }
 
     [Fact]
@@ -52,13 +52,14 @@ public class HtmlParserTests
         var element = parser.Parse();
 
         // Assert
-        element.ShouldNotBeNull();
-        element.ShouldBeOfType<Div>();
-        
-        var children = element.Elements;
-        children.ShouldNotBeEmpty();
+		var el = element.AsT1;
+		el.ShouldBeOfType<Div>();
+        /**/
+
+		var children = el.Elements;
+		children.ShouldNotBeEmpty();
         children.Count.ShouldBe(1);
-        children[0].ShouldBeOfType<P>();
+		children[0].AsT1.ShouldBeOfType<P>();
     }
 
     [Fact]
@@ -72,12 +73,11 @@ public class HtmlParserTests
         var element = parser.Parse();
 
         // Assert
-        element.ShouldNotBeNull();
-        element.ShouldBeOfType<Img>();
+        element.AsT2.ShouldBeOfType<Img>();
 
-        element.Attributes[0].Value.ShouldBe("image.png");
-        element.Attributes[0].Name.ShouldBe("src");
-        element.Attributes[0].ShouldBeOfType<Src>();
+        element.AsT2.Attributes[0].Value.ShouldBe("image.png");
+        element.AsT2.Attributes[0].Name.ShouldBe("src");
+        element.AsT2.Attributes[0].ShouldBeOfType<Src>();
     }
 
 	[Fact]
@@ -89,7 +89,7 @@ public class HtmlParserTests
         // Act
         var element = parser.Parse();
 
-		element?.ToString().ShouldContain("Hello");
+		element.ToString().ShouldContain("Hello");
 
 	}
 
@@ -104,18 +104,17 @@ public class HtmlParserTests
         var div = parser.Parse();
 
         // Assert
-        div.ShouldNotBeNull();
-        div.ShouldBeOfType<Div>();
+        div.AsT1.ShouldBeOfType<Div>();
 
-        var divElements = div.Elements;
+        var divElements = div.AsT1.Elements;
         divElements.Count.ShouldBe(1);
         divElements[0].ShouldBeOfType<P>();
 		divElements[0].ToString().ShouldContain("Text");
 
-        var pChildren = divElements[0].Elements;
+        var pChildren = divElements[0].AsT1.Elements;
 		//text counts as an element
         pChildren.Count.ShouldBe(2);
-        pChildren[0].ShouldBeOfType<B>();
+        pChildren[0].AsT1.ShouldBeOfType<B>();
 
         pChildren[0].ToString().ShouldContain("Bold");
     }
@@ -128,7 +127,7 @@ public class HtmlParserTests
 		var html = "<!DOCTYPE html><html></html>";
 		var parser = new HtmlParser(html);
 		var element = parser.Parse();
-		element.ShouldBeOfType<Html>();
+		element.AsT1.ShouldBeOfType<Html>();
 	}
 
 	[Fact]
@@ -140,7 +139,7 @@ public class HtmlParserTests
 			<html></html>";
 		var parser = new HtmlParser(html);
 		var element = parser.Parse();
-		element.ShouldBeOfType<Html>();
+		element.AsT1.ShouldBeOfType<Html>();
 	}
 
 	[Fact]
@@ -149,24 +148,17 @@ public class HtmlParserTests
 	{
 		var html = @"<!DOCTYPE html>  
 			<html>
-			<head>
-			<meta>
-			<meta>
-			</head>
-			<body>
-			</body>
+				<head>
+					<meta>
+					<meta>
+				</head>
+				<body>
+				</body>
 			</html>";
 		var parser = new HtmlParser(html);
 		var element = parser.Parse();
-		element.ShouldBeOfType<Html>();
+		element.AsT1.ShouldBeOfType<Html>();
 
-		//notes on implementation
-		//1.  create a void element with no end tag
-		//2.  create all the void elements that extend void
-		//3. within the parser, check for void element, if it is found, ignore trying to parse the end tag
-		//https://html.spec.whatwg.org/multipage/syntax.html#void-elements
-		//void elements are:
-		//area, base, br, col, embed, hr, img, input, link, meta, source, track, wbr
 	}
 }
 

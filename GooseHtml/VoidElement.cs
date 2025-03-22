@@ -6,7 +6,7 @@ using GooseHtml.Attributes;
 //by default void elements dont need a closing tag
 //as this saves a character, will will keep the default
 //but allow overloading for self closing as well
-public abstract class VoidElement : IElement
+public abstract class VoidElement 
 {
     private readonly string TagStart;
 	public readonly List<Attribute> Attributes = [];
@@ -31,14 +31,15 @@ public abstract class VoidElement : IElement
 	}
 
 	private void AddAttrs(StringBuilder sb)
-	{
-		foreach (var attribute in Attributes)
-		{
-			sb.Append(attribute.ToString());
-		}
-	}
+    {
+        foreach (var attribute in Attributes)
+        {
+			sb.Append(' ');
+            sb.Append(attribute.ToString());
+        }
+    }
 
-	public override string ToString()
+    public override string ToString()
 	{
 		var sb = new StringBuilder();
 		sb.Append(TagStart);

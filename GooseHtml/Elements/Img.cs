@@ -1,14 +1,16 @@
 namespace GooseHtml;
 using GooseHtml.Attributes;
 
-public class Img : Element
+public class Img : VoidElement
 {
-	public Img() : base(selfClosing: true) { }
-
-	public Img(string src, string alt) : base(selfClosing: true)
+	public Img(string src, string alt) : base("img", selfClosing: false)
 	{
 		Add(new Src(src));
 		Add(new Alt(alt));
 	}
+
+    public Img(bool selfClosing = false) : base("img", selfClosing)
+    {
+    }
 }
 

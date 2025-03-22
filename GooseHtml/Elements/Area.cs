@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Area : Element
+public class Area(bool selfClosing = false) : VoidElement("area", selfClosing)
 {
 }

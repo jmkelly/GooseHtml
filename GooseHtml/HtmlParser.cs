@@ -13,27 +13,29 @@ public class HtmlParser(string html)
 	private int _lineNumber = 1;
 	private int _columnNumber = 1;
 
-	public Element? Parse()
+	public OneOf<Element, VoidElement> Parse()
 	{
 		SkipWhitespace();
 		return ParseElement();
 	}
+	private static void Write(string text) => Console.WriteLine(text);
 
-	private Element? ParseElement()
+	private OneOf<Element,VoidElement> ParseElement()
 	{
-		if (!Match('<')) return null;
+		if (!Match('<')) throw new Exception("Expected '<' got '" + _html[_position] + "'");
 		Advance(); // Skip '<'
 
 		string tagName = ParseTagName();
+		Write("parsed tag name: " + tagName);
 		if (tagName.Equals("!doctype", StringComparison.InvariantCultureIgnoreCase))
         {
             AdvanceToStartOfNextElement();
-            if (!Match('<')) return null;
+            if (!Match('<')) throw new Exception("Expected '<' got '" + _html[_position] + "'");
             Advance(); // Skip '<'
             tagName = ParseTagName();
         }
 
-        Element element = ElementFactory.Create(tagName);
+        OneOf<Element, VoidElement> element = ElementFactory.Create(tagName);
 
 		// Parse attributes
 		while (!Match('>') && !Match("/>") && _position < _html.Length)
@@ -41,14 +43,24 @@ public class HtmlParser(string html)
 			SkipWhitespace();
 			var attr = ParseAttribute();
 			if (attr is not null)
-				element.Add(attr);
+				element.Match(e => e.Add(attr), v => v.Add(attr));
 		}
 
 		// Handle self-closing tags
 		if (Match("/>"))
 		{
+			Write("end of empty tag name: " + tagName);
 			Advance(2);
-			return element;
+			SkipWhitespace();
+			ParseElement();
+		}
+
+		if (Match('>') && element.IsT2)//VoidElement
+		{
+			Write("end of void tag name: " + tagName);
+			Advance(); // Skip '>'
+			SkipWhitespace();
+			ParseElement();
 		}
 
 		Advance(); // Skip '>'
@@ -64,13 +76,13 @@ public class HtmlParser(string html)
 			if (Match('<'))
 			{
 				var el = ParseElement();
-				if (el is not null)
-					element.Add(el);
+				el.Match(e => e.Add(el), v => throw new Exception("Void elements cannot have child elements"));
 			}
 			else
 			{
 				innerTextBuilder.Append(ParseText());
-				element.Add(new Text(innerTextBuilder.ToString()));
+				var text = new Text(innerTextBuilder.ToString());
+				element.Match(e => e.Add(text), v => throw new Exception("Void elements cannot have text"));
 			}
 
 		}

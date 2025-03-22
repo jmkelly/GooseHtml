@@ -12,7 +12,7 @@ public class Li : Element
 		Add(value);
 	}
 
-	public Li(Element[] elements) : base("li")
+	public Li(OneOf<Element, VoidElement>[] elements) : base("li")
 	{
 		AddRange(elements);
 	}

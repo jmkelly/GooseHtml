@@ -4,7 +4,7 @@ using System.Text;
 using GooseHtml.Attributes;
 
 
-public class Element : IElement
+public class Element 
 {
 	internal string TagEnd = string.Empty;
 	internal string TagStart = string.Empty;
@@ -13,9 +13,15 @@ public class Element : IElement
 	private readonly HtmlFormatter HtmlFormatter = new();
 	private readonly string Name;
 	public readonly List<Attribute> Attributes = [];
-	public readonly List<IElement> Elements = []; 
+	public readonly List<OneOf<Element, VoidElement>> Elements = [];
 
-	public Element()
+    public List<OneOf<Element, VoidElement>> Children => [.. Elements];
+    public void Add(OneOf<Element, VoidElement> element)
+    {
+		Elements.Add(element);
+    }
+
+    public Element()
 	{
 		Name = GetType().Name.ToLowerInvariant();
 		Init(Name, false );
@@ -67,10 +73,10 @@ public class Element : IElement
 
 	public void Add(Text text)
 	{
-		Elements.Add(new TextElement(text.Value));
+		Elements.Add(new OneOf<Element, VoidElement>(new TextElement(text.Value)));
 	}
 
-	public void Remove(Element element)
+	public void Remove(OneOf<Element, VoidElement> element)
 	{
 		Elements.Remove(element);
 	}
@@ -84,12 +90,8 @@ public class Element : IElement
 	{
 		Attributes.Add(attribute);
 	}
-	public void Add(IElement element)
-	{
-		Elements.Add(element);
-	}
 
-	public void AddRange(IElement[] elements)
+	public void AddRange(OneOf<Element, VoidElement>[] elements)
 	{
 		Elements.AddRange(elements);
 	}

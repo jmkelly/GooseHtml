@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Embed : Element
+public class Embed(bool selfClosing = false) : VoidElement("embed", selfClosing)
 {
 }

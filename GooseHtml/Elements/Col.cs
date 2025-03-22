@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Col : Element
+public class Col(bool selfClosing = false) : VoidElement("col", selfClosing)
 {
 }

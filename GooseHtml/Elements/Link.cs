@@ -2,17 +2,21 @@ namespace GooseHtml;
 
 using GooseHtml.Attributes;
 
-public class Link : Element
+public class Link : VoidElement
 {
-    public Link()
-    {
-    }
 
-    public Link(string href) : base("link", [new Href(href)])
+    public Link(string href) : base("link")
 	{
+		Add(new Href(href));
 	}
 
-    public Link(string href, string rel) : base("link", [new Href(href), new Attribute("rel", rel)])
+    public Link(string href, string rel) : base("link")
+    {
+		Add(new Href(href));
+		Add(new Rel(rel));
+    }
+
+    public Link(bool selfClosing = false) : base("link", selfClosing)
     {
     }
 }
