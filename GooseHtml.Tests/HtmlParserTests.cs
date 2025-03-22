@@ -142,5 +142,31 @@ public class HtmlParserTests
 		var element = parser.Parse();
 		element.ShouldBeOfType<Html>();
 	}
+
+	[Fact]
+	[Trait("Category", "parser")]
+	public void Should_Handle_MetaElementsWithoutEndTags()
+	{
+		var html = @"<!DOCTYPE html>  
+			<html>
+			<head>
+			<meta>
+			<meta>
+			</head>
+			<body>
+			</body>
+			</html>";
+		var parser = new HtmlParser(html);
+		var element = parser.Parse();
+		element.ShouldBeOfType<Html>();
+
+		//notes on implementation
+		//1.  create a void element with no end tag
+		//2.  create all the void elements that extend void
+		//3. within the parser, check for void element, if it is found, ignore trying to parse the end tag
+		//https://html.spec.whatwg.org/multipage/syntax.html#void-elements
+		//void elements are:
+		//area, base, br, col, embed, hr, img, input, link, meta, source, track, wbr
+	}
 }
 
