@@ -16,7 +16,7 @@ public class Attribute
     public string Name { get; }
     public string? Value { get; }
 
-    public sealed override string ToString()
+    public override string ToString()
 	{
 		if (Value is null) return Name;
 		return $"{Name}=\"{Value}\"";

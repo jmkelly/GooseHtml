@@ -3,18 +3,17 @@ namespace GooseHtml;
 using System.Text;
 using GooseHtml.Attributes;
 
-public class Element
+
+public class Element : IElement
 {
 	internal string TagEnd = string.Empty;
 	internal string TagStart = string.Empty;
 
-	private bool SelfClosing = false;
+	internal bool SelfClosing = false;
 	private readonly HtmlFormatter HtmlFormatter = new();
 	private readonly string Name;
 	public readonly List<Attribute> Attributes = [];
-	//think about removing this....and just handle with an attribute that has an empty string assigned
-	private readonly List<EmptyAttribute> EmptyAttributes = [];
-	public readonly List<Element> Elements = []; 
+	public readonly List<IElement> Elements = []; 
 
 	public Element()
 	{
@@ -81,21 +80,16 @@ public class Element
 		Attributes.Add(new Attribute("class", @class.Name));
 	}
 
-	public void Add(EmptyAttribute emptyAttribute)
-	{
-		EmptyAttributes.Add(emptyAttribute);
-	}
-
 	public void Add(Attribute attribute) 
 	{
 		Attributes.Add(attribute);
 	}
-	public void Add(Element element)
+	public void Add(IElement element)
 	{
 		Elements.Add(element);
 	}
 
-	public void AddRange(Element[] elements)
+	public void AddRange(IElement[] elements)
 	{
 		Elements.AddRange(elements);
 	}
@@ -121,12 +115,12 @@ public class Element
 	}
 
 
-    private void EndTag(StringBuilder sb)
+    internal void EndTag(StringBuilder sb)
 	{
 		sb.Append(TagEnd);
 	}
 
-	private void AddElements(StringBuilder sb)
+	internal void AddElements(StringBuilder sb)
 	{
 		foreach (var element in Elements)
 		{
@@ -134,26 +128,18 @@ public class Element
 		}
 	}
 
-	private static void CloseTag(StringBuilder sb)
+	internal static void CloseTag(StringBuilder sb)
 	{
 		sb.Append('>');	
 	}
 
-	private void StartTag(StringBuilder sb)
+	internal void StartTag(StringBuilder sb)
 	{
 		sb.Append(TagStart);
 	}
 
-	private void AddAttrs(StringBuilder sb)
+	internal void AddAttrs(StringBuilder sb)
 	{
-		//set the empty elements first....
-		//todo: figure out some way to add the empty and non-empty 
-		//attributes in the order added to the Element
-		foreach (var attr in EmptyAttributes)
-		{
-			sb.Append(' ');
-			sb.Append(attr.ToString());
-		}
 		foreach (var attr in Attributes)
 		{
 			sb.Append(' ');

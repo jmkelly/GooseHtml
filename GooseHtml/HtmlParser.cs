@@ -10,6 +10,8 @@ public class HtmlParser(string html)
 {
 	private readonly string _html = html;
 	private int _position = 0;
+	private int _lineNumber = 1;
+	private int _columnNumber = 1;
 
 	public Element? Parse()
 	{
@@ -101,9 +103,36 @@ public class HtmlParser(string html)
 		}
 
 		if (start == _position)
-			throw new Exception($"Invalid tag name at position {_position}");
+		{
+			//get the characters before and after current from last whitepsace to next whitespace from current position
+			throw new Exception($"Invalid tag name at line:{_lineNumber}:{_columnNumber} - {ShowCharInString(GetCurrentWord(), _html[_position])}");
+		}
 
 		return _html.AsSpan(start, _position - start).ToString(); // ✅ Uses Span
+	}
+
+	private static string ShowCharInString(string text, char chr)
+	{
+		//show the char in the string surrounded by * on both sides
+		return $"{text.Substring(0, text.IndexOf(chr))}**{text.Substring(text.IndexOf(chr))}";
+		//return string.Concat(text.AsSpan(0, text.IndexOf(chr)), "*", text.AsSpan(text.IndexOf(chr)));
+	}
+
+	private string GetCurrentWord()
+	{
+		/*int backwards = _position;*/
+		/*int forwards = _position;*/
+		/*while (backwards < _html.Length && _html[backwards].IsValidChar() && _html[backwards] != ' ')*/
+		/*{*/
+		/*	backwards--;*/
+		/*}*/
+		/*while (forwards < _html.Length && _html[forwards].IsValidChar() && _html[forwards] != ' ')*/
+		/*{*/
+		/*	forwards++;*/
+		/*}*/
+		int start = _position - 20;
+		int end = _position + 10;
+		return _html[start..end]; 
 	}
 
 
@@ -132,7 +161,7 @@ public class HtmlParser(string html)
 	private ReadOnlySpan<char> ParseAttributeValue()
 	{
 		if (!Match('"') && !Match('\''))
-			throw new Exception("Expected quote for attribute value");
+			throw new Exception($"Expected quote for attribute value at {_lineNumber}:{_columnNumber}");
 
 		char quote = _html[_position];
 		Advance(); // Skip opening quote
@@ -159,7 +188,15 @@ public class HtmlParser(string html)
 	private void SkipWhitespace()
 	{
 		while (_position < _html.Length && char.IsWhiteSpace(_html[_position]))
+		{
+			if (_html[_position] == '\n')
+			{
+				_lineNumber++;
+				_columnNumber = 1;
+			}
 			_position++;
+
+		}
 	}
 
 	private bool Match(char ch)
@@ -175,6 +212,7 @@ public class HtmlParser(string html)
 	private void Advance(int count = 1)
 	{
 		_position += count;
+		_columnNumber += count;
 	}
 
 }
