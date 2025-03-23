@@ -10,6 +10,9 @@ public static class ElementFactory
 				"a" => new OneOf<Element, VoidElement>(new A()),
 				"abbr" => new OneOf<Element, VoidElement>(new Abbr()),
 				"address" => new OneOf<Element, VoidElement>(new Address()),
+				"animate" => new OneOf<Element, VoidElement>(new Animate()),
+				"animatemotion" => new OneOf<Element, VoidElement>(new AnimateMotion()),
+				"animatetransform" => new OneOf<Element, VoidElement>(new AnimateTransform()),
 				"area" => new OneOf<Element, VoidElement>(new Area()),
 				"article" => new OneOf<Element, VoidElement>(new Article()),
 				"aside" => new OneOf<Element, VoidElement>(new Aside()),
@@ -24,8 +27,12 @@ public static class ElementFactory
 				"button" => new OneOf<Element, VoidElement>(new Button()),
 				"canvas" => new OneOf<Element, VoidElement>(new Canvas()),
 				"caption" => new OneOf<Element, VoidElement>(new Caption()),
+				"circle" => new OneOf<Element, VoidElement>(new Circle()),
 				"cite" => new OneOf<Element, VoidElement>(new Cite()),
+				"c-wiz" => new OneOf<Element, VoidElement>(new Element(name: "c-wiz")), //custom google element
+				"c-data" => new OneOf<Element, VoidElement>(new Element(name: "c-data")), //custom google element
 				"class" => new OneOf<Element, VoidElement>(new Class()),
+				"clippath" => new OneOf<Element, VoidElement>(new ClipPath()),
 				"code" => new OneOf<Element, VoidElement>(new Code()),
 				"col" => new OneOf<Element, VoidElement>(new Col()),
 				"colgroup" => new OneOf<Element, VoidElement>(new Colgroup()),
@@ -75,6 +82,7 @@ public static class ElementFactory
 				"footer" => new OneOf<Element, VoidElement>(new Footer()),
 				"form" => new OneOf<Element, VoidElement>(new Form()),
 				"g" => new OneOf<Element, VoidElement>(new G()),
+				"gu-island" => new OneOf<Element, VoidElement>(new Element("gu-island")), //custom element
 				"h" => new OneOf<Element, VoidElement>(new H()),
 				"h1" => new OneOf<Element, VoidElement>(new H1()),
 				"h2" => new OneOf<Element, VoidElement>(new H2()),
@@ -89,6 +97,7 @@ public static class ElementFactory
 				"i" => new OneOf<Element, VoidElement>(new I()),
 				"iframe" => new OneOf<Element, VoidElement>(new Iframe()),
 				"img" => new OneOf<Element, VoidElement>(new Img()),
+				"image" => new OneOf<Element, VoidElement>(new Image()),
 				"input" => new OneOf<Element, VoidElement>(new Input()),
 				"ins" => new OneOf<Element, VoidElement>(new Ins()),
 				"kbd" => new OneOf<Element, VoidElement>(new Kbd()),
@@ -96,6 +105,7 @@ public static class ElementFactory
 				"legend" => new OneOf<Element, VoidElement>(new Legend()),
 				"li" => new OneOf<Element, VoidElement>(new Li()),
 				"line" => new OneOf<Element, VoidElement>(new Line()),
+				"lineargradient" => new OneOf<Element, VoidElement>(new LinearGradient()),
 				"link" => new OneOf<Element, VoidElement>(new Link()),
 				"main" => new OneOf<Element, VoidElement>(new Main()),
 				"mask" => new OneOf<Element, VoidElement>(new Mask()),
@@ -115,10 +125,12 @@ public static class ElementFactory
 				"param" => new OneOf<Element, VoidElement>(new Param()),
 				"path" => new OneOf<Element, VoidElement>(new Path()),
 				"picture" => new OneOf<Element, VoidElement>(new Picture()),
+				"polygon" => new OneOf<Element, VoidElement>(new Polygon()),
 				"pre" => new OneOf<Element, VoidElement>(new Pre()),
 				"progress" => new OneOf<Element, VoidElement>(new Progress()),
 				"q" => new OneOf<Element, VoidElement>(new Q()),
 				"rp" => new OneOf<Element, VoidElement>(new Rp()),
+				"rect" => new OneOf<Element, VoidElement>(new Rect()),
 				"rt" => new OneOf<Element, VoidElement>(new Rt()),
 				"ruby" => new OneOf<Element, VoidElement>(new Ruby()),
 				"s" => new OneOf<Element, VoidElement>(new S()),
@@ -129,6 +141,7 @@ public static class ElementFactory
 				"small" => new OneOf<Element, VoidElement>(new Small()),
 				"source" => new OneOf<Element, VoidElement>(new Source()),
 				"span" => new OneOf<Element, VoidElement>(new Span()),
+				"stop" => new OneOf<Element, VoidElement>(new Stop()),
 				"strong" => new OneOf<Element, VoidElement>(new Strong()),
 				"style" => new OneOf<Element, VoidElement>(new Style()),
 				"sub" => new OneOf<Element, VoidElement>(new Sub()),
@@ -154,9 +167,7 @@ public static class ElementFactory
 				"var" => new OneOf<Element, VoidElement>(new Var()),
 				"video" => new OneOf<Element, VoidElement>(new Video()),
 				"wbr" => new OneOf<Element, VoidElement>(new Wbr()),
-				_ => throw new ArgumentException($"element type: {tagName} unknown")
+				_ => new OneOf<Element, VoidElement>(new Element(name: tagName))
 		};
 	}
 }
-
-
