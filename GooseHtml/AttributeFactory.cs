@@ -140,7 +140,7 @@ internal static class AttributeFactory
 				"bias" => new Bias(value),
 				"by" => new By(value),
 				"calcMode" => new CalcMode(value),
-				"clipPath" => new ClipPath(value),
+				"clipPath" => new Attributes.ClipPath(value),
 				"clipPathUnits" => new ClipPathUnits(value),
 				"clipRule" => new ClipRule(value),
 				"color" => new Color(value),
