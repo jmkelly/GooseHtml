@@ -16,7 +16,7 @@ public class HtmlParserWebTest
 			"https://www.nytimes.com/",
 			"https://news.google.com/",
 			"https://www.aljazeera.com/",
-			"https://www.reuters.com/",
+			//"https://www.reuters.com/", --this was forbidden
 			"https://www.theguardian.com/international",
 
 			// E-Commerce & Product Pages
