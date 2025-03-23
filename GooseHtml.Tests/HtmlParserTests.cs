@@ -235,4 +235,20 @@ public class HtmlParserTests
 			var result = parser.Parse();
 			result.AsElement().Attributes.ShouldContain(a => a.Name == "href" && a.Value == "https://google.com");
 		}
+
+	[Fact]
+	[Trait("Category","parser")]
+		public void Should_Parse_Element_With_Comments()
+		{
+			string html = "<span>Feed refreshed <!-- -->Mar 22</span>";
+			var parser = new HtmlParser(html);
+			var result = parser.Parse();
+			var span = result.AsElement();
+			span.Elements.Count.ShouldBe(1);
+			var text = span.Elements[0].AsElement();
+			text.ShouldBeOfType<TextElement>();
+			text.ToString().ShouldContain("Feed refreshed Mar 22");
+			text.ToString().ShouldNotContain("<!--");
+			text.ToString().ShouldNotContain("-->");
+		}
 }
