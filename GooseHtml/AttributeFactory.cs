@@ -16,7 +16,6 @@ internal static class AttributeFactory
 				"alt" => new Alt(value),
 				"as" => new As(value),
 				"asyncattribute" => new AsyncAttribute(value),
-				"attribute" => new Attributes.Attribute("attribute",value),
 				"autocapitalize" => new Autocapitalize(value),
 				"autocomplete" => new Autocomplete(value),
 				"autoplay" => new Autoplay(value),
@@ -205,7 +204,7 @@ internal static class AttributeFactory
 				"marker-start" => new MarkerStart(value),
 				"markerunits" => new MarkerUnits(value),
 				"markerwidth" => new MarkerWidth(value),
-				"mask" => new Mask(value),
+				"mask" => new Attributes.Mask(value),
 				"maskcontentunits" => new MaskContentUnits(value),
 				"maskunits" => new MaskUnits(value),
 				"numoctaves" => new NumOctaves(value),
@@ -294,7 +293,7 @@ internal static class AttributeFactory
 				"ychannelselector" => new YChannelSelector(value),
 				"z" => new Z(value),
 				"zoomandplan" => new ZoomAndPlan(value),
-				_ => throw new ArgumentException($"Attribute {key} unknown"),
+				_ => new Attributes.Attribute(key, value),//throw new ArgumentException($"Attribute {key} unknown"),
 		};
 	}
 }

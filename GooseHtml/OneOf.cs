@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public record OneOf<T0, T1>
+public class OneOf<T0, T1>
 {
     private readonly T0? _value1;
     private readonly T1? _value2;

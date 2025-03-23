@@ -1,12 +1,12 @@
 using Shouldly;
-using GooseHtml;
 
+namespace GooseHtml.Tests;
 public class HtmlParserWebTest
 {
 	private static readonly HttpClient _httpClient = new();
 
-	private static readonly List<string> _websites = new()
-	{
+	private static readonly List<string> _websites =
+    [
 		// News & Media
 		"https://www.wikipedia.org/",
 			"https://www.cnn.com/",
@@ -78,9 +78,9 @@ public class HtmlParserWebTest
 			"https://www.fifa.com/",
 			"https://www.tripadvisor.com/",
 			"https://www.airbnb.com/"
-	};
+	];
 
-	[Fact(Skip="ignore for now")]
+	[Fact]
 	[Trait("Category", "WebFetch")]
 	public async Task Should_Parse_Multiple_Websites()
 	{
