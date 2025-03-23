@@ -1,7 +1,20 @@
-using System.Text;
 using GooseHtml.Attributes;
 
 namespace GooseHtml;
+public static class StringExtension
+{
+	public static string RemoveComments(this string text)
+	{
+			if (text.Length < 7) return text;//no comment
+			//remove comments and the text between them
+			var startComment = text.IndexOf("<!--");
+			var endComment = text.IndexOf("-->");
+			var endString = text.Length;
+			if (startComment != -1 && endComment != -1)
+				return $"{text[0..startComment]}{text[(endComment + 3)..endString]}";
+			return text;
+	}
+}
 
 public class HtmlParser(string html)
 {
@@ -112,7 +125,9 @@ public class HtmlParser(string html)
                     var textContent = ParseText().ToString().Trim();
                     if (!string.IsNullOrEmpty(textContent))
                     {
-                        currentElement.Add(new Text(textContent));
+						//todo: fix the text parser to remove comments rather than this workaround
+						var text = textContent.RemoveComments();
+                        currentElement.Add(new Text(text));
                     }
                 }
             }
@@ -244,16 +259,64 @@ public class HtmlParser(string html)
 
     string unquotedValue = _html[start.._position];
 	return unquotedValue.Trim();
+
+
 	}
 
 	private ReadOnlySpan<char> ParseText()
-	{
-		int start = _position;
-		while (_position < _html.Length && _html[_position] != '<')
-			_position++;
+{
+    int start = _position;
+    while (_position < _html.Length)
+    {
+        if (_html[_position] == '<')
+        {
+            // Check if this is the start of a comment
+            //if (_position + 3 < _html.Length && 
+               // _html[_position..(_position + 4)].SequenceEqual("<!--"))
+			if (Match("<!--"))
+            {
+                // Skip the entire comment
+                _position += 4; // Skip "<!--"
+                
+                // Find the closing "-->"
+                while (_position < _html.Length - 2)
+                {
+                    if (Match("-->"))
+                    {
+                        _position += 3; // Skip "-->"
+                        break;
+                    }
+                    _position++;
+                }
+            }
+            else
+            {
+                // Stop at non-comment '<' (start of a new element)
+                break;
+            }
+        }
+        else
+        {
+            _position++;
+        }
+    }
 
-		return _html.AsSpan(start, _position - start);
-	}
+	return _html.AsSpan(start, _position - start);
+
+    //return _html.AsSpan(start, _position - start);
+}
+
+	/*private ReadOnlySpan<char> ParseText()*/
+	/*{*/
+	/*	int start = _position;*/
+	/*	//if we match a comment, we want to keep going, and ignore the '<' at the start of the comment*/
+	/*	while (_position < _html.Length && _html[_position] != '<' && Match("<!--"))*/
+	/*	{*/
+	/*		_position++;*/
+	/*	}*/
+	/**/
+	/*	return _html.AsSpan(start, _position - start);*/
+	/*}*/
 
 	private void SkipWhitespace()
 	{
