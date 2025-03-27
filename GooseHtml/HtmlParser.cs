@@ -69,7 +69,7 @@ public class HtmlParser(string html) : IParser
 		OneOf<Element, VoidElement> element = ElementFactory.Create(tagName);
 
 		// Parse attributes
-		while (!Match('>') && !Match("/>") && BeforeEnd() && LoopGuard.ShouldContinue($"attributes {GetCurrentContext()}"))
+		while (!Match('>') && !Match("/>") && IsBeforeLastChar() && LoopGuard.ShouldContinue($"attributes {GetCurrentContext()}"))
 		{
 			SkipWhitespace();
 			var attr = ParseAttribute();
@@ -105,7 +105,7 @@ public class HtmlParser(string html) : IParser
 		if (currentElement is not Script)
 		{
 			// Parse inner text and children for non-void elements
-			while (!Match(ClosingTag(tagName)) && BeforeEnd() && LoopGuard.ShouldContinue("parse sub elements"))
+			while (!Match(ClosingTag(tagName)) && IsBeforeLastChar() && LoopGuard.ShouldContinue("parse sub elements"))
 			{
 				if (Match('<') && !Match("<!--") && !Match("</")) //ignore malformed tags that don't match the closing tag
 				{
@@ -173,7 +173,7 @@ public class HtmlParser(string html) : IParser
 	private ReadOnlySpan<char> ParseTagName()
 	{
 		int start = _position;
-		while (BeforeEnd() && _html[_position].IsValidTagNameChar())
+		while (IsBeforeLastChar() && _html[_position].IsValidTagNameChar())
 		{
 			_position++;
 		}
@@ -189,7 +189,7 @@ public class HtmlParser(string html) : IParser
 
         // Parse attribute name
         int start = _position;
-        while (BeforeEnd() &&
+        while (IsBeforeLastChar() &&
                 !char.IsWhiteSpace(_html[_position]) &&
                 !Match('=') &&
                 !Match('>') &&
@@ -216,11 +216,6 @@ public class HtmlParser(string html) : IParser
         return AttributeFactory.Create(key, value);
     }
 
-    private bool BeforeEnd()
-    {
-        return _position < _html.Length;
-    }
-
     private string ParseAttributeValue()
 	{
 
@@ -233,13 +228,13 @@ public class HtmlParser(string html) : IParser
 		int start = _position;
 		//handle quoted values
 
-		if (BeforeEnd() && (Match('"') || Match('\'')))
+		if (IsBeforeLastChar() && (Match('"') || Match('\'')))
         {
             char quote = CurrentChar();
             Advance(); // Skip opening quote
             start = _position;
 
-            while (BeforeEnd() &&
+            while (IsBeforeLastChar() &&
                     CurrentChar() != quote &&
                     LoopGuard.ShouldContinue("parse attribute value"))
                 Advance();
@@ -249,7 +244,7 @@ public class HtmlParser(string html) : IParser
             return value;
         }
 
-        while (BeforeEnd() && 
+        while (IsBeforeLastChar() && 
 				!char.IsWhiteSpace(CurrentChar()) && 
 				!Match('>') && 
 				!Match('=') && 
@@ -274,7 +269,7 @@ public class HtmlParser(string html) : IParser
     private ReadOnlySpan<char> ParseText(string tagName)
 	{
 		int start = _position;
-		while (_position < _html.Length && LoopGuard.ShouldContinue("parse text"))
+		while (IsBeforeLastChar() && LoopGuard.ShouldContinue("parse text"))
 		{
 			IgnoreMalformedEndTag(tagName);
 			if (Match("<!--"))
@@ -328,11 +323,13 @@ public class HtmlParser(string html) : IParser
 
 	private void SkipWhitespace()
 	{
-		while (_position < _html.Length && (char.IsWhiteSpace(_html[_position]) ||  !IsValid(_html[_position])) && LoopGuard.ShouldContinue("skip whitespace"))
+		while (IsBeforeLastChar() && (char.IsWhiteSpace(_html[_position]) ||  !IsValid(_html[_position])) && LoopGuard.ShouldContinue("skip whitespace"))
 		{
 			Advance();
 		}
 	}
+
+	private bool IsBeforeLastChar() => _position < _html.Length;
 
 	private void SkipComment()
 	{
@@ -379,6 +376,7 @@ public class HtmlParser(string html) : IParser
 		{
 			if (_position >= _html.Length) break;
 
+			//keeping this is string because its faster than using the span....needs further investigation
 			if (_html[_position] == '\n')
 			{
 				_currentLine++;
