@@ -358,7 +358,20 @@ public class HtmlParser(string html) : IParser
 	}
 
 	private bool Match(char ch) => _position < _html.Length && _html[_position] == ch;
-	private bool Match(string str) => _position + str.Length <= _html.Length && _html.Substring(_position, str.Length) == str;
+
+	private bool Match(string str) 
+	{
+		ReadOnlySpan<char> strSpan = str.AsSpan(); // Convert the string to a ReadOnlySpan<char>
+		
+		// Check if the position and length are within bounds
+		if (_position + strSpan.Length > HtmlSpan.Length)
+		{
+			return false;
+		}
+
+		// Compare the spans
+		return HtmlSpan.Slice(_position, strSpan.Length).SequenceEqual(strSpan);
+	}
 
 	private void Advance(int count = 1)
 	{
