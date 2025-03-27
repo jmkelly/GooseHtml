@@ -5,7 +5,7 @@ public static class ElementFactory
 
 	public static  OneOf<Element, VoidElement> Create(string tagName)
 	{
-		return tagName.ToLower() switch
+		return tagName switch
 		{
 				"a" => new OneOf<Element, VoidElement>(new A()),
 				"abbr" => new OneOf<Element, VoidElement>(new Abbr()),

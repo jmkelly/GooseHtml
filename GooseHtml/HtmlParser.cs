@@ -1,50 +1,54 @@
 using GooseHtml.Attributes;
 
 namespace GooseHtml;
-public static class StringExtension
+
+public class ThreadSafeLoopGuard(int max = int.MaxValue)
 {
-	public static string RemoveComments(this string text)
-	{
-			if (text.Length < 7) return text;//no comment
-			//remove comments and the text between them
-			var startComment = text.IndexOf("<!--");
-			var endComment = text.IndexOf("-->");
-			var endString = text.Length;
-			if (startComment != -1 && endComment != -1)
-				return $"{text[0..startComment]}{text[(endComment + 3)..endString]}";
-			return text;
-	}
+    private int counter = 0;
+    private readonly int maxIterations = max;
+
+    public bool ShouldContinue(string loopName)
+    {
+        int newValue = Interlocked.Increment(ref counter);
+		bool inRange = newValue <= maxIterations && newValue != int.MaxValue;
+
+		if (inRange == false)
+		{
+			throw new Exception($"Loop iteration limit exceeded in {loopName}");
+		}
+		return inRange;
+    }
 }
 
-public class HtmlParser(string html)
+public class HtmlParser(string html): IParser
 {
 	private readonly string _html = html;
 	private int _position = 0;
-	private int _lineNumber = 1;
-	private int _columnNumber = 1;
 
-    // Track line and column for error reporting
-    private int _currentLine = 1;
-    private int _currentColumn = 1;
+	private readonly ThreadSafeLoopGuard LoopGuard = new(10000000);
 
-    // Public accessors for error context
-    public int CurrentLine => _currentLine;
-    public int CurrentColumn => _currentColumn;
-    public int CurrentPosition => _position;
+	// Track line and column for error reporting
+	private int _currentLine = 1;
+	private int _currentColumn = 1;
 
-    // Helper to get a snippet of HTML around the current position
-    public string GetCurrentContext(int before = 20, int after = 20)
-    {
-        int start = System.Math.Max(0, _position - before);
-        int end = System.Math.Min(_html.Length, _position + after);
-        string snippet = _html[start..end];
-        
-        // Add a marker (^) at the error position within the snippet
-        int markerPos = _position - start;
-        return snippet.Insert(markerPos, "❯❯❯").Insert(markerPos + 3, "❮❮❮");
-    }
+	// Public accessors for error context
+	public int CurrentLine => _currentLine;
+	public int CurrentColumn => _currentColumn;
+	public int CurrentPosition => _position;
 
-    // Update line/column when advancing
+	// Helper to get a snippet of HTML around the current position
+	public string GetCurrentContext(int before = 20, int after = 20)
+	{
+		int start = System.Math.Max(0, _position - before);
+		int end = System.Math.Min(_html.Length, _position + after);
+		string snippet = _html[start..end];
+
+		// Add a marker (^) at the error position within the snippet
+		int markerPos = _position - start;
+		return snippet.Insert(markerPos, "❯❯❯").Insert(markerPos + 3, "❮❮❮");
+	}
+
+	// Update line/column when advancing
 	public OneOf<Element, VoidElement> Parse()
 	{
 		SkipWhitespace();
@@ -68,7 +72,7 @@ public class HtmlParser(string html)
 		}
 
 		if (!Match('<')) throw new Exception($"Expected '<' got '{_html[_position]}'.  {GetCurrentContext()}");
-		Advance(); // Skip '<'
+		Advance();
 
 		string tagName = ParseTagName();
 		if (tagName.Equals("!doctype", StringComparison.InvariantCultureIgnoreCase))
@@ -82,7 +86,7 @@ public class HtmlParser(string html)
 		OneOf<Element, VoidElement> element = ElementFactory.Create(tagName);
 
 		// Parse attributes
-		while (!Match('>') && !Match("/>") && _position < _html.Length)
+		while (!Match('>') && !Match("/>") && BeforeEnd() && LoopGuard.ShouldContinue($"attributes {GetCurrentContext()}"))
 		{
 			SkipWhitespace();
 			var attr = ParseAttribute();
@@ -104,123 +108,136 @@ public class HtmlParser(string html)
 		// Check if the element is a VoidElement and return immediately
 		if (element.IsVoidElement())
 		{
+			//void elements can't have any children, but they may have a closing tag  even
+			//though its not valid....we will handle it just in case
 			parent?.Add(element);
+			if (Match(ClosingTag(tagName)))
+				Advance(ClosingTag(tagName).Length); // Skip closing tag
 			return element;
 		}
 
 		var currentElement = element.AsElement();
 		parent?.Add(currentElement);
 
-        if (currentElement is not Script)
-        {
-            // Parse inner text and children for non-void elements
-            while (!Match($"</{tagName}>"))
-            {
-                if (Match('<'))
-                {
-                    ParseElement(parent: currentElement);
-                }
-                else
-                {
-                    var textContent = ParseText().ToString().Trim();
-                    if (!string.IsNullOrEmpty(textContent))
-                    {
+		if (currentElement is not Script)
+		{
+			// Parse inner text and children for non-void elements
+			while (!Match(ClosingTag(tagName)) && BeforeEnd() && LoopGuard.ShouldContinue("parse sub elements"))
+			{
+				if (Match('<') && !Match("<!--") && !Match("</")) //ignore malformed tags that don't match the closing tag
+				{
+					ParseElement(parent: currentElement);
+				}
+				else
+				{
+					var textContent = ParseText(ClosingTag(tagName)).ToString().Trim();
+					if (!string.IsNullOrEmpty(textContent))
+					{
 						//todo: fix the text parser to remove comments rather than this workaround
 						var text = textContent.RemoveComments();
-                        currentElement.Add(new Text(text));
-                    }
-                }
-            }
+						currentElement.Add(new Text(text));
+					}
+				}
+			}
 
-            Advance($"</{tagName}>".Length); // Skip closing tag
-        }
-        else
-        {
-            // Parse raw text content until </script>
-            HandleScript(currentElement);
-        }
-        return currentElement;
+			Advance($"</{tagName}>".Length); // Skip closing tag
+		}
+		else
+		{
+			// Parse raw text content until </script>
+			HandleScript(currentElement);
+		}
+
+		return currentElement;
 	}
 
-    private void HandleScript(Element currentElement)
-    {
-        string closingTag = "</script>";
-        int contentStart = _position;
-
-        while (_position <= _html.Length - closingTag.Length)
-        {
-            if (Match(closingTag))
-            {
-                string content = _html[contentStart.._position];
-                if (!string.IsNullOrWhiteSpace(content))
-                {
-                    currentElement.Add(new TextElement(content, false));
-                }
-                Advance(closingTag.Length); // Skip closing tag
-                break;
-            }
-            Advance();
-        }
-    }
-
-    private void AdvanceToStartOfNextElement()
+	private void HandleScript(Element currentElement)
 	{
-		while (!Match('>')) Advance();
+		string closingTag = "</script>";
+		int contentStart = _position;
+		bool found = false;
+
+		while (_position <= _html.Length - closingTag.Length && LoopGuard.ShouldContinue("handle script"))
+		{
+			if (Match(closingTag))
+			{
+				found = true;
+				break;
+			}
+			Advance();
+		}
+
+		if (!found)
+			throw new Exception($"Unclosed script element at line {CurrentLine}, column {CurrentColumn}.");
+
+		string content = _html[contentStart.._position];
+		currentElement.Add(new TextElement(content, false));
+		Advance(closingTag.Length);
+	}
+
+	private void AdvanceToStartOfNextElement()
+	{
+		while (!Match('>')) 
+		{
+			Advance();
+		}
 		Advance(); // Skip '>' after doctype
 		SkipWhitespace();
 	}
 
+	private static string ClosingTag(string tagName) => $"</{tagName}>";
+
 	private string ParseTagName()
 	{
 		int start = _position;
-		while (_position < _html.Length && _html[_position].IsValidTagNameChar())
+		while (BeforeEnd() && _html[_position].IsValidTagNameChar())
 		{
 			_position++;
-		}
-
-		if (start == _position)
-		{
-			throw new Exception($"invalid tag name at line {_lineNumber}, column {_columnNumber}.\nContext: {GetCurrentContext()}");
 		}
 
 		return _html[start.._position];
+
 	}
 
 	private Attributes.Attribute ParseAttribute()
-	{
-		SkipWhitespace();
+    {
+        SkipWhitespace();
 
-		// Parse attribute name
-		int start = _position;
-		while (_position < _html.Length && 
-			   !char.IsWhiteSpace(_html[_position]) && 
-			   _html[_position] != '=' && 
-			   _html[_position] != '>' && 
-			   _html[_position] != '/')
-		{
-			_position++;
-		}
+        // Parse attribute name
+        int start = _position;
+        while (BeforeEnd() &&
+                !char.IsWhiteSpace(_html[_position]) &&
+                !Match('=') &&
+                !Match('>') &&
+                LoopGuard.ShouldContinue("parse attribute name"))
+        {
+            Advance();
+        }
 
-		string key = _html[start.._position];
-		SkipWhitespace();
+        string key = _html[start.._position];
+        SkipWhitespace();
 
-		// Check if the attribute has a value (e.g., "key" vs. "key=value")
-		if (!Match('='))
-		{
-			// Boolean attribute (e.g., "checked" in <input checked>)
-			return new EmptyAttribute(key);
-		}
+        // Check if the attribute has a value (e.g., "key" vs. "key=value")
+        if (!Match('='))
+        {
+            // Boolean attribute (e.g., "checked" in <input checked>)
+            return new EmptyAttribute(key);
+        }
 
-		Advance(); // Skip '='
-		SkipWhitespace();
+        Advance(); // Skip '='
+        SkipWhitespace();
 
-		// Parse the value (quoted, unquoted, or empty)
-		string value = ParseAttributeValue();
-		return AttributeFactory.Create(key, value);
-	}
+        // Parse the value (quoted, unquoted, or empty)
+        string value = ParseAttributeValue();
+        return AttributeFactory.Create(key, value);
+    }
 
+    private bool BeforeEnd()
+    {
+        return _position < _html.Length;
+    }
 
-	private string ParseAttributeValue()
+    private string ParseAttributeValue()
 	{
 
 		if (_position >= _html.Length)
@@ -232,102 +249,104 @@ public class HtmlParser(string html)
 		int start = _position;
 		//handle quoted values
 
-		if (_position <= _html.Length && (Match('"') || Match('\''))) 
-		{
-			char quote = _html[_position];
-			Advance(); // Skip opening quote
-			start = _position;
+		if (BeforeEnd() && (Match('"') || Match('\'')))
+        {
+            char quote = CurrentChar();
+            Advance(); // Skip opening quote
+            start = _position;
 
-			while (_position < _html.Length && _html[_position] != quote)
-				_position++;
+            while (BeforeEnd() &&
+                    CurrentChar() != quote &&
+                    LoopGuard.ShouldContinue("parse attribute value"))
+                Advance();
 
-			string value = _html[start.._position];
-			Advance(); // Skip closing quote
-			return value;
-		}
+            string value = _html[start.._position];
+            Advance(); // Skip closing quote
+            return value;
+        }
 
-		while (_position < _html.Length && 
-			   !char.IsWhiteSpace(_html[_position]) && 
-			   _html[_position] != '>' && 
-			   _html[_position] != '=' && 
-			   _html[_position] != '`' && 
-			   _html[_position] != '"')
-			   
+        while (BeforeEnd() && 
+				!char.IsWhiteSpace(CurrentChar()) && 
+				!Match('>') && 
+				!Match('=') && 
+				!Match('`') && 
+				!Match('"') && LoopGuard.ShouldContinue("parse end of attribute values"))
+
 		{
 			Advance();
 		}
 
-    string unquotedValue = _html[start.._position];
-	return unquotedValue.Trim();
+		string unquotedValue = _html[start.._position];
+		return unquotedValue.Trim();
 
 
 	}
 
-	private ReadOnlySpan<char> ParseText()
-{
-    int start = _position;
-    while (_position < _html.Length)
+    private char CurrentChar()
     {
-        if (_html[_position] == '<')
-        {
-            // Check if this is the start of a comment
-            //if (_position + 3 < _html.Length && 
-               // _html[_position..(_position + 4)].SequenceEqual("<!--"))
-			if (Match("<!--"))
-            {
-                // Skip the entire comment
-                _position += 4; // Skip "<!--"
-                
-                // Find the closing "-->"
-                while (_position < _html.Length - 2)
-                {
-                    if (Match("-->"))
-                    {
-                        _position += 3; // Skip "-->"
-                        break;
-                    }
-                    _position++;
-                }
-            }
-            else
-            {
-                // Stop at non-comment '<' (start of a new element)
-                break;
-            }
-        }
-        else
-        {
-            _position++;
-        }
+        return _html[_position];
     }
 
-	return _html.AsSpan(start, _position - start);
+    private ReadOnlySpan<char> ParseText(string tagName)
+	{
+		int start = _position;
+		while (_position < _html.Length && LoopGuard.ShouldContinue("parse text"))
+		{
+			IgnoreMalformedEndTag(tagName);
+			if (Match("<!--"))
+			{
+				SkipComment();
+			}
+			else if (Match('<')) 
+			{
+				break;
+			}
+			else
+			{
+				Advance();
+			}
+		}
+		return _html.AsSpan(start,_position - start);
+	}
 
-    //return _html.AsSpan(start, _position - start);
-}
 
-	/*private ReadOnlySpan<char> ParseText()*/
-	/*{*/
-	/*	int start = _position;*/
-	/*	//if we match a comment, we want to keep going, and ignore the '<' at the start of the comment*/
-	/*	while (_position < _html.Length && _html[_position] != '<' && Match("<!--"))*/
-	/*	{*/
-	/*		_position++;*/
-	/*	}*/
-	/**/
-	/*	return _html.AsSpan(start, _position - start);*/
-	/*}*/
+    private void IgnoreMalformedEndTag(string currentTagName)
+    {
+		if (Match("</") && !Match(currentTagName))
+		{
+			Advance(2);
+		}
+    }
+
+    private static bool IsValid(char character)
+	{
+		// Check for acceptable characters: letters, digits, whitespace, and some punctuation
+		return char.IsLetterOrDigit(character) || 
+			char.IsWhiteSpace(character) || 
+			character == '-' || 
+			character == '_' || 
+			character == '.' || 
+			character == ',' || 
+			character == '!' || 
+			character == '?' || 
+			character == ':' || 
+			character == ';' || 
+			character == '\'' || 
+			character == '\"' || 
+			character == '/' || 
+			character == '\\' || 
+			character == '@' || 
+			character == '<' || 
+			character == '>' || 
+			character == '=' || 
+			character == '#';
+	}
 
 	private void SkipWhitespace()
 	{
-		while (_position < _html.Length && char.IsWhiteSpace(_html[_position]))
+		while (_position < _html.Length && (char.IsWhiteSpace(_html[_position]) ||  !IsValid(_html[_position])) && LoopGuard.ShouldContinue("skip whitespace"))
 		{
-			if (_html[_position] == '\n')
-			{
-				_lineNumber++;
-				_columnNumber = 1;
-			}
-			_position++;
+			Advance();
 		}
 	}
 
@@ -340,7 +359,7 @@ public class HtmlParser(string html)
 		Advance(4);
 
 		// Find the closing "-->"
-		while (_position < _html.Length - 2)
+		while (_position < _html.Length - 2 && LoopGuard.ShouldContinue("skip comments"))
 		{
 			if (Match("-->"))
 			{
@@ -357,24 +376,24 @@ public class HtmlParser(string html)
 	private bool Match(char ch) => _position < _html.Length && _html[_position] == ch;
 	private bool Match(string str) => _position + str.Length <= _html.Length && _html.Substring(_position, str.Length) == str;
 
-    private void Advance(int count = 1)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            if (_position >= _html.Length) break;
+	private void Advance(int count = 1)
+	{
+		for (int i = 0; i < count; i++)
+		{
+			if (_position >= _html.Length) break;
 
-            if (_html[_position] == '\n')
-            {
-                _currentLine++;
-                _currentColumn = 1;
-            }
-            else
-            {
-                _currentColumn++;
-            }
+			if (_html[_position] == '\n')
+			{
+				_currentLine++;
+				_currentColumn = 1;
+			}
+			else
+			{
+				_currentColumn++;
+			}
 
-            _position++;
-        }
-    }
+			_position++;
+		}
+	}
 
 }

@@ -1,8 +1,7 @@
 namespace GooseHtml;
 
-public class Path : Element
+public class Path(bool selfClosing = true) : VoidElement("path", selfClosing)
 {
-	public Path(): base(){}
 }
 
 

@@ -12,13 +12,16 @@ public class HtmlParserTests
 	{
 		// Arrange
 		string html = "<div></div>";
-		var parser = new HtmlParser(html);
+		var parsers = ParserFactory.CreateAll(html);
+		//var parser = new HtmlParser(html);
 
 		// Act
-		var element = parser.Parse();
-
-		// Assert
-		element.AsElement().ShouldBeOfType<Div>();
+		foreach (var parser in parsers)
+		{
+			var element = parser.Parse();
+			// Assert
+			element.AsElement().ShouldBeOfType<Div>();
+		}
 	}
 
 	[Fact]
@@ -26,7 +29,10 @@ public class HtmlParserTests
 	{
 		// Arrange
 		string html = "<div class='container' id='main'></div>";
-		var parser = new HtmlParser(html);
+		var parsers = ParserFactory.CreateAll(html);
+		foreach (var parser in parsers)
+		{
+
 
 		// Act
 		var result = parser.Parse();
@@ -40,6 +46,7 @@ public class HtmlParserTests
 		result.MatchElement(e => e.Attributes[0].Value.ShouldBe("container"));
 		result.MatchElement(e => e.Attributes[1].Name.ShouldBe("id"));
 		result.MatchElement(e => e.Attributes[1].Value.ShouldBe("main"));
+		}
 	}
 
 	[Fact]
@@ -47,7 +54,9 @@ public class HtmlParserTests
 	{
 		// Arrange
 		string html = "<div><p>Hello</p></div>";
-		var parser = new HtmlParser(html);
+		var parsers = ParserFactory.CreateAll(html);
+		foreach (var parser in parsers)
+		{
 
 		// Act
 		var element = parser.Parse();
@@ -61,6 +70,7 @@ public class HtmlParserTests
 		children.ShouldNotBeEmpty();
 		children.Count.ShouldBe(1);
 		children[0].AsElement().ShouldBeOfType<P>();
+		}
 	}
 
 	[Fact]
@@ -68,7 +78,9 @@ public class HtmlParserTests
 	{
 		// Arrange
 		string html = "<img src='image.png' />";
-		var parser = new HtmlParser(html);
+		var parsers = ParserFactory.CreateAll(html);
+		foreach (var parser in parsers)
+		{
 
 		// Act
 		var result = parser.Parse();
@@ -79,18 +91,22 @@ public class HtmlParserTests
 		result.AsVoidElement().Attributes[0].Value.ShouldBe("image.png");
 		result.AsVoidElement().Attributes[0].Name.ShouldBe("src");
 		result.AsVoidElement().Attributes[0].ShouldBeOfType<Src>();
+		}
 	}
 
 	[Fact]
 	public void Should_Parse_Text_Inside_Element()
 	{
 		string html = "<div>Hello</div>";
-		var parser = new HtmlParser(html);
+		var parsers = ParserFactory.CreateAll(html);
+		foreach (var parser in parsers)
+		{
 
-		// Act
-		var result = parser.Parse();
+			// Act
+			var result = parser.Parse();
 
-		result.ToString().ShouldContain("Hello");
+			result.ToString().ShouldContain("Hello");
+		}
 
 	}
 
@@ -99,7 +115,9 @@ public class HtmlParserTests
 	{
 		// Arrange
 		string html = "<div><p><b>Bold</b> Text</p></div>";
-		var parser = new HtmlParser(html);
+		var parsers = ParserFactory.CreateAll(html);
+		foreach (var parser in parsers)
+		{
 
 		// Act
 		var result = parser.Parse();
@@ -118,6 +136,7 @@ public class HtmlParserTests
 		pChildren[0].AsElement().ShouldBeOfType<B>();
 
 		pChildren[0].ToString().ShouldContain("Bold");
+		}
 	}
 
 
@@ -126,9 +145,12 @@ public class HtmlParserTests
 	public void Should_Handle_Elements_Under_Doctype()
 	{
 		var html = "<!DOCTYPE html><html></html>";
-		var parser = new HtmlParser(html);
+		var parsers = ParserFactory.CreateAll(html);
+		foreach (var parser in parsers)
+		{
 		var element = parser.Parse();
 		element.AsElement().ShouldBeOfType<Html>();
+		}
 	}
 
 	[Fact]
@@ -138,9 +160,12 @@ public class HtmlParserTests
 		var html = @"<!DOCTYPE html>  
 
 			<html></html>";
-		var parser = new HtmlParser(html);
+		var parsers = ParserFactory.CreateAll(html);
+		foreach (var parser in parsers)
+		{
 		var element = parser.Parse();
 		element.AsElement().ShouldBeOfType<Html>();
+		}
 	}
 
 	[Fact]
