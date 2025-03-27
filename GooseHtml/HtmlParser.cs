@@ -2,28 +2,11 @@ using GooseHtml.Attributes;
 
 namespace GooseHtml;
 
-public class ThreadSafeLoopGuard(int max = int.MaxValue)
-{
-    private int counter = 0;
-    private readonly int maxIterations = max;
-
-    public bool ShouldContinue(string loopName)
-    {
-        int newValue = Interlocked.Increment(ref counter);
-		bool inRange = newValue <= maxIterations && newValue != int.MaxValue;
-
-		if (inRange == false)
-		{
-			throw new Exception($"Loop iteration limit exceeded in {loopName}");
-		}
-		return inRange;
-    }
-}
-
-public class HtmlParser(string html): IParser
+public class HtmlParser(string html) : IParser
 {
 	private readonly string _html = html;
-	private int _position = 0;
+    private ReadOnlySpan<char> HtmlSpan => _html.AsSpan();
+    private int _position = 0;
 
 	private readonly ThreadSafeLoopGuard LoopGuard = new(10000000);
 
@@ -31,8 +14,8 @@ public class HtmlParser(string html): IParser
 	private int _currentLine = 1;
 	private int _currentColumn = 1;
 
-	// Public accessors for error context
-	public int CurrentLine => _currentLine;
+    // Public accessors for error context
+    public int CurrentLine => _currentLine;
 	public int CurrentColumn => _currentColumn;
 	public int CurrentPosition => _position;
 
@@ -74,13 +57,13 @@ public class HtmlParser(string html): IParser
 		if (!Match('<')) throw new Exception($"Expected '<' got '{_html[_position]}'.  {GetCurrentContext()}");
 		Advance();
 
-		string tagName = ParseTagName();
+		string tagName = ParseTagName().ToString();
 		if (tagName.Equals("!doctype", StringComparison.InvariantCultureIgnoreCase))
 		{
 			AdvanceToStartOfNextElement();
 			if (!Match('<')) throw new Exception($"Expected '<' got '{_html[_position]}'.  {GetCurrentContext()}");
 			Advance(); // Skip '<'
-			tagName = ParseTagName();
+			tagName = ParseTagName().ToString();
 		}
 
 		OneOf<Element, VoidElement> element = ElementFactory.Create(tagName);
@@ -187,7 +170,7 @@ public class HtmlParser(string html): IParser
 
 	private static string ClosingTag(string tagName) => $"</{tagName}>";
 
-	private string ParseTagName()
+	private ReadOnlySpan<char> ParseTagName()
 	{
 		int start = _position;
 		while (BeforeEnd() && _html[_position].IsValidTagNameChar())
@@ -195,7 +178,8 @@ public class HtmlParser(string html): IParser
 			_position++;
 		}
 
-		return _html[start.._position];
+		//return HtmlSpan[start.._position];
+		return HtmlSpan[start.._position];
 
 	}
 
