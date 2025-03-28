@@ -10,8 +10,7 @@ class Program
     }
 }
 
-
-[MemoryDiagnoser] // Tracks memory allocations
+[EtwProfiler(performExtraBenchmarkRuns: false)] 
 public class HtmlParserBenchmark
 {
     private string html;
