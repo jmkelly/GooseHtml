@@ -3,7 +3,7 @@ namespace GooseHtml;
 public static class ElementFactory
 {
 
-	public static  OneOf<Element, VoidElement> Create(string tagName)
+	public static  OneOf<Element, VoidElement> Create(ReadOnlySpan<char> tagName)
 	{
 		return tagName switch
 		{
@@ -167,7 +167,7 @@ public static class ElementFactory
 				"var" => new OneOf<Element, VoidElement>(new Var()),
 				"video" => new OneOf<Element, VoidElement>(new Video()),
 				"wbr" => new OneOf<Element, VoidElement>(new Wbr()),
-				_ => new OneOf<Element, VoidElement>(new Element(name: tagName))
+				_ => new OneOf<Element, VoidElement>(new Element(name: tagName.ToString()))
 		};
 	}
 }
