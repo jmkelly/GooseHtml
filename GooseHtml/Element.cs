@@ -1,125 +1,111 @@
 namespace GooseHtml;
 
+using System.Collections.Generic;
 using System.Text;
 using GooseHtml.Attributes;
 
-
-public class Element 
+public class Element
 {
-	internal string TagEnd = string.Empty;
-	internal string TagStart = string.Empty;
+    private readonly HtmlFormatter _htmlFormatter = new();
+    private readonly string _name;
+    
+    private readonly List<Attribute> _attributes = [];
+    private readonly List<Either<Element, VoidElement>> _elements = [];
 
-	private readonly HtmlFormatter HtmlFormatter = new();
-	private readonly string Name;
-	public readonly List<Attribute> Attributes = [];
-	public readonly List<Either<Element, VoidElement>> Children = [];
+    public IReadOnlyList<Attribute> Attributes => _attributes.AsReadOnly();
+    public IReadOnlyList<Either<Element, VoidElement>> Children => _elements.AsReadOnly();
+
+    public string TagEnd { get; }
+    public string TagStart { get; }
+
+    public Element(string name)
+    {
+        _name = ValidateName(name);
+        (TagStart, TagEnd) = InitializeTags(_name);
+    }
+
+    public Element(string name, params Attribute[] attributes) : this(name)
+    {
+        _attributes.AddRange(attributes);
+    }
+
+    private static string ValidateName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Element name cannot be null or whitespace", nameof(name));
+            
+        return name;
+    }
+
+    private static (string Start, string End) InitializeTags(string name)
+    {
+        return ($"<{name}", $"</{name}>");
+    }
 
     public void Add(Either<Element, VoidElement> element)
     {
-		Children.Add(element);
+        _elements.Add(element);
     }
 
-	public Element(string name)
+    public void Add(Text text)
+    {
+        _elements.Add(new Either<Element, VoidElement>(new TextElement(text.Value)));
+    }
+
+    public void Add(Class @class)
+    {
+        _attributes.Add(@class);
+    }
+
+    public void Add(Attribute attribute)
+    {
+        _attributes.Add(attribute);
+    }
+
+	public void AddRange(IEnumerable<Attribute> attributes)
 	{
-		Name = name;
-		Init(Name );
+		_attributes.AddRange(attributes);
 	}
 
-	public Element(string name, Attribute[] attributes)
-	{
-		Name = name;
-		Init(name);
-		foreach (var attribute in attributes)
-		{
-			Attributes.Add(attribute);
-		}
-	}
+    public void AddRange(IEnumerable<Either<Element, VoidElement>> elements)
+    {
+        _elements.AddRange(elements);
+    }
 
+    public void Remove(Either<Element, VoidElement> element)
+    {
+        _elements.Remove(element);
+    }
 
-	private void Init(string name )
-	{
-		TagEnd = $"</{name}>";
-		TagStart = $"<{name}";
-	}
+    public string Pretty() => _htmlFormatter.Pretty(ToString());
 
-	public void Add(Text text)
-	{
-		Children.Add(new Either<Element, VoidElement>(new TextElement(text.Value)));
-	}
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        
+        sb.Append(TagStart);
+        AppendAttributes(sb);
+        sb.Append('>');
+        AppendChildren(sb);
+        sb.Append(TagEnd);
 
-	public void Remove(Either<Element, VoidElement> element)
-	{
-		Children.Remove(element);
-	}
+        return sb.ToString();
+    }
 
-	public void Add(Class @class)
-	{
-		Attributes.Add(@class);
-	}
+    private void AppendAttributes(StringBuilder sb)
+    {
+        foreach (var attr in _attributes)
+        {
+            sb.Append(' ')
+              .Append(attr);
+        }
+    }
 
-	public void Add(Attribute attribute) 
-	{
-		Attributes.Add(attribute);
-	}
-
-	public void AddRange(List<Either<Element, VoidElement>> elements)
-	{
-		Children.AddRange(elements);
-	}
-
-	public string Pretty()
-	{ 
-		return HtmlFormatter.Pretty(ToString());
-	}
-
-	public override string ToString()
-	{
-		var sb = new StringBuilder();
-		StartTag(sb);
-		AddAttrs(sb);
-		CloseTag(sb);
-		AddElements(sb);
-		EndTag(sb);
-		return sb.ToString();
-	}
-
-
-    internal void EndTag(StringBuilder sb)
-	{
-		sb.Append(TagEnd);
-	}
-
-/*************  ✨ Codeium Command ⭐  *************/
-/// <summary>
-/// Appends the string representation of each child element to the provided StringBuilder instance.
-/// </summary>
-/// <param name="sb">The StringBuilder instance to append the elements' string representations to.</param>
-
-/******  10c79aa3-51db-43e5-8ef7-e27ddb1c0d72  *******/
-	internal void AddElements(StringBuilder sb)
-	{
-		foreach (var element in Children)
-		{
-			sb.Append(element.ToString());
-		}
-	}
-
-	internal static void CloseTag(StringBuilder sb)
-	{
-		sb.Append('>');	
-	}
-
-	internal void StartTag(StringBuilder sb)
-	{
-		sb.Append(TagStart);
-	}
-
-	internal void AddAttrs(StringBuilder sb)
-	{
-		foreach (var attr in Attributes)
-		{
-			sb.Append(' ');
-			sb.Append(attr.ToString());
-		}
-	}
+    private void AppendChildren(StringBuilder sb)
+    {
+        foreach (var element in _elements)
+        {
+            sb.Append(element);
+        }
+    }
 }
