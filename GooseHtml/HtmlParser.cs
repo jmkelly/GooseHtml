@@ -175,13 +175,17 @@ public sealed class HtmlParser(string html)
 
 	private void MatchAndParseAttribute(Either<Element, VoidElement> element)
 	{
+		//allocate a list to hold attributes, so we can add them to the element without constant resizing
+		List<Attributes.Attribute> attributes = [];
 		while (!Match(TagEnd) && !Match(TagClose) && IsBeforeLastChar() && LoopGuard.ShouldContinue($"attributes"))
 		{
 			SkipWhitespace();
 			var attr = ParseAttribute();
 			if (attr is not null)
-				element.Match(e => e.Add(attr), v => v.Add(attr));
+				attributes.Add(attr);
 		}
+		
+		element.Match(e => e.AddRange(attributes), v => v.AddRange(attributes));
 	}
 
 	private void HandleScript(Element currentElement)
