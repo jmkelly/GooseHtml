@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Either<T0, T1>
+public readonly struct Either<T0, T1>
 {
     private readonly T0? _value1;
     private readonly T1? _value2;
