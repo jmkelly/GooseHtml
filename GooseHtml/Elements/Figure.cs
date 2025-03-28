@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Figure : Element
+public class Figure() : Element(ElementNames.Figure)
 {
 }

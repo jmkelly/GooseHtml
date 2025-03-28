@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
 public class FeFuncB : Element {
-	public FeFuncB():base("feFuncB") {}
+	public FeFuncB():base(ElementNames.FeFuncB) {}
 }
 

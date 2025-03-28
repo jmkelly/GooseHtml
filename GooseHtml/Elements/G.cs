@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class G : Element
+public class G(): Element(ElementNames.G)
 {
 
 }

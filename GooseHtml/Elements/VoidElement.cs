@@ -35,7 +35,7 @@ public abstract class VoidElement
         foreach (var attribute in Attributes)
         {
 			sb.Append(' ');
-            sb.Append(attribute.ToString());
+            sb.Append(attribute);
         }
     }
 

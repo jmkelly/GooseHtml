@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Path(bool selfClosing = true) : VoidElement("path", selfClosing)
+public class Path() : VoidElement(ElementNames.Path)
 {
 }
 

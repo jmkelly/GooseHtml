@@ -21,6 +21,12 @@ public class Element
 		Elements.Add(element);
     }
 
+	public Element(string name)
+	{
+		Name = name;
+		Init(Name, false );
+	}
+
     public Element()
 	{
 		Name = GetType().Name.ToLowerInvariant();
@@ -83,7 +89,7 @@ public class Element
 
 	public void Add(Class @class)
 	{
-		Attributes.Add(new Attribute("class", @class.Name));
+		Attributes.Add(@class);
 	}
 
 	public void Add(Attribute attribute) 
@@ -91,7 +97,7 @@ public class Element
 		Attributes.Add(attribute);
 	}
 
-	public void AddRange(Either<Element, VoidElement>[] elements)
+	public void AddRange(List<Either<Element, VoidElement>> elements)
 	{
 		Elements.AddRange(elements);
 	}

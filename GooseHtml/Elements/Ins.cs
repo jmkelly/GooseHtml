@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Ins : Element
+public class Ins() : Element(ElementNames.Ins)
 {
 }

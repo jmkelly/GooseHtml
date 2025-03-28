@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Bdo : Element
+public class Bdo() : Element(ElementNames.Bdo)
 {
 }

@@ -4,12 +4,12 @@ using GooseHtml.Attributes;
 public class Input : VoidElement
 {
 
-    public Input(): base("input", selfClosing:false)
+    public Input(): base(ElementNames.Input)
 	{
 
 	}
 
-    public Input(Type type, string name, string value) : base("input", selfClosing:false)
+    public Input(Type type, string name, string value) : base(ElementNames.Input)
     {
 		switch (type)
 		{

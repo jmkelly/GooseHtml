@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
 public class FeDiffuseLighting : Element {
-	public FeDiffuseLighting():base("feDiffuseLighting") {}
+	public FeDiffuseLighting():base(ElementNames.FeDiffuseLighting) {}
 }
 

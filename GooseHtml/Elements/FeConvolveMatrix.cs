@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
 public class FeConvolveMatrix : Element {
-	public FeConvolveMatrix():base("feConvolveMatrix") {}
+	public FeConvolveMatrix():base(ElementNames.FeConvolveMatrix) {}
 }
 

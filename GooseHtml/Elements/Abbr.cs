@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Abbr(bool selfClosing = false) : Element(ElementNames.Abbr, selfClosing)
+public class Abbr() : Element(ElementNames.Abbr)
 {
 }

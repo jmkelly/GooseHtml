@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
 public class FeDisplacementMap : Element {
-	public FeDisplacementMap():base("feDisplacementMap") {}
+	public FeDisplacementMap():base(ElementNames.FeDisplacementMap) {}
 }
 

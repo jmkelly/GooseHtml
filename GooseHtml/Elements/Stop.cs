@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Stop : Element
+public class Stop() : Element(ElementNames.Stop)
 {
 }
 

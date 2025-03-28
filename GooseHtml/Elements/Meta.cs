@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Meta(bool selfClosing = false) : VoidElement("meta", selfClosing)
+public class Meta() : VoidElement(ElementNames.Meta)
 {
 }
 

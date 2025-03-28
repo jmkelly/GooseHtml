@@ -2,9 +2,9 @@ namespace GooseHtml;
 
 public class Code : Element
 {
-	public Code(): base("code") {}
+	public Code(): base(ElementNames.Code) {}
 
-	public Code(string text): base("code")
+	public Code(string text): base(ElementNames.Code)
 	{
 		Add(new Text(text));
 	}

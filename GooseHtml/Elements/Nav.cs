@@ -3,9 +3,13 @@ namespace GooseHtml;
 
 public class Nav : Element
 {
-	public Nav(Class @class) : base(@class)
+
+    public Nav(Attributes.Class @class) : base(ElementNames.Nav)
 	{
+		Add(@class);
 	}
 
-	public Nav(): base(){}
+    public Nav() : base(ElementNames.Nav)
+    {
+    }
 }	

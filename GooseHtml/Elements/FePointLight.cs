@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
 public class FePointLight : Element {
-	public FePointLight():base("fePointLight") {}
+	public FePointLight():base(ElementNames.FePointLight) {}
 }
 

@@ -1,6 +1,7 @@
 namespace GooseHtml;
 
 public class FeComponentTransfer : Element {
-	public FeComponentTransfer(): base("feComponentTransfer") {}
+	public FeComponentTransfer(): base(ElementNames.FeComponentTransfer) {}
 }
+
 

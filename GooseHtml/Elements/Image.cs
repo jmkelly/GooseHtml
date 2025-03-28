@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Image : Element
+public class Image() : Element(ElementNames.Image)
     {
     }
 

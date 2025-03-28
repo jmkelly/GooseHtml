@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class ClipPath : Element
+public class ClipPath() : Element(ElementNames.ClipPath)
 {
 }
 

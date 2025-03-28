@@ -2,8 +2,9 @@ namespace GooseHtml;
 
 public class FeColorMatrix : Element 
 {
-	public FeColorMatrix(): base("feColorMatrix")
+	public FeColorMatrix(): base(ElementNames.FeColorMatrix)
 	{
+
 	}
 }
 

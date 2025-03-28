@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Bdi : Element
+public class Bdi() : Element(ElementNames.Bdi)
 {
 }

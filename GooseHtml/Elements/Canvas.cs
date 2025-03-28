@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Canvas : Element
+public class Canvas() : Element(ElementNames.Canvas)
 {
 }

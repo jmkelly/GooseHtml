@@ -31,7 +31,6 @@ public static class ElementFactory
 				"cite" => new Either<Element, VoidElement>(new Cite()),
 				"c-wiz" => new Either<Element, VoidElement>(new Element(name: "c-wiz")), //custom google element
 				"c-data" => new Either<Element, VoidElement>(new Element(name: "c-data")), //custom google element
-				"class" => new Either<Element, VoidElement>(new Class()),
 				"clippath" => new Either<Element, VoidElement>(new ClipPath()),
 				"code" => new Either<Element, VoidElement>(new Code()),
 				"col" => new Either<Element, VoidElement>(new Col()),
@@ -83,7 +82,6 @@ public static class ElementFactory
 				"form" => new Either<Element, VoidElement>(new Form()),
 				"g" => new Either<Element, VoidElement>(new G()),
 				"gu-island" => new Either<Element, VoidElement>(new Element("gu-island")), //custom element
-				"h" => new Either<Element, VoidElement>(new H()),
 				"h1" => new Either<Element, VoidElement>(new H1()),
 				"h2" => new Either<Element, VoidElement>(new H2()),
 				"h3" => new Either<Element, VoidElement>(new H3()),

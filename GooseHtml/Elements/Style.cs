@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Style : Element
+public class Style() : Element(ElementNames.Style)
 {
 }

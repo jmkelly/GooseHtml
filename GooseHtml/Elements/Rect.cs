@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Rect : Element
+public class Rect() : Element(ElementNames.Rect)
 {
 }
 

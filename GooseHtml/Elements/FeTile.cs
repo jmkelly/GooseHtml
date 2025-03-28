@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
 public class FeTile : Element {
-	public FeTile():base("feTile") {}
+	public FeTile():base(ElementNames.FeTile) {}
 }
 

@@ -5,7 +5,7 @@ public class TextElement: Element
     private readonly string text;
     private readonly bool htmlEncode;
 
-    public TextElement()
+    public TextElement():base(ElementNames.Text)
     {
     }
 

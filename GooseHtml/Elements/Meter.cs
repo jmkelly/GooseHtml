@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Meter : Element
+public class Meter() : Element(ElementNames.Meter)
 {
 }

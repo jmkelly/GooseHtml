@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Use : Element
+public class Use() : Element(ElementNames.Use)
 {
 
 }

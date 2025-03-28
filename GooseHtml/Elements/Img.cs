@@ -3,13 +3,13 @@ using GooseHtml.Attributes;
 
 public class Img : VoidElement
 {
-	public Img(string src, string alt) : base("img", selfClosing: false)
+	public Img(string src, string alt) : base(ElementNames.Img)
 	{
 		Add(new Src(src));
 		Add(new Alt(alt));
 	}
 
-    public Img(bool selfClosing = false) : base("img", selfClosing)
+    public Img() : base(ElementNames.Img)
     {
     }
 }

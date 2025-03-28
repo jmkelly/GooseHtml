@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Aside : Element
+public class Aside() : Element(ElementNames.Aside)
 {
 }

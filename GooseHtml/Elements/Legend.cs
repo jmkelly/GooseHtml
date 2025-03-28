@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Legend : Element
+public class Legend() : Element(ElementNames.Legend)
 {
 }

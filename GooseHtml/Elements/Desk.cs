@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Desc : Element
+public class Desc() : Element(ElementNames.Desc)
 {
 }
 

@@ -1,8 +1,7 @@
 namespace GooseHtml;
 
-public class Picture : Element
+public class Picture() : Element(ElementNames.Picture)
 {
-	public Picture(): base(){}
 }
 
 

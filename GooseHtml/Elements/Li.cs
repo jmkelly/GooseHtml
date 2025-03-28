@@ -3,7 +3,7 @@ namespace GooseHtml;
 public class Li : Element
 {
 
-	public Li(): base("li")
+	public Li(): base(ElementNames.Li)
 	{
 	}
 
@@ -12,7 +12,7 @@ public class Li : Element
 		Add(value);
 	}
 
-	public Li(Either<Element, VoidElement>[] elements) : base("li")
+	public Li(List<Either<Element, VoidElement>> elements) : base(ElementNames.Li)
 	{
 		AddRange(elements);
 	}

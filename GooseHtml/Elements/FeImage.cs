@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
 public class FeImage : Element {
-	public FeImage():base("feImage") {}
+	public FeImage():base(ElementNames.FeImage) {}
 }
 

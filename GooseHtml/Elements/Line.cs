@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Line : Element
+public class Line() : Element(ElementNames.Line)
 {
 
 }

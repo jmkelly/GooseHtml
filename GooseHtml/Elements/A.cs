@@ -9,7 +9,7 @@ public class A : Element
 		Add(text);
     }
 
-    public A(bool selfClosing = false) : base(ElementNames.A, selfClosing)
+    public A() : base(ElementNames.A)
     {
     }
 }

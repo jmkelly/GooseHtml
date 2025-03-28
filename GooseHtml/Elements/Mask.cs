@@ -1,8 +1,7 @@
 namespace GooseHtml;
 
-public class Mask : Element
+public class Mask() : Element(ElementNames.Mask)
 {
-	public Mask(): base(){}
 }
 
 

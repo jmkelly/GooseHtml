@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Address(bool selfClosing = false) : Element(ElementNames.Address, selfClosing)
+public class Address() : Element(ElementNames.Address)
 {
 }

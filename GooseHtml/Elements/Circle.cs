@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Circle : Element
+public class Circle() : Element(ElementNames.Circle)
 {
 }
 

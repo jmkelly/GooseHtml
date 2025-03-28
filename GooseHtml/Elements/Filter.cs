@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Filter : Element
+public class Filter() : Element(ElementNames.Filter)
 {
 
 }

@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Tbody : Element
+public class Tbody() : Element(ElementNames.Tbody)
 {
 }

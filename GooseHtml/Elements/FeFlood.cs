@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
 public class FeFlood : Element {
-	public FeFlood():base("feFlood") {}
+	public FeFlood():base(ElementNames.FeFlood) {}
 }
 

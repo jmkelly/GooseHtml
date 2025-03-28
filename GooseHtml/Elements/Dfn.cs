@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Dfn : Element
+public class Dfn() : Element(ElementNames.Dfn)
 {
 }

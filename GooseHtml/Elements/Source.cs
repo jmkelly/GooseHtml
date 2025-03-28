@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Source(bool selfClosing = false) : VoidElement("source", selfClosing)
+public class Source() : VoidElement(ElementNames.Source)
 {
 }

@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class DocType : Element
+public class DocType() : Element(ElementNames.DocType)
 {
 
 }

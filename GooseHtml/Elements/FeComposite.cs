@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
 public class FeComposite : Element {
-	public FeComposite():base("feComposite") {}
+	public FeComposite():base(ElementNames.FeComposite) {}
 }
 

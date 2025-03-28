@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Iframe : Element
+public class Iframe() : Element(ElementNames.Iframe)
 {
 }
