@@ -48,5 +48,10 @@ public abstract class VoidElement
 		//we don't have a closing tag on a void element
 		return sb.ToString();
 	}
+
+    internal void AddRange(List<Attribute> attributes)
+    {
+		Attributes.AddRange(attributes);
+    }
 }
 
