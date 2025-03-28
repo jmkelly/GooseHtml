@@ -6,13 +6,15 @@ public class HtmlParser(string html) : IParser
 {
 	private readonly string _html = html;
     private ReadOnlySpan<char> HtmlSpan => _html.AsSpan();
+	private static ReadOnlySpan<char> CommentOpen => "<!--".AsSpan();
+	private static ReadOnlySpan<char> CommentClose => "-->".AsSpan();
     private int _position = 0;
 
 	private readonly ThreadSafeLoopGuard LoopGuard = new(10000000);
 
 	// Track line and column for error reporting
-	private int _currentLine = 1;
-	private int _currentColumn = 1;
+	private readonly int _currentLine = 1;
+	private readonly int _currentColumn = 1;
 
     // Public accessors for error context
     public int CurrentLine => _currentLine;
@@ -47,23 +49,23 @@ public class HtmlParser(string html) : IParser
 			return parent;
 		}
 
-		if (Match("<!--"))
+		if (Match(CommentOpen))
 		{
 			SkipComment();
 			SkipWhitespace();
 			return ParseElement(parent); // Recursively parse next element after the comment
 		}
 
-		if (!Match('<')) throw new Exception($"Expected '<' got '{_html[_position]}'.  {GetCurrentContext()}");
+		if (!Match('<')) throw new Exception($"Expected '<' got '{CurrentChar()}'.  {GetCurrentContext()}");
 		Advance();
 
-		string tagName = ParseTagName().ToString();
+		var tagName = ParseTagName();
 		if (tagName.Equals("!doctype", StringComparison.InvariantCultureIgnoreCase))
 		{
 			AdvanceToStartOfNextElement();
 			if (!Match('<')) throw new Exception($"Expected '<' got '{CurrentChar()}'.  {GetCurrentContext()}");
 			Advance(); // Skip '<'
-			tagName = ParseTagName().ToString();
+			tagName = ParseTagName();
 		}
 
 		OneOf<Element, VoidElement> element = ElementFactory.Create(tagName);
@@ -136,7 +138,8 @@ public class HtmlParser(string html) : IParser
 
 	private void HandleScript(Element currentElement)
 	{
-		string closingTag = "</script>";
+		ReadOnlySpan<char> closingTag = ClosingTag("script");
+			//"</script>");
 		int contentStart = _position;
 		bool found = false;
 
@@ -168,7 +171,8 @@ public class HtmlParser(string html) : IParser
 		SkipWhitespace();
 	}
 
-	private static string ClosingTag(string tagName) => $"</{tagName}>";
+	private static ReadOnlySpan<char> ClosingTag(ReadOnlySpan<char> tagName) => $"</{tagName}>";
+
 
 	private ReadOnlySpan<char> ParseTagName()
 	{
@@ -198,25 +202,25 @@ public class HtmlParser(string html) : IParser
             Advance();
         }
 
-		string key = HtmlSpan[start.._position].ToString();
+		var key = HtmlSpan[start.._position];
         SkipWhitespace();
 
         // Check if the attribute has a value (e.g., "key" vs. "key=value")
         if (!Match('='))
         {
             // Boolean attribute (e.g., "checked" in <input checked>)
-            return new EmptyAttribute(key);
+            return new EmptyAttribute(key.ToString());
         }
 
         Advance(); // Skip '='
         SkipWhitespace();
 
         // Parse the value (quoted, unquoted, or empty)
-        string value = ParseAttributeValue();
-        return AttributeFactory.Create(key, value);
+        var value = ParseAttributeValue();
+        return AttributeFactory.Create(key.ToString(), value.ToString());
     }
 
-    private string ParseAttributeValue()
+    private ReadOnlySpan<char> ParseAttributeValue()
 	{
 
 		if (_position >= _html.Length)
@@ -239,7 +243,7 @@ public class HtmlParser(string html) : IParser
                     LoopGuard.ShouldContinue("parse attribute value"))
                 Advance();
 
-            string value = HtmlSpan[start.._position].ToString();
+            var value = HtmlSpan[start.._position];
             Advance(); // Skip closing quote
             return value;
         }
@@ -254,8 +258,7 @@ public class HtmlParser(string html) : IParser
 			Advance();
 		}
 
-		string unquotedValue = HtmlSpan[start.._position].Trim().ToString();
-		return unquotedValue;
+		return HtmlSpan[start.._position].Trim();
 	}
 
     private char CurrentChar()
@@ -263,7 +266,7 @@ public class HtmlParser(string html) : IParser
         return _html[_position];
     }
 
-    private ReadOnlySpan<char> ParseText(string tagName)
+	private ReadOnlySpan<char> ParseText(ReadOnlySpan<char> tagName) 
 	{
 		int start = _position;
 		while (IsBeforeLastChar() && LoopGuard.ShouldContinue("parse text"))
@@ -286,13 +289,13 @@ public class HtmlParser(string html) : IParser
 	}
 
 
-    private void IgnoreMalformedEndTag(string currentTagName)
-    {
+    private void IgnoreMalformedEndTag(ReadOnlySpan<char> currentTagName)
+	{
 		if (Match("</") && !Match(currentTagName))
 		{
 			Advance(2);
 		}
-    }
+	}
 
     private static bool IsValid(char character)
 	{
@@ -330,16 +333,16 @@ public class HtmlParser(string html) : IParser
 
 	private void SkipComment()
 	{
-		if (!Match("<!--")) return;
+		if (!Match(CommentOpen)) return;
 
 
 		// Skip past "<!--"
 		Advance(4);
 
 		// Find the closing "-->"
-		while (_position < _html.Length - 2 && LoopGuard.ShouldContinue("skip comments"))
+		while (_position < HtmlSpan.Length - 2 && LoopGuard.ShouldContinue("skip comments"))
 		{
-			if (Match("-->"))
+			if (Match(CommentClose))
 			{
 				Advance(3);
 				return;
@@ -351,13 +354,8 @@ public class HtmlParser(string html) : IParser
 		throw new Exception("Unclosed HTML comment detected.");
 	}
 
-	private bool Match(char ch) => IsBeforeLastChar() && CurrentChar() == ch;
-
-	private bool Match(string str) 
+	private bool Match(ReadOnlySpan<char> strSpan) 
 	{
-		ReadOnlySpan<char> strSpan = str.AsSpan(); // Convert the string to a ReadOnlySpan<char>
-		
-		// Check if the position and length are within bounds
 		if (_position + strSpan.Length > HtmlSpan.Length)
 		{
 			return false;
@@ -365,6 +363,12 @@ public class HtmlParser(string html) : IParser
 
 		// Compare the spans
 		return HtmlSpan.Slice(_position, strSpan.Length).SequenceEqual(strSpan);
+	}
+	private bool Match(char ch) => IsBeforeLastChar() && CurrentChar() == ch;
+
+	private bool Match(string str) 
+	{
+		return Match(str.AsSpan());
 	}
 
 	private void Advance(int count = 1)
