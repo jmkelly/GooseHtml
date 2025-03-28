@@ -13,10 +13,10 @@ public class Element
 	private readonly HtmlFormatter HtmlFormatter = new();
 	private readonly string Name;
 	public readonly List<Attribute> Attributes = [];
-	public readonly List<OneOf<Element, VoidElement>> Elements = [];
+	public readonly List<Either<Element, VoidElement>> Elements = [];
 
-    public List<OneOf<Element, VoidElement>> Children => [.. Elements];
-    public void Add(OneOf<Element, VoidElement> element)
+    public List<Either<Element, VoidElement>> Children => [.. Elements];
+    public void Add(Either<Element, VoidElement> element)
     {
 		Elements.Add(element);
     }
@@ -73,10 +73,10 @@ public class Element
 
 	public void Add(Text text)
 	{
-		Elements.Add(new OneOf<Element, VoidElement>(new TextElement(text.Value)));
+		Elements.Add(new Either<Element, VoidElement>(new TextElement(text.Value)));
 	}
 
-	public void Remove(OneOf<Element, VoidElement> element)
+	public void Remove(Either<Element, VoidElement> element)
 	{
 		Elements.Remove(element);
 	}
@@ -91,7 +91,7 @@ public class Element
 		Attributes.Add(attribute);
 	}
 
-	public void AddRange(OneOf<Element, VoidElement>[] elements)
+	public void AddRange(Either<Element, VoidElement>[] elements)
 	{
 		Elements.AddRange(elements);
 	}

@@ -45,109 +45,144 @@ public class HtmlParser(string html) : IParser
 	}
 
 	// Update line/column when advancing
-	public OneOf<Element, VoidElement> Parse()
+	public Either<Element, VoidElement> Parse()
 	{
 		SkipWhitespace();
 		return ParseElement(null);//start with a null element
 	}
 
-	private OneOf<Element, VoidElement> ParseElement(Element? parent) //a void element cannot be a parent
-	{
+	private Either<Element, VoidElement> ParseElement(Element? parent) //a void element cannot be a parent
+    {
 
-		//add clause to shortcircuit if we have reached the end when recursing back in prior to running all the attribute logic
-		if (parent is not null && Match(parent.TagEnd))
-		{
-			return parent;
-		}
+        //add clause to shortcircuit if we have reached the end when recursing back in prior to running all the attribute logic
+        if (parent is not null && Match(parent.TagEnd))
+        {
+            return parent;
+        }
 
-		if (Match(CommentOpen))
-		{
-			SkipComment();
-			SkipWhitespace();
-			return ParseElement(parent); // Recursively parse next element after the comment
-		}
+        if (Match(CommentOpen))
+        {
+            SkipComment();
+            SkipWhitespace();
+            return ParseElement(parent); // Recursively parse next element after the comment
+        }
 
-		if (!Match(TagOpen)) throw new Exception($"Expected '{TagOpen}' got '{CurrentChar()}'.  {GetCurrentContext()}");
-		Advance();
+        GuardAgainstNotTagOpen();
+        Advance();
 
-		var tagName = ParseTagName();
-		if (tagName.Equals("!doctype", StringComparison.InvariantCultureIgnoreCase))
-		{
-			AdvanceToStartOfNextElement();
-			if (!Match(TagOpen)) throw new Exception($"Expected '{TagOpen}' got '{CurrentChar()}'.  {GetCurrentContext()}");
-			Advance(); // Skip '<'
-			tagName = ParseTagName();
-		}
+        var tagName = ParseTagName();
+        if (IsDocType(tagName))
+        {
+            AdvanceToStartOfNextElement();
+            GuardAgainstNotTagOpen();
+            Advance(); // Skip '<'
+            tagName = ParseTagName();
+        }
 
-		OneOf<Element, VoidElement> element = ElementFactory.Create(tagName);
+        Either<Element, VoidElement> element = ElementFactory.Create(tagName);
 
-		// Parse attributes
-		while (!Match(TagEnd) && !Match(TagClose) && IsBeforeLastChar() && LoopGuard.ShouldContinue($"attributes"))
-		{
-			SkipWhitespace();
-			var attr = ParseAttribute();
-			if (attr is not null)
-				element.Match(e => e.Add(attr), v => v.Add(attr));
-		}
+        // Parse attributes
+        MatchAndParseAttribute(element);
 
-		// Handle self-closing tags
-		if (Match(TagClose))
-		{
-			Advance(2); // Skip "/>"
-			parent?.Add(element);
-			return element;
-		}
+        // Handle self-closing tags
+        if (Match(TagClose))
+        {
+            Advance(2); // Skip "/>"
+            parent?.Add(element);
+            return element;
+        }
 
-		if (!Match(TagEnd)) throw new Exception($"Expected '{TagEnd}'");
-		Advance(); // Skip '>'
+        GuardAgainstNotTagEnd();
+        Advance(); // Skip '>'
 
-		// Check if the element is a VoidElement and return immediately
-		if (element.IsVoidElement())
-		{
-			//void elements can't have any children, but they may have a closing tag  even
-			//though its not valid....we will handle it just in case
-			parent?.Add(element);
-			if (Match(ClosingTag(tagName)))
-				Advance(ClosingTag(tagName).Length); // Skip closing tag
-			return element;
-		}
+        // Check if the element is a VoidElement and return immediately
+        if (element.IsVoidElement())
+        {
+            //void elements can't have any children, but they may have a closing tag  even
+            //though its not valid....we will handle it just in case
+            parent?.Add(element);
+            if (Match(ClosingTag(tagName)))
+                Advance(ClosingTag(tagName).Length); // Skip closing tag
+            return element;
+        }
 
-		var currentElement = element.AsElement();
-		parent?.Add(currentElement);
+        var currentElement = element.AsElement();
+        parent?.Add(currentElement);
 
-		if (currentElement is not GooseHtml.Script)
-		{
-			// Parse inner text and children for non-void elements
-			while (!Match(ClosingTag(tagName)) && IsBeforeLastChar() && LoopGuard.ShouldContinue("parse sub elements"))
-			{
-				if (Match(TagOpen) && !Match(CommentOpen) && !Match(MalformedEndTag)) //ignore malformed tags '</' that don't match the closing tag
-				{
-					ParseElement(parent: currentElement);
-				}
-				else
-				{
-					var textContent = ParseText(ClosingTag(tagName)).Trim();
-					if (textContent.Length > 0)
-					{
-						var text = textContent.RemoveComments();
-						if (text.Length > 0)
-							currentElement.Add(new TextElement(text.ToString()));
-					}
-				}
-			}
+        if (currentElement is not GooseHtml.Script)
+        {
+            // Parse inner text and children for non-void elements
+            while (DoesntMatchEndOfElementTag(tagName))
+            {
+                if (MatchesStartOfNewElement()) //ignore malformed tags '</' that don't match the closing tag
+                {
+                    ParseElement(parent: currentElement);
+                }
+                else
+                {
+                    AddTextToElement(tagName, currentElement);
+                }
+            }
 
-			Advance(ClosingTag(tagName).Length); // Skip closing tag
-		}
-		else
-		{
-			// Parse raw text content until </script>
-			HandleScript(currentElement);
-		}
+            Advance(ClosingTag(tagName).Length); // Skip closing tag
+        }
+        else
+        {
+            // Parse raw text content until </script>
+            HandleScript(currentElement);
+        }
 
-		return currentElement;
-	}
+        return currentElement;
+    }
 
-	private void HandleScript(Element currentElement)
+    private bool MatchesStartOfNewElement()
+    {
+        return Match(TagOpen) && !Match(CommentOpen) && !Match(MalformedEndTag);
+    }
+
+    private static bool IsDocType(ReadOnlySpan<char> tagName)
+    {
+        return tagName.Equals("!doctype", StringComparison.InvariantCultureIgnoreCase);
+    }
+
+    private bool DoesntMatchEndOfElementTag(ReadOnlySpan<char> tagName)
+    {
+        return !Match(ClosingTag(tagName)) && IsBeforeLastChar() && LoopGuard.ShouldContinue("parse sub elements");
+    }
+
+    private void AddTextToElement(ReadOnlySpan<char> tagName, Element currentElement)
+    {
+        var textContent = ParseText(ClosingTag(tagName)).Trim();
+        if (textContent.Length > 0)
+        {
+            var text = textContent.RemoveComments();
+            if (text.Length > 0)
+                currentElement.Add(new TextElement(text.ToString()));
+        }
+    }
+
+    private void GuardAgainstNotTagOpen()
+    {
+        if (!Match(TagOpen)) throw new Exception($"Expected '{TagOpen}' got '{CurrentChar()}'.  {GetCurrentContext()}");
+    }
+
+    private void GuardAgainstNotTagEnd()
+    {
+        if (!Match(TagEnd)) throw new Exception($"Expected '{TagEnd}'");
+    }
+
+    private void MatchAndParseAttribute(Either<Element, VoidElement> element)
+    {
+        while (!Match(TagEnd) && !Match(TagClose) && IsBeforeLastChar() && LoopGuard.ShouldContinue($"attributes"))
+        {
+            SkipWhitespace();
+            var attr = ParseAttribute();
+            if (attr is not null)
+                element.Match(e => e.Add(attr), v => v.Add(attr));
+        }
+    }
+
+    private void HandleScript(Element currentElement)
 	{
 		ReadOnlySpan<char> closingTag = ClosingTag(Script);
 		int contentStart = _position;

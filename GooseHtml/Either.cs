@@ -1,19 +1,19 @@
 namespace GooseHtml;
 
-public class OneOf<T0, T1>
+public class Either<T0, T1>
 {
     private readonly T0? _value1;
     private readonly T1? _value2;
     private readonly byte _typeIndex; // 1 = T1, 2 = T2
 
-    public OneOf(T0 value)
+    public Either(T0 value)
     {
         _value1 = value ?? throw new ArgumentNullException(nameof(value));
         _value2 = default;
         _typeIndex = 1;
     }
 
-    public OneOf(T1 value)
+    public Either(T1 value)
     {
         _value2 = value ?? throw new ArgumentNullException(nameof(value));
         _value1 = default;
@@ -31,7 +31,7 @@ public class OneOf<T0, T1>
         {
             1 => _value1!.ToString()!,
             2 => _value2!.ToString()!,
-            _ => throw new InvalidOperationException("Invalid OneOf state")
+            _ => throw new InvalidOperationException("Invalid state")
         };
 
     public T Match<T>(Func<T0, T> caseT0, Func<T1, T> caseT1) =>
@@ -39,7 +39,7 @@ public class OneOf<T0, T1>
         {
             1 => caseT0(_value1!),
             2 => caseT1(_value2!),
-            _ => throw new InvalidOperationException("Invalid OneOf state")
+            _ => throw new InvalidOperationException("Invalid state")
         };
 
 	public void Match(Action<T0> caseT1, Action<T1> caseT2)
@@ -49,7 +49,7 @@ public class OneOf<T0, T1>
 		else if (_typeIndex == 2)
 			caseT2(_value2!);
 		else
-			throw new InvalidOperationException("Invalid OneOf state");
+			throw new InvalidOperationException("Invalid state");
 	}
 
 	public void MatchT0(Action<T0> caseT0)
@@ -64,7 +64,7 @@ public class OneOf<T0, T1>
 			caseT1(_value2!);
 	}
 
-	public static implicit operator OneOf<T0, T1>(T0 value) => new (value);
-	public static implicit operator OneOf<T0, T1>(T1 value) => new (value);
+	public static implicit operator Either<T0, T1>(T0 value) => new (value);
+	public static implicit operator Either<T0, T1>(T1 value) => new (value);
 
 }
