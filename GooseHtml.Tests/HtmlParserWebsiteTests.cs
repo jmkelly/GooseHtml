@@ -37,7 +37,7 @@ public class HtmlParserWebTest
 			"https://www.facebook.com/",
 			"https://www.tiktok.com/",
 			"https://www.linkedin.com/",
-			"https://www.reddit.com/", //--timeout
+			"https://www.reddit.com/", 
 			"https://www.pinterest.com/",
 			"https://www.snapchat.com/",
 			"https://www.youtube.com/",
@@ -48,7 +48,7 @@ public class HtmlParserWebTest
 			"https://learn.microsoft.com/",
 			"https://docs.python.org/3/",
 			"https://stackoverflow.com/",
-			"https://github.com/", //--timeout
+			"https://github.com/", 
 			"https://docs.docker.com/",
 			"https://kubernetes.io/docs/",
 			//"https://openai.com/", --forbidden
@@ -58,13 +58,13 @@ public class HtmlParserWebTest
 			// Educational & Research
 			"https://www.khanacademy.org/",
 			"https://www.coursera.org/",
-			"https://www.harvard.edu/", //timeout
-			"https://www.mit.edu/", //skipped because likely timeout
-			"https://www.nasa.gov/", //skipped because likely timeout
+			"https://www.harvard.edu/", 
+			"https://www.mit.edu/", 
+			"https://www.nasa.gov/", 
 			"https://www.stanford.edu/",
 			"https://www.ted.com/",
 			"https://www.springer.com/",
-			"https://arxiv.org/", //timeout
+			"https://arxiv.org/", 
 			"https://pubmed.ncbi.nlm.nih.gov/",
 
 			// Miscellaneous
@@ -75,7 +75,7 @@ public class HtmlParserWebTest
 			"https://weather.com/",
 			"https://www.nationalgeographic.com/",
 			"https://www.espn.com/",
-			"https://www.fifa.com/",
+			//"https://www.fifa.com/", --not found
 			//"https://www.tripadvisor.com/", --forbidden
 			"https://www.airbnb.com/"
 	];
