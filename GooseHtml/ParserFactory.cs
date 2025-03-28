@@ -2,10 +2,10 @@ namespace GooseHtml;
 
 public static class ParserFactory
 {
-	public static IParser Create(string html) => new HtmlParser(html);
-	public static List<IParser> CreateAll(string html)  
+	public static HtmlParser Create(string html) => new HtmlParser(html);
+	public static List<HtmlParser> CreateAll(string html)  
 	{
-		var list = new List<IParser>
+		var list = new List<HtmlParser>
         {
             new HtmlParser(html),
         };
