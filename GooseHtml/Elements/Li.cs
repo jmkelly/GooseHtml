@@ -7,7 +7,7 @@ public class Li : Element
 	{
 	}
 
-	public Li(Text value) : base()
+	public Li(Text value) : base(ElementNames.Li)
 	{
 		Add(value);
 	}

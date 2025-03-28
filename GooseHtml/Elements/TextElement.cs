@@ -7,10 +7,12 @@ public class TextElement: Element
 
     public TextElement():base(ElementNames.Text)
     {
+		text = string.Empty;
+		htmlEncode = true;
     }
 
     //special case for text
-    public TextElement(string text, bool htmlEncode=true): base()
+    public TextElement(string text, bool htmlEncode=true): base(ElementNames.Text)
 	{
 		this.text = text;
         this.htmlEncode = htmlEncode;
