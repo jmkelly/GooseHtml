@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using GooseHtml.Attributes;
 
 namespace GooseHtml;
@@ -186,26 +187,18 @@ public class HtmlParser(string html) : IParser
 
     private void HandleScript(Element currentElement)
 	{
-		ReadOnlySpan<char> closingTag = ClosingTag(Script);
-		int contentStart = _position;
-		bool found = false;
+		   	ReadOnlySpan<char> closingTag = ClosingTag(Script);
+    		int contentStart = _position;
+    		int closingIndex = _html.IndexOf(closingTag.ToString(), _position, StringComparison.Ordinal);
 
-		while (_position <= _html.Length - closingTag.Length && LoopGuard.ShouldContinue("handle script"))
-		{
-			if (Match(closingTag))
+			if (closingIndex == -1)
 			{
-				found = true;
-				break;
+				throw new Exception($"Unclosed script element at line {GetCurrentContext()}");
 			}
-			Advance();
-		}
 
-		if (!found)
-			throw new Exception($"Unclosed script element at line {GetCurrentContext()}");
-
-		string content = HtmlSpan[contentStart.._position].ToString();
-		currentElement.Add(new TextElement(content, false));
-		Advance(closingTag.Length);
+			string content = HtmlSpan[contentStart..closingIndex].ToString();
+			currentElement.Add(new TextElement(content, false));
+			_position = closingIndex + closingTag.Length;
 	}
 
 	private void AdvanceToStartOfNextElement()
@@ -270,7 +263,7 @@ public class HtmlParser(string html) : IParser
     private ReadOnlySpan<char> ParseAttributeValue()
 	{
 
-		if (_position >= _html.Length)
+		if (_position >= Length)
 		{
 			throw new Exception($"Unexpected end of input while parsing attribute value at line {CurrentLine}, column {CurrentColumn}.\nContext: {GetCurrentContext()}");
 		}
