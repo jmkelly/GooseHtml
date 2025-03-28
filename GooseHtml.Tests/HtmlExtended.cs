@@ -3,7 +3,7 @@ using GooseHtml.Attributes;
 
 public class HtmlExtended : Html
 {
-    public HtmlExtended() : base("html")
+    public HtmlExtended() : base()
     {
 		var head = new Head();
 		var meta = new Meta();
