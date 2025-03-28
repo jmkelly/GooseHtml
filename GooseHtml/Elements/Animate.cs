@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Animate : Element
+public class Animate(bool selfClosing = false) : Element(ElementNames.Animate, selfClosing)
 {
 }
 
