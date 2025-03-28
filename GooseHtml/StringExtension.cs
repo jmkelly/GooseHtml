@@ -25,5 +25,10 @@ public static class StringExtension
 				return $"{text[0..startComment]}{text[(endComment + 3)..endString]}";
 			return text;
 	}
+
+		public static string SanitizeUrl(this string url)
+		{
+			return url.Replace("https://", "").Replace("http://", "").Replace("/", "_");
+		}
 }
 
