@@ -1,16 +1,34 @@
 ﻿using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using GooseHtml;
 
 class Program
 {
     static void Main(string[] args)
     {
-        BenchmarkRunner.Run<HtmlAttributeBenchmark>();
+        BenchmarkRunner.Run<HtmlParserBenchmark>();
     }
 }
 
 
+[MemoryDiagnoser] // Tracks memory allocations
+public class HtmlParserBenchmark
+{
+    private string html;
+
+    [GlobalSetup] // Runs once before benchmarking
+    public void Setup()
+    {
+		html = File.ReadAllText("developer.mozilla.org__2025-03.html");
+    }
+
+    [Benchmark]
+    public void Parse()
+    {
+		var parser = new HtmlParser(html);
+		parser.Parse();
+    }
+}
 
 [MemoryDiagnoser] // Tracks memory allocations
 public class HtmlAttributeBenchmark

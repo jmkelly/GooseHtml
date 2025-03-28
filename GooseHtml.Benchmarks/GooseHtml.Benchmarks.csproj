@@ -10,5 +10,11 @@
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
   </ItemGroup>
+	<ItemGroup>
+		<Content Include="developer.mozilla.org__2025-03.html" CopyToOutputDirectory="Always" />
+	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GooseHtml\GooseHtml.csproj" />
+  </ItemGroup>
 
 </Project>
