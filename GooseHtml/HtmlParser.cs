@@ -6,8 +6,10 @@ public class HtmlParser(string html) : IParser
 {
     private readonly string _html = html;
     private ReadOnlySpan<char> HtmlSpan => _html.AsSpan();
+	private int Length => HtmlSpan.Length;
 	private static ReadOnlySpan<char> CommentOpen => "<!--".AsSpan();
 	private static ReadOnlySpan<char> CommentClose => "-->".AsSpan();
+
     private const char BackTick = '`';
 	private const char TagOpen = '<';
 	private const char TagEnd = '>';
@@ -350,7 +352,7 @@ public class HtmlParser(string html) : IParser
 		}
 	}
 
-	private bool IsBeforeLastChar() => _position < HtmlSpan.Length;
+	private bool IsBeforeLastChar() => _position < Length;
 
 	private void SkipComment()
 	{
@@ -361,7 +363,7 @@ public class HtmlParser(string html) : IParser
 		Advance(4);
 
 		// Find the closing "-->"
-		while (_position < HtmlSpan.Length - 2 && LoopGuard.ShouldContinue("skip comments"))
+		while (_position < Length - 2 && LoopGuard.ShouldContinue("skip comments"))
 		{
 			if (Match(CommentClose))
 			{
@@ -377,7 +379,7 @@ public class HtmlParser(string html) : IParser
 
 	private bool Match(ReadOnlySpan<char> text) 
 	{
-		if (_position + text.Length > HtmlSpan.Length)
+		if (_position + text.Length > Length)
 		{
 			return false;
 		}
