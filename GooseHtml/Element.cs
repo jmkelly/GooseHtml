@@ -9,7 +9,6 @@ public class Element
 	internal string TagEnd = string.Empty;
 	internal string TagStart = string.Empty;
 
-	internal bool SelfClosing = false;
 	private readonly HtmlFormatter HtmlFormatter = new();
 	private readonly string Name;
 	public readonly List<Attribute> Attributes = [];
@@ -24,38 +23,13 @@ public class Element
 	public Element(string name)
 	{
 		Name = name;
-		Init(Name, false );
-	}
-
-    public Element()
-	{
-		Name = GetType().Name.ToLowerInvariant();
-		Init(Name, false );
-	}
-
-	public Element(Class @class, bool selfClosing=false)
-	{
-		Name = GetType().Name.ToLowerInvariant();
-		Init(Name, selfClosing);
-		Attributes?.Add(new Attribute("class", @class.Name));
-	}
-
-	public Element(bool selfClosing=false)
-	{
-		Name = GetType().Name.ToLowerInvariant();
-		Init(Name, selfClosing );
-	}
-
-	public Element(string name, bool selfClosing=false)
-	{
-		Name = name;
-		Init(name, selfClosing);
+		Init(Name );
 	}
 
 	public Element(string name, Attribute[] attributes)
 	{
 		Name = name;
-		Init(name, false);
+		Init(name);
 		foreach (var attribute in attributes)
 		{
 			Attributes.Add(attribute);
@@ -63,18 +37,10 @@ public class Element
 	}
 
 
-	private void Init(string name, bool selfClosing)
+	private void Init(string name )
 	{
-		if (selfClosing)
-		{
-			TagEnd = "/>";
-		}
-		else
-		{
-			TagEnd = $"</{name}>";
-		}
+		TagEnd = $"</{name}>";
 		TagStart = $"<{name}";
-		SelfClosing = selfClosing;
 	}
 
 	public void Add(Text text)
@@ -112,11 +78,7 @@ public class Element
 		var sb = new StringBuilder();
 		StartTag(sb);
 		AddAttrs(sb);
-		if (!SelfClosing)
-		{
-			CloseTag(sb);
-		}
-
+		CloseTag(sb);
 		AddElements(sb);
 		EndTag(sb);
 		return sb.ToString();
