@@ -12,12 +12,11 @@ public class Element
 	private readonly HtmlFormatter HtmlFormatter = new();
 	private readonly string Name;
 	public readonly List<Attribute> Attributes = [];
-	public readonly List<Either<Element, VoidElement>> Elements = [];
+	public readonly List<Either<Element, VoidElement>> Children = [];
 
-    public List<Either<Element, VoidElement>> Children => [.. Elements];
     public void Add(Either<Element, VoidElement> element)
     {
-		Elements.Add(element);
+		Children.Add(element);
     }
 
 	public Element(string name)
@@ -45,12 +44,12 @@ public class Element
 
 	public void Add(Text text)
 	{
-		Elements.Add(new Either<Element, VoidElement>(new TextElement(text.Value)));
+		Children.Add(new Either<Element, VoidElement>(new TextElement(text.Value)));
 	}
 
 	public void Remove(Either<Element, VoidElement> element)
 	{
-		Elements.Remove(element);
+		Children.Remove(element);
 	}
 
 	public void Add(Class @class)
@@ -65,7 +64,7 @@ public class Element
 
 	public void AddRange(List<Either<Element, VoidElement>> elements)
 	{
-		Elements.AddRange(elements);
+		Children.AddRange(elements);
 	}
 
 	public string Pretty()
@@ -90,9 +89,16 @@ public class Element
 		sb.Append(TagEnd);
 	}
 
+/*************  ✨ Codeium Command ⭐  *************/
+/// <summary>
+/// Appends the string representation of each child element to the provided StringBuilder instance.
+/// </summary>
+/// <param name="sb">The StringBuilder instance to append the elements' string representations to.</param>
+
+/******  10c79aa3-51db-43e5-8ef7-e27ddb1c0d72  *******/
 	internal void AddElements(StringBuilder sb)
 	{
-		foreach (var element in Elements)
+		foreach (var element in Children)
 		{
 			sb.Append(element.ToString());
 		}

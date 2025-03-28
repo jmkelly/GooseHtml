@@ -27,8 +27,8 @@ public class HtmlScriptParserTests
 		script.Attributes.ShouldContain(a => a.Name == "async");
 
 		// Verify script content is parsed as raw text
-		script.Elements.ShouldHaveSingleItem();
-		var text = script.Elements[0].AsElement().ShouldBeOfType<TextElement>();
+		script.Children.ShouldHaveSingleItem();
+		var text = script.Children[0].AsElement().ShouldBeOfType<TextElement>();
 		text.ToString().ShouldContain("alert('Hello <world>!');");
 	}
 
@@ -42,7 +42,7 @@ public class HtmlScriptParserTests
 
 		result.AsElement().ShouldBeOfType<Script>();
 		var script = result.AsElement();
-		var text = script.Elements[0].AsElement();
+		var text = script.Children[0].AsElement();
 		text.ToString().ShouldBeNullOrEmpty();
 	}
 
@@ -54,9 +54,9 @@ public class HtmlScriptParserTests
 		var parser = new HtmlParser(html);
 		var result = parser.Parse();
 		var script = result.AsElement().ShouldBeOfType<Script>();
-		var text = script.Elements[0].AsElement().ShouldBeOfType<TextElement>();
+		var text = script.Children[0].AsElement().ShouldBeOfType<TextElement>();
 		text.ToString().ShouldContain("if (a < b) { /*...*/ }");
-		script.Elements[0].AsElement().ToString().ShouldContain("if (a < b) { /*...*/ }");
+		script.Children[0].AsElement().ToString().ShouldContain("if (a < b) { /*...*/ }");
 	}
 
 

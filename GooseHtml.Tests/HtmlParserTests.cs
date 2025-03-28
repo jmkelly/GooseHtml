@@ -66,7 +66,7 @@ public class HtmlParserTests
 		el.ShouldBeOfType<Div>();
 		/**/
 
-		var children = el.Elements;
+		var children = el.Children;
 		children.ShouldNotBeEmpty();
 		children.Count.ShouldBe(1);
 		children[0].AsElement().ShouldBeOfType<P>();
@@ -125,12 +125,12 @@ public class HtmlParserTests
 		// Assert
 		result.AsElement().ShouldBeOfType<Div>();
 
-		var divElements = result.AsElement().Elements;
+		var divElements = result.AsElement().Children;
 		divElements.Count.ShouldBe(1);
 		divElements[0].AsElement().ShouldBeOfType<P>();
 		divElements[0].ToString().ShouldContain("Text");
 
-		var pChildren = divElements[0].AsElement().Elements;
+		var pChildren = divElements[0].AsElement().Children;
 		//text counts as an element
 		pChildren.Count.ShouldBe(2);
 		pChildren[0].AsElement().ShouldBeOfType<B>();
@@ -186,13 +186,13 @@ public class HtmlParserTests
 		var parser = new HtmlParser(html);
 		var either = parser.Parse();
 		either.AsElement().ShouldBeOfType<Html>();
-		var head = either.AsElement().Elements[0].AsElement();
+		var head = either.AsElement().Children[0].AsElement();
 		head.ShouldBeOfType<Head>();
-		head.Elements.Count.ShouldBe(4);
-		head.Elements[0].AsVoidElement().ShouldBeOfType<Meta>();
-		head.Elements[1].AsVoidElement().ShouldBeOfType<Meta>();
-		head.Elements[2].AsVoidElement().ShouldBeOfType<Meta>();
-		head.Elements[3].AsVoidElement().ShouldBeOfType<Meta>();
+		head.Children.Count.ShouldBe(4);
+		head.Children[0].AsVoidElement().ShouldBeOfType<Meta>();
+		head.Children[1].AsVoidElement().ShouldBeOfType<Meta>();
+		head.Children[2].AsVoidElement().ShouldBeOfType<Meta>();
+		head.Children[3].AsVoidElement().ShouldBeOfType<Meta>();
 
 	}
 
@@ -204,7 +204,7 @@ public class HtmlParserTests
 		var parser = new HtmlParser(html);
 		var result = parser.Parse();
 		var div = result.AsElement();
-		div.Elements.Count.ShouldBe(2); // Only <p> elements, no Text nodes
+		div.Children.Count.ShouldBe(2); // Only <p> elements, no Text nodes
 	}
 
 	[Fact]
@@ -269,8 +269,8 @@ public class HtmlParserTests
 			var parser = new HtmlParser(html);
 			var result = parser.Parse();
 			var span = result.AsElement();
-			span.Elements.Count.ShouldBe(1);
-			var text = span.Elements[0].AsElement();
+			span.Children.Count.ShouldBe(1);
+			var text = span.Children[0].AsElement();
 			text.ShouldBeOfType<TextElement>();
 			text.ToString().ShouldContain("Feed refreshed Mar 22");
 			text.ToString().ShouldNotContain("<!--");
