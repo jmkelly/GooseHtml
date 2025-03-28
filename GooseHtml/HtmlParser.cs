@@ -61,7 +61,7 @@ public class HtmlParser(string html) : IParser
 		if (tagName.Equals("!doctype", StringComparison.InvariantCultureIgnoreCase))
 		{
 			AdvanceToStartOfNextElement();
-			if (!Match('<')) throw new Exception($"Expected '<' got '{_html[_position]}'.  {GetCurrentContext()}");
+			if (!Match('<')) throw new Exception($"Expected '<' got '{CurrentChar()}'.  {GetCurrentContext()}");
 			Advance(); // Skip '<'
 			tagName = ParseTagName().ToString();
 		}
@@ -113,17 +113,17 @@ public class HtmlParser(string html) : IParser
 				}
 				else
 				{
-					var textContent = ParseText(ClosingTag(tagName)).ToString().Trim();
-					if (!string.IsNullOrEmpty(textContent))
+					var textContent = ParseText(ClosingTag(tagName)).Trim();
+					if (textContent.Length > 0)
 					{
-						//todo: fix the text parser to remove comments rather than this workaround
 						var text = textContent.RemoveComments();
-						currentElement.Add(new Text(text));
+						if (text.Length > 0)
+							currentElement.Add(new TextElement(text.ToString()));
 					}
 				}
 			}
 
-			Advance($"</{tagName}>".Length); // Skip closing tag
+			Advance(ClosingTag(tagName).Length); // Skip closing tag
 		}
 		else
 		{
@@ -153,7 +153,7 @@ public class HtmlParser(string html) : IParser
 		if (!found)
 			throw new Exception($"Unclosed script element at line {CurrentLine}, column {CurrentColumn}.");
 
-		string content = _html[contentStart.._position];
+		string content = HtmlSpan[contentStart.._position].ToString();
 		currentElement.Add(new TextElement(content, false));
 		Advance(closingTag.Length);
 	}
@@ -173,9 +173,9 @@ public class HtmlParser(string html) : IParser
 	private ReadOnlySpan<char> ParseTagName()
 	{
 		int start = _position;
-		while (IsBeforeLastChar() && _html[_position].IsValidTagNameChar())
+		while (IsBeforeLastChar() && CurrentChar().IsValidTagNameChar())
 		{
-			_position++;
+			Advance();
 		}
 
 		//return HtmlSpan[start.._position];
@@ -190,7 +190,7 @@ public class HtmlParser(string html) : IParser
         // Parse attribute name
         int start = _position;
         while (IsBeforeLastChar() &&
-                !char.IsWhiteSpace(_html[_position]) &&
+                !char.IsWhiteSpace(CurrentChar()) &&
                 !Match('=') &&
                 !Match('>') &&
                 LoopGuard.ShouldContinue("parse attribute name"))
@@ -198,7 +198,7 @@ public class HtmlParser(string html) : IParser
             Advance();
         }
 
-        string key = _html[start.._position];
+		string key = HtmlSpan[start.._position].ToString();
         SkipWhitespace();
 
         // Check if the attribute has a value (e.g., "key" vs. "key=value")
@@ -239,7 +239,7 @@ public class HtmlParser(string html) : IParser
                     LoopGuard.ShouldContinue("parse attribute value"))
                 Advance();
 
-            string value = _html[start.._position];
+            string value = HtmlSpan[start.._position].ToString();
             Advance(); // Skip closing quote
             return value;
         }
@@ -250,15 +250,12 @@ public class HtmlParser(string html) : IParser
 				!Match('=') && 
 				!Match('`') && 
 				!Match('"') && LoopGuard.ShouldContinue("parse end of attribute values"))
-
 		{
 			Advance();
 		}
 
-		string unquotedValue = _html[start.._position];
-		return unquotedValue.Trim();
-
-
+		string unquotedValue = HtmlSpan[start.._position].Trim().ToString();
+		return unquotedValue;
 	}
 
     private char CurrentChar()
@@ -285,7 +282,7 @@ public class HtmlParser(string html) : IParser
 				Advance();
 			}
 		}
-		return _html.AsSpan(start,_position - start);
+		return HtmlSpan[start.._position];
 	}
 
 
@@ -354,7 +351,7 @@ public class HtmlParser(string html) : IParser
 		throw new Exception("Unclosed HTML comment detected.");
 	}
 
-	private bool Match(char ch) => _position < _html.Length && _html[_position] == ch;
+	private bool Match(char ch) => IsBeforeLastChar() && CurrentChar() == ch;
 
 	private bool Match(string str) 
 	{
@@ -375,18 +372,6 @@ public class HtmlParser(string html) : IParser
 		for (int i = 0; i < count; i++)
 		{
 			if (_position >= _html.Length) break;
-
-			//keeping this is string because its faster than using the span....needs further investigation
-			if (_html[_position] == '\n')
-			{
-				_currentLine++;
-				_currentColumn = 1;
-			}
-			else
-			{
-				_currentColumn++;
-			}
-
 			_position++;
 		}
 	}
