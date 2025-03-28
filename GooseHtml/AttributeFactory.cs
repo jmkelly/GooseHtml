@@ -6,7 +6,7 @@ internal static class AttributeFactory
 {
 	internal static Attributes.Attribute Create(string key, string value)
 	{
-		return key.ToLower() switch
+		return key.ToLowerInvariant() switch
 		{
 			"accept" => new Accept(value),
 				"acceptcharset" => new AcceptCharset(value),
