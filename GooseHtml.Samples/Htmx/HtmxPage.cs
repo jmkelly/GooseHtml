@@ -27,7 +27,7 @@ class HtmxPage
 
 	private static Div AddCodes(List<StockCode> codes)
 	{
-		var gridContainer = new Div(new Class("grid-container"));
+		var gridContainer = new Div(new GooseHtml.Attributes.Class("grid-container"));
 
 		foreach (var code in codes)
 		{
