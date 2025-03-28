@@ -37,7 +37,7 @@ public class HtmlParser(string html) : IParser
 	{
 		int start = System.Math.Max(0, _position - before);
 		int end = System.Math.Min(_html.Length, _position + after);
-		string snippet = _html[start..end];
+		string snippet = HtmlSpan[start..end].ToString();
 
 		// Add a marker (^) at the error position within the snippet
 		int markerPos = _position - start;
@@ -82,7 +82,7 @@ public class HtmlParser(string html) : IParser
 		OneOf<Element, VoidElement> element = ElementFactory.Create(tagName);
 
 		// Parse attributes
-		while (!Match(TagEnd) && !Match(TagClose) && IsBeforeLastChar() && LoopGuard.ShouldContinue($"attributes {GetCurrentContext()}"))
+		while (!Match(TagEnd) && !Match(TagClose) && IsBeforeLastChar() && LoopGuard.ShouldContinue($"attributes"))
 		{
 			SkipWhitespace();
 			var attr = ParseAttribute();
@@ -307,39 +307,15 @@ public class HtmlParser(string html) : IParser
 		}
 	}
 
-    private static bool IsValid(char character)
-	{
-		// Check for acceptable characters: letters, digits, whitespace, and some punctuation
-		return char.IsLetterOrDigit(character) || 
-			char.IsWhiteSpace(character) || 
-			character == '-' || 
-			character == '_' || 
-			character == '.' || 
-			character == ',' || 
-			character == '!' || 
-			character == '?' || 
-			character == ':' || 
-			character == ';' || 
-			character == '\'' || 
-			character == '\"' || 
-			character == '/' || 
-			character == '\\' || 
-			character == '@' || 
-			character == TagOpen || 
-			character == TagEnd || 
-			character == Equal || 
-			character == '#';
-	}
-
 	private void SkipWhitespace()
 	{
-		while (IsBeforeLastChar() && (char.IsWhiteSpace(CurrentChar()) ||  !IsValid(CurrentChar())) && LoopGuard.ShouldContinue("skip whitespace"))
+		while (IsBeforeLastChar() && char.IsWhiteSpace(CurrentChar())  && LoopGuard.ShouldContinue("skip whitespace"))
 		{
 			Advance();
 		}
 	}
 
-	private bool IsBeforeLastChar() => _position < _html.Length;
+	private bool IsBeforeLastChar() => _position < HtmlSpan.Length;
 
 	private void SkipComment()
 	{
