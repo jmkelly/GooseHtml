@@ -19,7 +19,6 @@ public sealed class HtmlParser(string html)
 	private const char BackSlash = '\n';
 	private static ReadOnlySpan<char> MalformedEndTag => "</";
 	private static ReadOnlySpan<char> TagClose => "/>".AsSpan();
-	private static ReadOnlySpan<char> Script => "script".AsSpan();
 
 	private int _position = 0;
 
@@ -81,6 +80,8 @@ public sealed class HtmlParser(string html)
 			tagName = ParseTagName();
 		}
 
+		if (tagName.Length <= 0) throw new Exception($"TagName is empty at {GetCurrentContext()}");
+
 		Either<Element, VoidElement> element = ElementFactory.Create(tagName);
 
 		// Parse attributes
@@ -111,30 +112,33 @@ public sealed class HtmlParser(string html)
 		var currentElement = element.AsElement();
 		parent?.Add(currentElement);
 
-		if (currentElement is not GooseHtml.Script)
-		{
-			// Parse inner text and children for non-void elements
-			while (DoesntMatchEndOfElementTag(tagName))
-			{
-				if (MatchesStartOfNewElement()) //ignore malformed tags '</' that don't match the closing tag
-				{
-					ParseElement(parent: currentElement);
-				}
-				else
-				{
-					AddTextToElement(tagName, currentElement);
-				}
-			}
+        switch (currentElement.Name)
+        {
+            case ElementNames.Script:
+                HandleScript(currentElement);
+                break;
+			case ElementNames.Style:
+                HandleStyle(currentElement);
+				break;
+            default:
+                // Parse inner text and children for non-void elements
+                while (DoesntMatchEndOfElementTag(tagName))
+                {
+                    if (MatchesStartOfNewElement()) //ignore malformed tags '</' that don't match the closing tag
+                    {
+                        ParseElement(parent: currentElement);
+                    }
+                    else
+                    {
+                        AddTextToElement(tagName, currentElement);
+                    }
+                }
 
-			Advance(ClosingTag(tagName).Length); // Skip closing tag
-		}
-		else
-		{
-			// Parse raw text content until </script>
-			HandleScript(currentElement);
-		}
+                Advance(ClosingTag(tagName).Length); // Skip closing tag
+                break;
+        }
 
-		return currentElement;
+        return currentElement;
 	}
 
 	private bool MatchesStartOfNewElement()
@@ -188,9 +192,26 @@ public sealed class HtmlParser(string html)
 		element.Match(e => e.AddRange(attributes), v => v.AddRange(attributes));
 	}
 
+	private void HandleStyle(Element currentElement)
+	{
+		ReadOnlySpan<char> closingTag = ClosingTag(ElementNames.Style);
+		int contentStart = _position;
+		int closingIndex = _html.IndexOf(closingTag.ToString(), _position, StringComparison.Ordinal);
+
+		if (closingIndex == -1)
+		{
+			throw new Exception($"Unclosed style element at line {GetCurrentContext()}");
+		}
+
+		string content = HtmlSpan[contentStart..closingIndex].ToString();
+		currentElement.Add(new TextElement(content, false));
+		_position = closingIndex + closingTag.Length;
+	}
+
+
 	private void HandleScript(Element currentElement)
 	{
-		ReadOnlySpan<char> closingTag = ClosingTag(Script);
+		ReadOnlySpan<char> closingTag = ClosingTag(ElementNames.Script);
 		int contentStart = _position;
 		int closingIndex = _html.IndexOf(closingTag.ToString(), _position, StringComparison.Ordinal);
 
