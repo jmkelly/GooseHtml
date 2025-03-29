@@ -292,4 +292,14 @@ public class HtmlParserTests
 			body.Children.Count.ShouldBe(2);
 
 		}
+
+		[Fact]
+		[Trait("Category","parser")]
+		public void Script_ShouldRenderCorrectly()
+		{
+			var text = "alert('Hello <world>!');";
+			Script script = new();
+			script.Add(new TextElement(text, false));
+			script.ToString().ShouldBe("<script>alert('Hello <world>!');</script>");
+		}
 }
