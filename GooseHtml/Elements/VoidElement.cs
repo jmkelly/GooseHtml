@@ -8,8 +8,13 @@ using GooseHtml.Attributes;
 //but allow overloading for self closing as well
 public abstract class VoidElement 
 {
+	const string selfClosingTag = "/>";
+	const string CloseTagChar = ">";
+	const char Space = ' ';
     private readonly string TagStart;
-	public readonly List<Attribute> Attributes = [];
+
+	public IReadOnlyList<Attribute> Attributes => _attributes.AsReadOnly();
+	private readonly List<Attribute> _attributes = [];
     private readonly string TagEnd;
 
     public VoidElement(string name, bool selfClosing=false)
@@ -18,23 +23,23 @@ public abstract class VoidElement
 		TagStart = $"<{name}";
 		if (selfClosing)
 		{
-			TagEnd = "/>";
+			TagEnd = selfClosingTag;
 		}
 		else {
-			TagEnd = ">";
+			TagEnd = CloseTagChar;
 		}
     }
 
 	public void Add(Attribute attribute)
 	{
-		Attributes.Add(attribute);
+		_attributes.Add(attribute);
 	}
 
 	private void AddAttrs(StringBuilder sb)
     {
-        foreach (var attribute in Attributes)
+        foreach (var attribute in _attributes)
         {
-			sb.Append(' ');
+			sb.Append(Space);
             sb.Append(attribute);
         }
     }
@@ -51,7 +56,7 @@ public abstract class VoidElement
 
     internal void AddRange(List<Attribute> attributes)
     {
-		Attributes.AddRange(attributes);
+		_attributes.AddRange(attributes);
     }
 }
 

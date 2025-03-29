@@ -7,7 +7,7 @@ using GooseHtml.Attributes;
 public class Element
 {
     private readonly HtmlFormatter _htmlFormatter = new();
-    private readonly string _name;
+    public readonly string Name;
     
     private readonly List<Attribute> _attributes = [];
     private readonly List<Either<Element, VoidElement>> _elements = [];
@@ -20,8 +20,8 @@ public class Element
 
     public Element(string name)
     {
-        _name = ValidateName(name);
-        (TagStart, TagEnd) = InitializeTags(_name);
+        Name = ValidateName(name);
+        (TagStart, TagEnd) = InitializeTags(Name);
     }
 
     public Element(string name, params Attribute[] attributes) : this(name)
