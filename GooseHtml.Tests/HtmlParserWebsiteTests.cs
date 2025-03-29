@@ -77,7 +77,10 @@ public class HtmlParserWebTest
 			"https://www.espn.com/",
 			//"https://www.fifa.com/", --not found
 			//"https://www.tripadvisor.com/", --forbidden
-			"https://www.airbnb.com/"
+			"https://www.airbnb.com/",
+
+			//"http://www.w3.org/TR/html5/single-page.html" --> this fails
+			"https://html.spec.whatwg.org/"
 	];
 
 	[Fact]
@@ -105,13 +108,7 @@ public class HtmlParserWebTest
 			// Parse
 			Console.WriteLine($"requested {url} ok");
 			var parser = new HtmlParser(html); // Ensure you have an HtmlParser class
-			try {
-				var page = parser.Parse();
-			}
-			catch {
-				Console.WriteLine($"Failed to parse {url}");
-			}
-
+			parser.Parse();
 		}
 	}
 
