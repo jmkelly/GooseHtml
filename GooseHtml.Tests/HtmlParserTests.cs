@@ -276,4 +276,20 @@ public class HtmlParserTests
 			text.ToString().ShouldNotContain("<!--");
 			text.ToString().ShouldNotContain("-->");
 		}
+
+		[Fact]
+		[Trait("Category","parser")]
+		public void Should_Parse_Without_Closing_Tag()
+		{
+			//is is still compliant
+			string html = "<html><body><h1></h1><p>end of docmument</p>";
+			var parser = new HtmlParser(html);
+			var result = parser.Parse();
+			var element = result.AsElement();
+			element.ShouldBeOfType<Html>();
+			var body = element.Children[0].AsElement();
+			body.ShouldBeOfType<Body>();
+			body.Children.Count.ShouldBe(2);
+
+		}
 }
