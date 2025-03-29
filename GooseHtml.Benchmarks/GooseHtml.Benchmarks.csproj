@@ -10,14 +10,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="anglesharp" Version="1.2.0" />
     <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.14.0" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.0" />
+    <PackageReference Include="SoftCircuits.HtmlMonkey" Version="3.0.0" />
   </ItemGroup>
-	<ItemGroup>
-		<Content Include="developer.mozilla.org__2025-03.html" CopyToOutputDirectory="Always" />
-	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GooseHtml\GooseHtml.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+  <None Update="test_pages/*.html">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+
+  <None Update="*.html">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+</ItemGroup>
 
 </Project>
