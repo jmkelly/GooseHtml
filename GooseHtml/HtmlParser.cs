@@ -49,12 +49,16 @@ public sealed class HtmlParser(string html)
 	public Either<Element, VoidElement> Parse()
 	{
 		SkipWhitespace();
-		return ParseElement(null);//start with a null element
+		int depth = 0;
+		return ParseElement(null, depth);//start with a null element
 	}
 
-	private Either<Element, VoidElement> ParseElement(Element? parent) //a void element cannot be a parent
+	private Either<Element, VoidElement> ParseElement(Element? parent, int depth) //a void element cannot be a parent
 	{
 
+		depth++;
+		var currentContext = GetCurrentContext();
+		Console.WriteLine($"depth {depth}");
 		//add clause to shortcircuit if we have reached the end when recursing back in prior to running all the attribute logic
 		if (parent is not null && Match(parent.TagEnd))
 		{
@@ -65,7 +69,7 @@ public sealed class HtmlParser(string html)
 		{
 			SkipComment();
 			SkipWhitespace();
-			return ParseElement(parent); // Recursively parse next element after the comment
+			return ParseElement(parent, depth); // Recursively parse next element after the comment
 		}
 
 		GuardAgainstNotTagOpen();
@@ -82,7 +86,7 @@ public sealed class HtmlParser(string html)
 
 		if (tagName.Length <= 0) throw new Exception($"TagName is empty at {GetCurrentContext()}");
 
-		Either<Element, VoidElement> element = ElementFactory.Create(tagName);
+		Either<Element, VoidElement> element = ElementFactory.Create(tagName.ToString());
 
 		// Parse attributes
 		MatchAndParseAttribute(element);
@@ -109,7 +113,22 @@ public sealed class HtmlParser(string html)
 			return element;
 		}
 
+
+		//check for dt and dd self closing conditions
+
+
 		var currentElement = element.AsElement();
+		if (currentElement.Name == ElementNames.Dt && (Match(OpeningTag(ElementNames.Dd)) || Match(OpeningTag(ElementNames.Dt)) ))
+		{
+			//dt elements can be self closing if they are immediately followed by a dd of dt element or their parent has no more content
+			return element;
+		}
+
+		if (currentElement.Name == ElementNames.Dd && (Match(OpeningTag(ElementNames.Dd)) || Match(OpeningTag(ElementNames.Dt)) ))
+		{
+			//dd elements can be self closing if they are immediately followed by a dd dt element or their parent has no more content
+			return element;
+		}
 		parent?.Add(currentElement);
 
         switch (currentElement.Name)
@@ -120,13 +139,71 @@ public sealed class HtmlParser(string html)
 			case ElementNames.Style:
                 HandleStyle(currentElement);
 				break;
+			case ElementNames.Li:
+				while (DoesntMatchEndOfElementTag(tagName) && !Match(tagName) && LoopGuard.ShouldContinue("parse li"))
+				{
+					if (MatchesStartOfNewElement() && !Match(OpeningTag(ElementNames.Li))) //ignore malformed tags '</' that don't match the closing tag
+					{
+						//recursively parse the element
+						ParseElement(parent: currentElement, depth);
+					}
+					else if (MatchesStartOfNewElement() && Match(OpeningTag(ElementNames.Li)))
+					{
+						return currentElement;
+					}
+					else
+					{
+						AddTextToElement(tagName, currentElement);
+					}
+				}
+				break;
+
+			case ElementNames.Dd:
+				//a dd elements end tag can be omitted if the dd element is immediately followed by another dd element or a dt element 
+				//or if there is no more content in the parent
+				while (DoesntMatchEndOfElementTag(tagName) && !Match(tagName) && !Match(ElementNames.Dt) && LoopGuard.ShouldContinue("parse dd"))
+				{
+					if (MatchesStartOfNewElement() && !Match(OpeningTag(ElementNames.Dd)) && !Match(OpeningTag(ElementNames.Dt))) //ignore malformed tags '</' that don't match the closing tag
+					{
+						//recursively parse the element
+						ParseElement(parent: currentElement, depth);
+					}
+					else if (MatchesStartOfNewElement() && (Match(OpeningTag(ElementNames.Dd)) || Match(OpeningTag(ElementNames.Dt))))
+					{
+						return currentElement;
+					}
+					else
+					{
+						AddTextToElement(tagName, currentElement);
+					}
+				}
+				break;
+				case ElementNames.Dt:
+				//a dd elements end tag can be omitted if the dd element is immediately followed by another dd element or a dt element 
+				//or if there is no more content in the parent
+				while (DoesntMatchEndOfElementTag(tagName) && !Match(tagName) && !Match(ElementNames.Dd) && LoopGuard.ShouldContinue("parse dt"))
+				{
+					if (MatchesStartOfNewElement() && !Match(OpeningTag(ElementNames.Dd)) && !Match(OpeningTag(ElementNames.Dt))) { //if the next tag matches dd or dt, we can auto close the dt element
+						//recursively parse the element
+						ParseElement(parent: currentElement, depth);
+					}
+					else if (MatchesStartOfNewElement() && (Match(OpeningTag(ElementNames.Dd)) || Match(OpeningTag(ElementNames.Dt))))
+					{
+						return currentElement;
+					}
+					{
+
+						AddTextToElement(tagName, currentElement);
+					}
+				}
+				break;
             default:
                 // Parse inner text and children for non-void elements
                 while (DoesntMatchEndOfElementTag(tagName))
                 {
                     if (MatchesStartOfNewElement()) //ignore malformed tags '</' that don't match the closing tag
                     {
-                        ParseElement(parent: currentElement);
+                        ParseElement(parent: currentElement, depth);
                     }
                     else
                     {
@@ -141,7 +218,8 @@ public sealed class HtmlParser(string html)
         return currentElement;
 	}
 
-	private bool MatchesStartOfNewElement()
+
+    private bool MatchesStartOfNewElement()
 	{
 		return Match(TagOpen) && !Match(CommentOpen) && !Match(MalformedEndTag);
 	}
@@ -236,6 +314,7 @@ public sealed class HtmlParser(string html)
 	}
 
 	private static ReadOnlySpan<char> ClosingTag(ReadOnlySpan<char> tagName) => $"</{tagName}>";
+	private static ReadOnlySpan<char> OpeningTag(ReadOnlySpan<char> tagName) => $"<{tagName}>";
 
 
 	private ReadOnlySpan<char> ParseTagName()
@@ -423,7 +502,7 @@ public sealed class HtmlParser(string html)
 	{
 		for (int i = 0; i < count; i++)
 		{
-			if (_position >= _html.Length) break;
+			if (_position >= Length) break;
 			_position++;
 		}
 	}

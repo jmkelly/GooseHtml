@@ -21,7 +21,8 @@ public class Element
     public Element(string name)
     {
         Name = ValidateName(name);
-        (TagStart, TagEnd) = InitializeTags(Name);
+        TagStart = $"<{Name}";
+        TagEnd = $"</{Name}>";
     }
 
     public Element(string name, params Attribute[] attributes) : this(name)

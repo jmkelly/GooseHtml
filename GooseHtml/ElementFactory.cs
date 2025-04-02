@@ -3,7 +3,7 @@ namespace GooseHtml;
 public static class ElementFactory
 {
 
-	public static  Either<Element, VoidElement> Create(ReadOnlySpan<char> tagName)
+	public static  Either<Element, VoidElement> Create(string tagName)
 	{
 		return tagName switch
 		{
