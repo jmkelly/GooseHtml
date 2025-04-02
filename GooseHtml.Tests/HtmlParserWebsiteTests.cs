@@ -107,9 +107,13 @@ public class HtmlParserWebTest
 
 			// Parse
 			Console.WriteLine($"requested {url} ok");
-			var parser = new HtmlParser(html); // Ensure you have an HtmlParser class
-			parser.Parse();
+
+			//var parser = new HtmlParser(html); // Ensure you have an HtmlParser class
+			//parser.Parse();
 		}
+			var shortcurcuit = File.ReadAllText("test_pages/html.spec.whatwg.org__2025-03.html");
+			var parser = new HtmlParser(shortcurcuit); // Ensure you have an HtmlParser class
+			parser.Parse();
 	}
 
 	private static async Task<string> FetchHtmlFromUrl(string url)

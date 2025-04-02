@@ -302,4 +302,26 @@ public class HtmlParserTests
 			script.Add(new TextElement(text, false));
 			script.ToString().ShouldBe("<script>alert('Hello <world>!');</script>");
 		}
+
+		[Fact]
+		[Trait("Category","parser")]
+		public void DD_ShouldntNeedClosingTagWhenImmediatelyFollowedByAnotherDD()
+		{
+			var html = @"
+			<dl>
+				<dt>first heading
+				<dd><p>first paragraph within dd</p>
+				<dt>second heading
+				<dd><p>second paragraph within dd</p>
+			</dl>";
+			var parser = new HtmlParser(html);
+			var result = parser.Parse();
+			var dl = result.AsElement();
+			dl.Children.Count.ShouldBe(4);
+			var firstDt = dl.Children[0].AsElement();
+			var secondDt = dl.Children[2].AsElement();
+			firstDt.ShouldBeOfType<Dt>();
+			secondDt.ShouldBeOfType<Dt>();
+
+		}
 }

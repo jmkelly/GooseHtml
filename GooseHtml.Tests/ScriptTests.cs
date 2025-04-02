@@ -24,4 +24,6 @@ public class ScriptTests
 		async.ToString().ShouldBe("async");
 	}
 
+	
+
 }
