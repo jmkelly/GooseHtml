@@ -57,8 +57,6 @@ public sealed class HtmlParser(string html)
 	{
 
 		depth++;
-		var currentContext = GetCurrentContext();
-		Console.WriteLine($"depth {depth}");
 		//add clause to shortcircuit if we have reached the end when recursing back in prior to running all the attribute logic
 		if (parent is not null && Match(parent.TagEnd))
 		{
@@ -118,21 +116,30 @@ public sealed class HtmlParser(string html)
 
 
 		var currentElement = element.AsElement();
-		if (currentElement.Name == ElementNames.Dt && (Match(OpeningTag(ElementNames.Dd)) || Match(OpeningTag(ElementNames.Dt)) ))
-		{
-			//dt elements can be self closing if they are immediately followed by a dd of dt element or their parent has no more content
-			return element;
-		}
-
-		if (currentElement.Name == ElementNames.Dd && (Match(OpeningTag(ElementNames.Dd)) || Match(OpeningTag(ElementNames.Dt)) ))
-		{
-			//dd elements can be self closing if they are immediately followed by a dd dt element or their parent has no more content
-			return element;
-		}
+		
 		parent?.Add(currentElement);
 
         switch (currentElement.Name)
         {
+			 case ElementNames.P:
+			 	while (DoesntMatchEndOfElementTag(tagName) && !Match(tagName) && LoopGuard.ShouldContinue("parse p"))
+			 	{
+			 		if (MatchesStartOfNewElement() && !Match(OpeningTag(ElementNames.P))) //ignore malformed tags '</' that don't match the closing tag
+			 		{
+			 			//recursively parse the element
+			 			ParseElement(parent: currentElement, depth);
+			 		}
+			 		else if (MatchesStartOfNewElement() && Match(OpeningTag(ElementNames.P)))
+			 		{
+			 			return currentElement;
+			 		}
+			 		else
+			 		{
+			 			AddTextToElement(tagName, currentElement);
+			 		}
+			 	}
+                Advance(ClosingTag(tagName).Length); // Skip closing tag
+			 	break;
             case ElementNames.Script:
                 HandleScript(currentElement);
                 break;
