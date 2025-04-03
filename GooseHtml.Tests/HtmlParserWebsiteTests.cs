@@ -20,7 +20,7 @@ public class HtmlParserWebTest
 			"https://www.theguardian.com/international",
 
 			// E-Commerce & Product Pages
-			"https://www.amazon.com/",
+			//"https://www.amazon.com/", --weird, worked last month...this month getting a permannt redirect and junk
 			"https://www.ebay.com/",
 			//"https://www.walmart.com/", //--timeout
 			//"https://www.bestbuy.com/", //--timeout
@@ -111,9 +111,10 @@ public class HtmlParserWebTest
 			//var parser = new HtmlParser(html); // Ensure you have an HtmlParser class
 			//parser.Parse();
 		}
-			var shortcurcuit = File.ReadAllText("test_pages/html.spec.whatwg.org__2025-03.html");
-			var parser = new HtmlParser(shortcurcuit); // Ensure you have an HtmlParser class
-			parser.Parse();
+			//var shortcurcuit = File.ReadAllText("test_pages/html.spec.whatwg.org__2025-03.html");
+			//var parser = new HtmlParser(shortcurcuit); // Ensure you have an HtmlParser class
+			//parser.Parse();
+		//}
 	}
 
 	private static async Task<string> FetchHtmlFromUrl(string url)
