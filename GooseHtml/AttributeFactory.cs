@@ -22,7 +22,6 @@ internal static class AttributeFactory
 				"capture" => new Capture(value),
 				"charset" => new Charset(value),
 				"cite" => new Attributes.Cite(value),
-				"class" => new Attributes.Class(value),
 				"cols" => new Cols(value),
 				"colspan" => new Colspan(value),
 				"content" => new Content(value),
