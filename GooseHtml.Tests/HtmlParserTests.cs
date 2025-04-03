@@ -282,7 +282,7 @@ public class HtmlParserTests
 		public void Should_Parse_Without_Closing_Tag()
 		{
 			//is is still compliant
-			string html = "<html><body><h1></h1><p>end of docmument</p>";
+			string html = "<html><body><h1></h1><p>end of document</p>";
 			var parser = new HtmlParser(html);
 			var result = parser.Parse();
 			var element = result.AsElement();
@@ -322,6 +322,26 @@ public class HtmlParserTests
 			var secondDt = dl.Children[2].AsElement();
 			firstDt.ShouldBeOfType<Dt>();
 			secondDt.ShouldBeOfType<Dt>();
+
+		}
+
+		[Fact]
+		[Trait("Category","parser")]
+		public void P_ShouldntNeedClosingTagWhenImmediatelyFollowedByAnotherP()
+		{
+			var html = @"
+			<div>
+				<p>first paragraph
+				<p>second paragraph	
+			</div>";
+			var parser = new HtmlParser(html);
+			var result = parser.Parse();
+			var div = result.AsElement();
+			div.Children.Count.ShouldBe(2);
+			var firstparagrah = div.Children[0].AsElement();
+			var secondparagraph = div.Children[1].AsElement();
+			firstparagrah.ShouldBeOfType<P>();
+			secondparagraph.ShouldBeOfType<P>();
 
 		}
 }
