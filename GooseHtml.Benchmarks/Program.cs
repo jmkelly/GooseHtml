@@ -24,14 +24,14 @@ public class HtmlParserBenchmark
         //_htmlFiles.Add(Path.GetFileName("developer.mozilla.org__2025-03.html"), File.ReadAllText("developer.mozilla.org__2025-03.html"));
 
         IConfiguration config = Configuration.Default;
-        html =  File.ReadAllText("developer.mozilla.org__2025-03.html");
+        html =  File.ReadAllText("www.cnn.com__2025-04.html");
         //Create a new context for evaluating webpages with the given config
         context = BrowsingContext.New(config);
     }
  
 
     [Benchmark(Baseline = true)]
-    public void ParseHtml()
+    public void ParseGooseHtml()
     {
         var parser = new HtmlParser(html); 
         parser.Parse();
