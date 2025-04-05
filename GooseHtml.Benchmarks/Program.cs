@@ -1,7 +1,9 @@
 ﻿using AngleSharp;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Diagnostics.Windows.Configs;
 using BenchmarkDotNet.Running;
 using GooseHtml;
+using MariGold.HtmlParser;
 
 class Program
 {
@@ -11,7 +13,7 @@ class Program
     }
 }
 
-//[EtwProfiler] 
+[EtwProfiler] 
 [MemoryDiagnoser]
 public class HtmlParserBenchmark
 {
@@ -33,7 +35,7 @@ public class HtmlParserBenchmark
     [Benchmark(Baseline = true)]
     public void ParseGooseHtml()
     {
-        var parser = new HtmlParser(html); 
+        var parser = new GooseHtml.HtmlParser(html); 
         parser.Parse();
     }
 
@@ -55,5 +57,13 @@ public class HtmlParserBenchmark
     {
         await context.OpenAsync(req => req.Content(html));
     }
+
+    [Benchmark]
+    public void ParseMarigold()
+    {
+        var parser = new HtmlTextParser(html);
+        parser.Parse();
+    }
+
 
 }

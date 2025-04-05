@@ -14,6 +14,7 @@
     <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
     <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.14.0" />
     <PackageReference Include="HtmlAgilityPack" Version="1.12.0" />
+    <PackageReference Include="MariGold.HtmlParser" Version="2.1.0" />
     <PackageReference Include="SoftCircuits.HtmlMonkey" Version="3.0.0" />
   </ItemGroup>
   <ItemGroup>
