@@ -7,8 +7,8 @@ public sealed class HtmlParser(string html)
 	private readonly string _html = html;
 	private ReadOnlySpan<char> HtmlSpan => _html.AsSpan();
 	private int Length => HtmlSpan.Length;
-	private static ReadOnlySpan<char> CommentOpen => "<!--".AsSpan();
-	private static ReadOnlySpan<char> CommentClose => "-->".AsSpan();
+	private static ReadOnlySpan<char> CommentOpen => "<!--";
+	private static ReadOnlySpan<char> CommentClose => "-->";
 
 	private const char BackTick = '`';
 	private const char TagOpen = '<';
@@ -16,9 +16,8 @@ public sealed class HtmlParser(string html)
 	private const char Equal = '=';
 	private const char DoubleQuote = '"';
 	private const char SingleQuote = '\'';
-	private const char BackSlash = '\n';
 	private static ReadOnlySpan<char> MalformedEndTag => "</";
-	private static ReadOnlySpan<char> TagClose => "/>".AsSpan();
+	private static ReadOnlySpan<char> TagClose => "/>";
 
 	private int _position = 0;
 
@@ -58,7 +57,7 @@ public sealed class HtmlParser(string html)
 
 		depth++;
 		//add clause to shortcircuit if we have reached the end when recursing back in prior to running all the attribute logic
-		if (parent is not null && Match(parent.TagEnd))
+		if (parent is not null && Match(parent.TagEnd()))
 		{
 			return parent;
 		}
@@ -110,10 +109,6 @@ public sealed class HtmlParser(string html)
 				Advance(ClosingTag(tagName).Length); // Skip closing tag
 			return element;
 		}
-
-
-		//check for dt and dd self closing conditions
-
 
 		var currentElement = element.AsElement();
 		
