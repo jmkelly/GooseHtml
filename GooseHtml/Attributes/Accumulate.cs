@@ -1,6 +1,6 @@
 namespace GooseHtml.Attributes;
 
-public class Accumulate(string Value) : Attribute("accumulate", Value)
+public class Accumulate(string Value) : Attribute(AttributeNames.Accumulate, Value)
 {
 
 }

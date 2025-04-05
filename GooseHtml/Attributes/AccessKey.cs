@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public class AccessKey(string Value) : Attribute("accesskey", Value);
+public class AccessKey(string Value) : Attribute(AttributeNames.AccessKey, Value);
 

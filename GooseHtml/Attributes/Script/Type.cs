@@ -4,10 +4,10 @@ namespace GooseHtml.Attributes;
 //if the type is for javascript, then it is encouraged to leave out, so we are not going to provide an
 //option for this default
 //
-public class Type(string Value): Attribute("type", Value);
+public class Type(string Value): Attribute(AttributeNames.Type, Value);
 
-public class ModuleType(): Type("module");
-public class ImportMapType(): Type("importmap");
+public class ModuleType(): Type(AttributeNames.Module);
+public class ImportMapType(): Type(AttributeNames.ImportMap);
 
 public static class Types
 {

@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public class Href(string Value) : Attribute("href", Value);
+public class Href(string Value) : Attribute(AttributeNames.Href, Value);
 

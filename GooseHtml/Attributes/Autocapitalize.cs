@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public class Autocapitalize(string Value): Attribute("autocapitalize", Value);
+public class Autocapitalize(string Value): Attribute(AttributeNames.Autocapitalize, Value);
 
