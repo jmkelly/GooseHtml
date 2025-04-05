@@ -284,5 +284,6 @@ public static class AttributeNames
 	public const string YChannelSelector = "ychannelselector";
 	public const string Z = "z";
 	public const string ZoomAndPan = "zoomandpan";
-
+    public const string Module = "module";
+    public const string ImportMap = "importmap";
 }
