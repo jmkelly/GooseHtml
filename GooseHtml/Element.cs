@@ -4,29 +4,32 @@ using System.Collections.Generic;
 using System.Text;
 using GooseHtml.Attributes;
 
-public class Element
+public class Element(string name)
 {
-    private readonly HtmlFormatter _htmlFormatter = new();
-    public readonly string Name;
+    public readonly string Name = ValidateName(name);
     
-    private readonly List<Attribute> _attributes = [];
-    private readonly List<Either<Element, VoidElement>> _elements = [];
+    private static readonly Attribute[] EmptyAttributes = [];
+    private static readonly Either<Element, VoidElement>[] EmptyElements = [];
 
-    public IReadOnlyList<Attribute> Attributes => _attributes.AsReadOnly();
-    public IReadOnlyList<Either<Element, VoidElement>> Children => _elements.AsReadOnly();
+    private List<Attribute>? _attributes;
+    private List<Either<Element, VoidElement>>? _elements;
 
-    public string TagEnd { get; }
-    public string TagStart { get; }
+    public IReadOnlyList<Attribute> Attributes => _attributes ?? [.. EmptyAttributes];
+    public IReadOnlyList<Either<Element, VoidElement>> Children => _elements ?? [.. EmptyElements];
 
-    public Element(string name)
+    public string TagStart()
     {
-        Name = ValidateName(name);
-        TagStart = $"<{Name}";
-        TagEnd = $"</{Name}>";
+        return $"<{Name}";
+    }
+
+    public string TagEnd()
+    {
+        return  $"</{Name}>";
     }
 
     public Element(string name, params Attribute[] attributes) : this(name)
     {
+        _attributes ??= [];
         _attributes.AddRange(attributes);
     }
 
@@ -38,63 +41,72 @@ public class Element
         return name;
     }
 
-    private static (string Start, string End) InitializeTags(string name)
-    {
-        return ($"<{name}", $"</{name}>");
-    }
 
     public void Add(Either<Element, VoidElement> element)
     {
+        _elements ??= [];
         _elements.Add(element);
     }
 
     public void Add(Text text)
     {
-        _elements.Add(new Either<Element, VoidElement>(new TextElement(text.Value)));
+        _elements ??= [];
+        _elements.Add(new TextElement(text.Value));
     }
 
     public void Add(Class @class)
     {
+        _attributes ??= [];
         _attributes.Add(@class);
     }
 
     public void Add(Attribute attribute)
     {
+        _attributes ??= [];
         _attributes.Add(attribute);
     }
 
 	public void AddRange(IEnumerable<Attribute> attributes)
 	{
+        _attributes ??= [];
 		_attributes.AddRange(attributes);
 	}
 
     public void AddRange(IEnumerable<Either<Element, VoidElement>> elements)
     {
+        _elements ??= [];
         _elements.AddRange(elements);
     }
 
     public void Remove(Either<Element, VoidElement> element)
     {
+        _elements ??= [];
         _elements.Remove(element);
     }
 
-    public string Pretty() => _htmlFormatter.Pretty(ToString());
+    public string Pretty() 
+    {
+        return new HtmlFormatter().Pretty(ToString());
+    }
 
     public override string ToString()
     {
         var sb = new StringBuilder();
         
-        sb.Append(TagStart);
+        sb.Append('<').Append(Name);
         AppendAttributes(sb);
         sb.Append('>');
-        AppendChildren(sb);
-        sb.Append(TagEnd);
-
+        if (_elements is not null)
+        {
+            AppendChildren(sb);
+        }
+        sb.Append("</").Append(Name).Append('>');
         return sb.ToString();
     }
 
     private void AppendAttributes(StringBuilder sb)
     {
+        if (_attributes is null) return;
         foreach (var attr in _attributes)
         {
             sb.Append(' ')
@@ -104,6 +116,7 @@ public class Element
 
     private void AppendChildren(StringBuilder sb)
     {
+        if (_elements is null) return;
         foreach (var element in _elements)
         {
             sb.Append(element);
