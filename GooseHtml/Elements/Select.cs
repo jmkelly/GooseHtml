@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Select : Element
+public class Select() : Element(ElementNames.Select)
 {
 }

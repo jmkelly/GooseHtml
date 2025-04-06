@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Ismap(string Value): Attribute("ismap", Value);
+public class Ismap(string Value): Attribute("ismap", Value);
 

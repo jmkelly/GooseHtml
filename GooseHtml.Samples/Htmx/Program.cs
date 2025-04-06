@@ -1,4 +1,5 @@
 using GooseHtml;
+using GooseHtml.Attributes;
 
 class Program
 {

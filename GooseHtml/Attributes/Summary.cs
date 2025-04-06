@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Summary(string Value): Attribute("summary", Value);
+public class Summary(string Value): Attribute("summary", Value);
 

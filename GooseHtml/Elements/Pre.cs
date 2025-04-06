@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Pre: Element
+public class Pre(): Element(ElementNames.Pre)
 {
 
 }

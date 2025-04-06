@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Kbd : Element
+public class Kbd() : Element(ElementNames.Kbd)
 {
 }

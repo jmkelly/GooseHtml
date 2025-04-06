@@ -1,3 +1,3 @@
 namespace GooseHtml.Attributes.Htmx;
 
-public record HxTrigger(string Value) : Attribute("hx-trigger", Value);
+public class HxTrigger(string Value) : Attribute("hx-trigger", Value);

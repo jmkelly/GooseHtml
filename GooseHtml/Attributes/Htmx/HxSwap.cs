@@ -1,6 +1,6 @@
 namespace GooseHtml.Attributes.Htmx;
 
-public record HxSwap(string Value) : Attribute("hx-swap", Value);
+public class HxSwap(string Value) : Attribute("hx-swap", Value);
 
 public static class HxSwapValues
 {

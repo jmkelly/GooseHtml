@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Hidden(string Value): Attribute("hidden", Value);
+public class Hidden(string Value): Attribute("hidden", Value);
 

@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Csp(string Value): Attribute("csp", Value);
+public class Csp(string Value): Attribute("csp", Value);
 

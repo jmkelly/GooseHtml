@@ -4,7 +4,7 @@ namespace GooseHtml.Docs
 {
     public class Page : Html
     {
-		public Page() : base("html") 
+		public Page() : base() 
 		{
 			var head = new Head();
 

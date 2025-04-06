@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Placeholder(string Value): Attribute("placeholder", Value);
+public class Placeholder(string Value): Attribute("placeholder", Value);
 

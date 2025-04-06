@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Required(string Value): Attribute("required", Value);
+public class Required(string Value): Attribute("required", Value);
 

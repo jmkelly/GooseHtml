@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Formtarget(string Value): Attribute("formtarget", Value);
+public class Formtarget(string Value): Attribute("formtarget", Value);
 

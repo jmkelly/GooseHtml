@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Option : Element
+public class Option() : Element(ElementNames.Option)
 {
 }

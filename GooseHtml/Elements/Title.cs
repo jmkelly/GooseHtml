@@ -1,14 +1,15 @@
 namespace GooseHtml;
 
-public class Title : Element
+public class Title  : Element
 {
-    public Title()
+    public Title(): base(ElementNames.Title)
     {
     }
 
-    public Title(string text)
+    public Title(string text): base(ElementNames.Title)
 	{
 		Add(new Text(text));
 	}
+
 }
 

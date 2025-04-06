@@ -3,11 +3,12 @@ namespace GooseHtml;
 public class Form : Element
 {
 
-	public Form(Class @class) : base(@class)
+	public Form(Attributes.Class @class) : base(ElementNames.Form)
 	{
+		Add(@class);
 	}
 
-	public Form(): base()
+	public Form(): base(ElementNames.Form)
 	{
 
 	}

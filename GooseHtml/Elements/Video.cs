@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Video : Element
+public class Video() : Element(ElementNames.Video)
 {
 }

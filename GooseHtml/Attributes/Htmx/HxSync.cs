@@ -1,3 +1,3 @@
 namespace GooseHtml.Attributes.Htmx;
 
-public record HxSync(string Value): Attribute("hx-sync", Value);
+public class HxSync(string Value): Attribute("hx-sync", Value);

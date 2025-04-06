@@ -1,9 +1,6 @@
 namespace GooseHtml;
 
-public class Body : Element
+public class Body() : Element(ElementNames.Body)
 {
-	public Body() : base()
-	{
-	}
 }
 

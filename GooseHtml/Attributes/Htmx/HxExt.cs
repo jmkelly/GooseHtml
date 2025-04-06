@@ -1,3 +1,3 @@
 namespace GooseHtml.Attributes.Htmx;
 
-public record HxExt(string Value): Attribute("hx-ext", Value);
+public class HxExt(string Value): Attribute("hx-ext", Value);

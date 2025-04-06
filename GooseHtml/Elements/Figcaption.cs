@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Figcaption : Element
+public class Figcaption() : Element(ElementNames.Figcaption)
 {
 }

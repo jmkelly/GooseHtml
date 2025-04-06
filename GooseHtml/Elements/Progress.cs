@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Progress : Element
+public class Progress() : Element(ElementNames.Progress)
 {
 }

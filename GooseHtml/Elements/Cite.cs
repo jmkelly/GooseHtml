@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Cite : Element
+public class Cite() : Element(ElementNames.Cite)
 {
 }

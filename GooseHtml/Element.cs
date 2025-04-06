@@ -1,162 +1,127 @@
 namespace GooseHtml;
 
+using System.Collections.Generic;
 using System.Text;
 using GooseHtml.Attributes;
 
-public class Element
+public class Element(string name)
 {
-	internal string TagEnd = string.Empty;
-	internal string TagStart = string.Empty;
+    public readonly string Name = ValidateName(name);
+    
+    private static readonly Attribute[] EmptyAttributes = [];
+    private static readonly Either<Element, VoidElement>[] EmptyElements = [];
 
-	private bool SelfClosing = false;
-	private readonly HtmlFormatter HtmlFormatter = new();
-	private readonly string Name;
-	private readonly List<Attribute> Attributes = [];
-	private readonly List<EmptyAttribute> EmptyAttributes = [];
-	private readonly List<Element> Elements = []; 
+    private List<Attribute>? _attributes;
+    private List<Either<Element, VoidElement>>? _elements;
 
-	public Element()
+    public IReadOnlyList<Attribute> Attributes => _attributes ?? [.. EmptyAttributes];
+    public IReadOnlyList<Either<Element, VoidElement>> Children => _elements ?? [.. EmptyElements];
+
+    public string TagStart()
+    {
+        return $"<{Name}";
+    }
+
+    public string TagEnd()
+    {
+        return  $"</{Name}>";
+    }
+
+    public Element(string name, params Attribute[] attributes) : this(name)
+    {
+        _attributes ??= [];
+        _attributes.AddRange(attributes);
+    }
+
+    private static string ValidateName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new ArgumentException("Element name cannot be null or whitespace", nameof(name));
+            
+        return name;
+    }
+
+
+    public void Add(Either<Element, VoidElement> element)
+    {
+        _elements ??= [];
+        _elements.Add(element);
+    }
+
+    public void Add(Text text)
+    {
+        _elements ??= [];
+        _elements.Add(new TextElement(text.Value));
+    }
+
+    public void Add(Class @class)
+    {
+        _attributes ??= [];
+        _attributes.Add(@class);
+    }
+
+    public void Add(Attribute attribute)
+    {
+        _attributes ??= [];
+        _attributes.Add(attribute);
+    }
+
+	public void AddRange(IEnumerable<Attribute> attributes)
 	{
-		Name = GetType().Name.ToLowerInvariant();
-		Init(Name, false );
+        _attributes ??= [];
+		_attributes.AddRange(attributes);
 	}
 
-	public Element(Class @class, bool selfClosing=false)
-	{
-		Name = GetType().Name.ToLowerInvariant();
-		Init(Name, selfClosing);
-		Attributes?.Add(new Attribute("class", @class.Name));
-	}
+    public void AddRange(IEnumerable<Either<Element, VoidElement>> elements)
+    {
+        _elements ??= [];
+        _elements.AddRange(elements);
+    }
 
-	public Element(bool selfClosing=false)
-	{
-		Name = GetType().Name.ToLowerInvariant();
-		Init(Name, selfClosing );
-	}
+    public void Remove(Either<Element, VoidElement> element)
+    {
+        _elements ??= [];
+        _elements.Remove(element);
+    }
 
-	public Element(string name, bool selfClosing=false)
-	{
-		Name = name;
-		Init(name, selfClosing);
-	}
+    public string Pretty() 
+    {
+        return new HtmlFormatter().Pretty(ToString());
+    }
 
-	public Element(string name, Attribute[] attributes)
-	{
-		Name = name;
-		Init(name, false);
-		foreach (var attribute in attributes)
-		{
-			Attributes.Add(attribute);
-		}
-	}
+    public override string ToString()
+    {
+        //var sb = new StringBuilder();
+        var sb = StringBuilderPool.Shared.Rent();
+        
+        sb.Append('<').Append(Name);
+        AppendAttributes(sb);
+        sb.Append('>');
+        if (_elements is not null)
+        {
+            AppendChildren(sb);
+        }
+        sb.Append("</").Append(Name).Append('>');
+        return StringBuilderPool.Shared.GetStringAndReturn(sb);
+        //return sb.ToString();
+    }
 
+    private void AppendAttributes(StringBuilder sb)
+    {
+        if (_attributes is null) return;
+        foreach (var attr in _attributes)
+        {
+            sb.Append(' ')
+              .Append(attr);
+        }
+    }
 
-	private void Init(string name, bool selfClosing)
-	{
-		if (selfClosing)
-		{
-			TagEnd = "/>";
-		}
-		else
-		{
-			TagEnd = $"</{name}>";
-		}
-		TagStart = $"<{name}";
-		SelfClosing = selfClosing;
-	}
-
-	public void Add(Text text)
-	{
-		Elements.Add(new TextElement(text.Value));
-	}
-
-	public void Remove(Element element)
-	{
-		Elements.Remove(element);
-	}
-
-	public void Add(Class @class)
-	{
-		Attributes.Add(new Attribute("class", @class.Name));
-	}
-
-	public void Add(EmptyAttribute emptyAttribute)
-	{
-		EmptyAttributes.Add(emptyAttribute);
-	}
-
-	public void Add(Attribute attribute) 
-	{
-		Attributes.Add(attribute);
-	}
-	public void Add(Element element)
-	{
-		Elements.Add(element);
-	}
-
-	public void AddRange(Element[] elements)
-	{
-		Elements.AddRange(elements);
-	}
-
-	public string Pretty()
-	{ 
-		return HtmlFormatter.Pretty(ToString());
-	}
-
-	public override string ToString()
-	{
-		var sb = new StringBuilder();
-		StartTag(sb);
-		AddAttrs(sb);
-		if (!SelfClosing)
-		{
-			CloseTag(sb);
-		}
-
-		AddElements(sb);
-		EndTag(sb);
-		return sb.ToString();
-	}
-
-
-    private void EndTag(StringBuilder sb)
-	{
-		sb.Append(TagEnd);
-	}
-
-	private void AddElements(StringBuilder sb)
-	{
-		foreach (var element in Elements)
-		{
-			sb.Append(element.ToString());
-		}
-	}
-
-	private static void CloseTag(StringBuilder sb)
-	{
-		sb.Append('>');	
-	}
-
-	private void StartTag(StringBuilder sb)
-	{
-		sb.Append(TagStart);
-	}
-
-	private void AddAttrs(StringBuilder sb)
-	{
-		//set the empty elements first....
-		//todo: figure out some way to add the empty and non-empty 
-		//attributes in the order added to the Element
-		foreach (var attr in EmptyAttributes)
-		{
-			sb.Append(' ');
-			sb.Append(attr.ToString());
-		}
-		foreach (var attr in Attributes)
-		{
-			sb.Append(' ');
-			sb.Append(attr.ToString());
-		}
-	}
+    private void AppendChildren(StringBuilder sb)
+    {
+        if (_elements is null) return;
+        foreach (var element in _elements)
+        {
+            sb.Append(element);
+        }
+    }
 }

@@ -4,24 +4,24 @@ using GooseHtml.Attributes;
 
 public class Script : Element
 {
-	public Script() : base("script")
+	public Script() : base(ElementNames.Script)
 	{
 	}
 
-	public Script(Text text): base()
+	public Script(Text text): base(ElementNames.Script)
 	{
 		Add(text);
 	}
 
-	public Script(string src) : base("script", new [] {new Attribute("src", src)})
+	public Script(string src) : base(ElementNames.Script, [new Attribute("src", src)])
 	{
 	}
 
-	public Script(Attribute[] attributes) : base("script", attributes)
+	public Script(Attribute[] attributes) : base(ElementNames.Script, attributes)
 	{
 	}
 
-	public Script(string src, string integrity, string crossorigin) : base("script", [new Attribute("src", src), new Attribute("integrity", integrity), new Attribute("crossorigin", crossorigin)])
+	public Script(string src, string integrity, string crossorigin) : base(ElementNames.Script, [new Attribute("src", src), new Attribute("integrity", integrity), new Attribute("crossorigin", crossorigin)])
 	{
 	}
 

@@ -1,4 +1,3 @@
 namespace GooseHtml.Attributes;
 
-public record D(string Value): Attribute("d", Value);
-
+public class D(string Value): Attribute("d", Value);

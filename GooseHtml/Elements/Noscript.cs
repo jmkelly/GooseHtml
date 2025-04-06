@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Noscript : Element
+public class Noscript() : Element(ElementNames.Noscript)
 {
 }

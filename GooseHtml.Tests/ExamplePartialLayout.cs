@@ -7,7 +7,7 @@ public class ExamplePartialLayout : ExampleLayout
 	public override Body Body()
 	{
 		var body = new Body();
-		body.Add(new Footer(new Class("footer")));
+		body.Add(new Footer(new Attributes.Class("footer")));
 		return body;
 	}
 }
@@ -38,7 +38,7 @@ public class ViewModelTests
 	}
 }
 
-public record TestViewModel(string Name, string Address, string Phone) : IViewModel
+public class TestViewModel(string Name, string Address, string Phone) : IViewModel
 {
 
     public Element AsElement()

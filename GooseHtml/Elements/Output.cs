@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Output : Element
+public class Output() : Element(ElementNames.Output)
 {
 }

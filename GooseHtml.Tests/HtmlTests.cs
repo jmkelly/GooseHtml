@@ -5,7 +5,7 @@ using Shouldly;
 
 public class HtmlTests
 {
-	static readonly string template = @"<!DOCTYPE html><html lang=""en-US""><head><meta charset=""utf-8""/><title></title></head><body></body></html>";
+	static readonly string template = @"<!DOCTYPE html><html lang=""en-US""><head><meta charset=""utf-8""><title></title></head><body></body></html>";
 
 	[Fact]
 	public void Html_ExtendedShouldReturnHtml()
@@ -20,7 +20,7 @@ public class HtmlTests
 		var html = new Html();
 		var head = new Head();
 		var meta = new Meta();
-		meta.Add(new Charset());
+		meta.Add(new CharsetUtf8());
 
 		head.Add(meta);
 		head.Add(new Title());
@@ -29,7 +29,7 @@ public class HtmlTests
 
 		html.Add(head);
 		html.Add(body);
-		html.Add(new Lang());
+		html.Add(new EnUsLang());
 
 		html.ToString().ShouldBe(template);
 	}
@@ -38,7 +38,7 @@ public class HtmlTests
 	public void MetaElement_ShouldHaveMetaCharsetUtf8By()
 	{
 		var meta = new Meta();
-		meta.ToString().ShouldBe("<meta/>");
+		meta.ToString().ShouldBe("<meta>");
 	}
 
 	[Fact]
@@ -67,14 +67,14 @@ public class HtmlTests
 	{
 		var head = new Head();
 		head.Add(new Meta());
-		head.ToString().ShouldBe("<head><meta/></head>");
+		head.ToString().ShouldBe("<head><meta></head>");
 	}
 
 
 	[Fact]
 	public void MetaElement_ShouldReturnCorrectHtmlForAdditionalAttributes()
 	{
-		string result = "<meta http-equiv=\"refresh\" content=\"3;url=https://www.mozilla.org\"/>";
+		string result = "<meta http-equiv=\"refresh\" content=\"3;url=https://www.mozilla.org\">";
 		var meta = new Meta();
 		meta.Add(new Attribute("http-equiv", "refresh"));
 		meta.Add(new Attribute("content", "3;url=https://www.mozilla.org"));
@@ -89,6 +89,6 @@ public class HtmlTests
 		meta.Add(new Attribute("http-equiv", "refresh"));
 		meta.Add(new Attribute("content", "3;url=https://www.mozilla.org"));
 		head.Add(meta);
-		head.ToString().ShouldBe("<head><meta http-equiv=\"refresh\" content=\"3;url=https://www.mozilla.org\"/></head>");
+		head.ToString().ShouldBe("<head><meta http-equiv=\"refresh\" content=\"3;url=https://www.mozilla.org\"></head>");
 	}
 }

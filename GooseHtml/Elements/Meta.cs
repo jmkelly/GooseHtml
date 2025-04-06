@@ -1,9 +1,8 @@
 namespace GooseHtml;
 
-public class Meta : Element
+public class Meta() : VoidElement(ElementNames.Meta)
 {
-	public Meta() : base(selfClosing:true)
-	{
-	}
 }
+
+
 

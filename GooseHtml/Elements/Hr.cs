@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Hr : Element
+public class Hr() : VoidElement(ElementNames.Hr)
 {
 }

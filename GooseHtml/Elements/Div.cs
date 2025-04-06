@@ -2,18 +2,15 @@ namespace GooseHtml;
 
 public class Div : Element
 {
-	public Div(Class @class) : base(@class)
+	public Div(Attributes.Class @class) : base(ElementNames.Div)
 	{
+		Add(@class);
 	}
 
 
-	public Div(): base()
+	public Div(): base(ElementNames.Div)
 	{
 
 	}
 
-	public void AddRange(List<Element> elements)
-	{
-		AddRange(elements);
-	}
 }	

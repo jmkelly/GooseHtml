@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Var : Element
+public class Var() : Element(ElementNames.Var)
 {
 }

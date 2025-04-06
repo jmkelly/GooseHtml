@@ -1,7 +1,9 @@
 namespace GooseHtml;
 
-public class Path : Element
+public class Path() : VoidElement(ElementNames.Path)
 {
-	public Path(): base(){}
 }
+
+
+
 

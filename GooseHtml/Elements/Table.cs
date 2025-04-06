@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Table : Element
+public class Table() : Element(ElementNames.Table)
 {
 }

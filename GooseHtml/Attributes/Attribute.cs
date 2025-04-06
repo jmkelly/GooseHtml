@@ -1,10 +1,25 @@
 namespace GooseHtml.Attributes;
 
-public record Attribute(string Name,
-		string Value)
+public class Attribute 
 {
-	public sealed override string ToString()
+    public Attribute(string name, string value)
+    {
+        Name = name;
+        Value = value;
+    }
+	public Attribute(string name)
 	{
+		Name = name;
+		Value = null;
+	}
+
+    public string Name { get; }
+    public string? Value { get; }
+
+    public override string ToString()
+	{
+		if (Value is null) return Name;
 		return $"{Name}=\"{Value}\"";
 	}
 }
+

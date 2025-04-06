@@ -1,15 +1,15 @@
 namespace GooseHtml;
 using GooseHtml.Attributes;
 
-public class Input : Element
+public class Input : VoidElement
 {
 
-    public Input(): base(selfClosing:false)
+    public Input(): base(ElementNames.Input)
 	{
 
 	}
 
-    public Input(Type type, string name, string value) : base(selfClosing:false)
+    public Input(Type type, string name, string value) : base(ElementNames.Input)
     {
 		switch (type)
 		{

@@ -1,7 +1,9 @@
 namespace GooseHtml;
 
-public record Text(string Value, bool EscapeHtml = true)
+public class Text(string Value, bool EscapeHtml = true)
 {
+    public string Value { get; } = Value;
+
     public override string? ToString()
     {
         return EscapeHtml ? Value.EscapeHtml() : Value;

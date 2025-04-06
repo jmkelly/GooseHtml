@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Blockquote : Element
+public class Blockquote() : Element(ElementNames.Blockquote)
 {
 }

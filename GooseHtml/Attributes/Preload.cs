@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Preload(string Value): Attribute("preload", Value);
+public class Preload(string Value): Attribute("preload", Value);
 

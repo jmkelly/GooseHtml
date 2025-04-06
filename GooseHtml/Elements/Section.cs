@@ -3,19 +3,15 @@ namespace GooseHtml;
 public class Section : Element
 {
 
-	public Section(Class @class) : base(@class)
+	public Section(Attributes.Class @class) : base(ElementNames.Section)
 	{
+		Add(@class);
 	}
 
 
-	public Section(): base()
+	public Section(): base(ElementNames.Section)
 	{
 
-	}
-
-	public void AddRange(List<Element> elements)
-	{
-		AddRange(elements);
 	}
 }
 

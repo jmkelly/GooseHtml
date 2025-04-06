@@ -1,4 +1,4 @@
 namespace GooseHtml;
 
-public record EmptyValue(): Text(string.Empty);
+public class EmptyValue(): Text(string.Empty);
 

@@ -3,9 +3,12 @@ namespace GooseHtml;
 
 public class Footer : Element
 {
-	public Footer() : base() {}
+    public Footer(): base(ElementNames.Footer)
+    {
+    }
 
-	public Footer(Class @class) : base(@class)
+    public Footer(Attributes.Class @class) : base(ElementNames.Footer)
 	{
+		Add(@class);
 	}
 }	

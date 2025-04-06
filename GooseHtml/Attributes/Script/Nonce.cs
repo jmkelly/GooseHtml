@@ -1,2 +1,2 @@
 namespace GooseHtml.Attributes;
-public record Nonce(string Value) : Attribute("nonce", Value);
+public class Nonce(string Value) : Attribute("nonce", Value);

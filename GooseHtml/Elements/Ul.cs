@@ -1,11 +1,8 @@
 namespace GooseHtml;
 
-public class Ul: Element
+public class Ul(): Element(ElementNames.Ul)
 {
 
-	public Ul(): base("ul")
-	{
-	}
 }
 
 

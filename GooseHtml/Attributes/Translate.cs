@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Translate(string Value): Attribute("translate", Value);
+public class Translate(string Value): Attribute("translate", Value);
 

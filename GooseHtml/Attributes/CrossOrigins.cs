@@ -1,8 +1,8 @@
 namespace GooseHtml.Attributes;
 
-public record CrossOrigin(string Value) : Attribute("crossorigin", Value);
-public record CrossOriginAnonymous(): CrossOrigin("anonymous");
-public record CrossOriginUseCredentials(): CrossOrigin("use-credentials");
+public class CrossOrigin(string Value) : Attribute("crossorigin", Value);
+public class CrossOriginAnonymous(): CrossOrigin("anonymous");
+public class CrossOriginUseCredentials(): CrossOrigin("use-credentials");
 
 public static class CrossOrigins
 {

@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Caption : Element
+public class Caption() : Element(ElementNames.Caption)
 {
 }

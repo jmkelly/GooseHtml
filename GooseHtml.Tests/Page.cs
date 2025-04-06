@@ -4,14 +4,14 @@ namespace GooseHtml.Tests;
 
 public class Page : Html
     {
-		public void LoadHtml(List<Fragment> fragments)
+		public void LoadHtml(string html)
 		{
 			//need to work out some way to map the fragement to my own elements.....
-			var bodyElements = fragments.MapBodyElements();
-			var headElements = fragments.MapHeadElements();
+			var elements = new HtmlParser(html).Parse();
 
-			//Body().Add(bodyElements);
-			//Head().Add(headElements);
+			//figure out some way to extract specific elements by type
+			//Body().Add(body);
+			//Head().Add(head);
 		}
 
         public Body Body() 

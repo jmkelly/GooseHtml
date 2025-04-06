@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Sup : Element
+public class Sup() : Element(ElementNames.Sup)
 {
 }

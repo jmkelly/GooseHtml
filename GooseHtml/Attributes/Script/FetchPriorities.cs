@@ -1,6 +1,6 @@
 namespace GooseHtml.Attributes;
 
-public record FetchPriority(string Value) : Attribute("fetchpriority", Value);
+public class FetchPriority(string Value) : Attribute("fetchpriority", Value);
 
 public static class FetchPriorities
 {

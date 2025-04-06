@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Col : Element
+public class Col() : VoidElement(ElementNames.Col)
 {
 }

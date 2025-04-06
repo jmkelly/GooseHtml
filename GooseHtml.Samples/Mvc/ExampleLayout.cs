@@ -7,17 +7,17 @@ namespace GooseHtml.Samples.Mvc;
 //
 public class ExampleLayout : Html
 {
-    public ExampleLayout(): base("html")
+    public ExampleLayout(): base()
     {
-		this.Add(Head());
-		this.Add(Body());
+		Add(Head());
+		Add(Body());
     }
 
 
-	public ExampleLayout(Element element) : base("html")
+	public ExampleLayout(Element element) : base()
 	{
-		this.Add(Head());
-		this.Add(Body(element));
+		Add(Head()); 
+		Add(Body(element));
 	}
 
 
@@ -25,20 +25,20 @@ public class ExampleLayout : Html
 	{
 
 		var body = new Body();
-		body.Add(new Nav(new Class("nav navbar")));
-		body.Add(new Div(new Class("sidebar")));
-		var content = new Div(new Class("content"));
+		body.Add(new Nav(new Attributes.Class("nav navbar")));
+		body.Add(new Div(new Attributes.Class("sidebar")));
+		var content = new Div(new Attributes.Class("content"));
 		content.Add(element);
 		body.Add(content);
-		body.Add(new Footer(new Class("footer")));
+		body.Add(new Footer(new Attributes.Class("footer")));
 		return body;
 	}
     public virtual Body Body()
     {
 		var body = new Body();
-		body.Add(new Nav(new Class("nav navbar")));
-		body.Add(new Div(new Class("sidebar")));
-		body.Add(new Footer(new Class("footer")));
+		body.Add(new Nav(new Attributes.Class("nav navbar")));
+		body.Add(new Div(new Attributes.Class("sidebar")));
+		body.Add(new Footer(new Attributes.Class("footer")));
 		return body;
     }
 

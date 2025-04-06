@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Datalist : Element
+public class Datalist() : Element(ElementNames.Datalist)
 {
 }

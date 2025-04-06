@@ -1,8 +1,7 @@
 namespace GooseHtml;
 
-public class Svg : Element
+public class Svg() : Element(ElementNames.Svg)
 {
-	public Svg(): base(){}
 }
 
 

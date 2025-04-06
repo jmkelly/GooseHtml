@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Map : Element
+public class Map() : Element(ElementNames.Map)
 {
 }

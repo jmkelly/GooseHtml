@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record TypeAttribute(string Value): Attribute("type", Value);
+public class TypeAttribute(string Value): Attribute(AttributeNames.Type, Value);
 

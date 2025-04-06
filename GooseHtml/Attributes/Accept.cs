@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Accept(string Value) : Attribute("accept", Value);
+public class Accept(string Value) : Attribute(AttributeNames.Accept, Value);
 

@@ -3,11 +3,11 @@ using GooseHtml.Attributes;
 
 public class HtmlExtended : Html
 {
-    public HtmlExtended() : base("html")
+    public HtmlExtended() : base()
     {
 		var head = new Head();
 		var meta = new Meta();
-		meta.Add(new Charset());
+		meta.Add(new CharsetUtf8());
 
 		head.Add(meta);
 		head.Add(new Title());
@@ -17,6 +17,6 @@ public class HtmlExtended : Html
 
 		Add(head);
 		Add(body);
-		Add(new Lang());
+		Add(new EnUsLang());
     }
 }

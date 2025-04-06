@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Autocomplete(string Value): Attribute("autocomplete", Value);
+public class Autocomplete(string Value): Attribute("autocomplete", Value);
 

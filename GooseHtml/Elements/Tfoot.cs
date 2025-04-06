@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Tfoot : Element
+public class Tfoot() : Element(ElementNames.Tfoot)
 {
 }

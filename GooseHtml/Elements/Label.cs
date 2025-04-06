@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Label : Element
+public class Label() : Element(ElementNames.Label)
 {
 }

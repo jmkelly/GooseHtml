@@ -5,8 +5,14 @@ public class TextElement: Element
     private readonly string text;
     private readonly bool htmlEncode;
 
+    public TextElement():base(ElementNames.Text)
+    {
+		text = string.Empty;
+		htmlEncode = true;
+    }
+
     //special case for text
-    public TextElement(string text, bool htmlEncode=true): base()
+    public TextElement(string text, bool htmlEncode=true): base(ElementNames.Text)
 	{
 		this.text = text;
         this.htmlEncode = htmlEncode;

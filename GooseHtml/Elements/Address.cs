@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Address : Element
+public class Address() : Element(ElementNames.Address)
 {
 }

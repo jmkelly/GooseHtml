@@ -1,4 +1,4 @@
 namespace GooseHtml.Attributes;
 
-public record Srclang(string Value): Attribute("srclang", Value);
+public class Srclang(string Value): Attribute("srclang", Value);
 

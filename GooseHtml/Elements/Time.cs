@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Time : Element
+public class Time() : Element(ElementNames.Time)
 {
 }
