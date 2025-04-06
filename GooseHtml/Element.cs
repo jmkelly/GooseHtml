@@ -91,7 +91,8 @@ public class Element(string name)
 
     public override string ToString()
     {
-        var sb = new StringBuilder();
+        //var sb = new StringBuilder();
+        var sb = StringBuilderPool.Shared.Rent();
         
         sb.Append('<').Append(Name);
         AppendAttributes(sb);
@@ -101,7 +102,8 @@ public class Element(string name)
             AppendChildren(sb);
         }
         sb.Append("</").Append(Name).Append('>');
-        return sb.ToString();
+        return StringBuilderPool.Shared.GetStringAndReturn(sb);
+        //return sb.ToString();
     }
 
     private void AppendAttributes(StringBuilder sb)
