@@ -33,7 +33,7 @@ public class HtmlParserWebTest
 
 			// Social Media
 			//"https://twitter.com/", bad request
-			"https://www.instagram.com/",
+			//"https://www.instagram.com/", --too many requests sometimes
 			"https://www.facebook.com/",
 			"https://www.tiktok.com/",
 			//"https://www.linkedin.com/", -- sometimes bad request
