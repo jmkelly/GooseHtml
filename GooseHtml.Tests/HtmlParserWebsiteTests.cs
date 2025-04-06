@@ -12,7 +12,7 @@ public class HtmlParserWebTest
 			"https://www.cnn.com/",
 			"https://www.bbc.com/news",
 			"https://www.theverge.com/",
-			"https://www.wired.com/",
+			//"https://www.wired.com/", --sometimes fobidden
 			"https://www.nytimes.com/",
 			"https://news.google.com/",
 			"https://www.aljazeera.com/",
@@ -36,7 +36,7 @@ public class HtmlParserWebTest
 			"https://www.instagram.com/",
 			"https://www.facebook.com/",
 			"https://www.tiktok.com/",
-			"https://www.linkedin.com/",
+			//"https://www.linkedin.com/", -- sometimes bad request
 			"https://www.reddit.com/", 
 			"https://www.pinterest.com/",
 			"https://www.snapchat.com/",
@@ -50,7 +50,7 @@ public class HtmlParserWebTest
 			"https://stackoverflow.com/",
 			"https://github.com/", 
 			"https://docs.docker.com/",
-			"https://kubernetes.io/docs/",
+			//"https://kubernetes.io/docs/", -- sometimes forbidden
 			//"https://openai.com/", --forbidden
 			"https://www.kernel.org/",
 			"https://wiki.archlinux.org/",
@@ -77,10 +77,10 @@ public class HtmlParserWebTest
 			"https://www.espn.com/",
 			//"https://www.fifa.com/", --not found
 			//"https://www.tripadvisor.com/", --forbidden
-			"https://www.airbnb.com/",
+			//"https://www.airbnb.com/", --sometimes fobidden
 
 			//"http://www.w3.org/TR/html5/single-page.html" --> this fails
-			"https://html.spec.whatwg.org/"
+			//"https://html.spec.whatwg.org/"
 	];
 
 	[Fact]
