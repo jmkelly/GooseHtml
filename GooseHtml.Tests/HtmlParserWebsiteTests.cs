@@ -37,7 +37,7 @@ public class HtmlParserWebTest
 			"https://www.facebook.com/",
 			"https://www.tiktok.com/",
 			//"https://www.linkedin.com/", -- sometimes bad request
-			"https://www.reddit.com/", 
+			//"https://www.reddit.com/",  -- sometimes bad request
 			"https://www.pinterest.com/",
 			"https://www.snapchat.com/",
 			"https://www.youtube.com/",
