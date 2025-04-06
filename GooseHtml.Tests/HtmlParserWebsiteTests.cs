@@ -26,7 +26,7 @@ public class HtmlParserWebTest
 			//"https://www.bestbuy.com/", //--timeout
 			//"https://www.aliexpress.com/",
 			//"https://www.etsy.com/",
-			"https://www.newegg.com/",
+			//"https://www.newegg.com/", --occasional 403
 			//"https://www.costco.com/",//timeout
 			"https://www.target.com/",
 			"https://www.ikea.com/",
