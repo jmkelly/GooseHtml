@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using GooseHtml.Attributes;
 
 namespace GooseHtml;
@@ -158,6 +159,7 @@ public sealed class HtmlParser(string html)
 						AddTextToElement(tagName, currentElement);
 					}
 				}
+                Advance(ClosingTag(tagName).Length); // Skip closing tag
 				break;
 
 			case ElementNames.Dd:
