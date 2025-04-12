@@ -8,20 +8,20 @@ public class Script : Element
 	{
 	}
 
-	public Script(Text text): base(ElementNames.Script)
+	public Script(Text text): base(ElementNames.Script, isVoid:false)
 	{
 		Add(text);
 	}
 
-	public Script(string src) : base(ElementNames.Script, [new Attribute("src", src)])
+	public Script(string src) : base(ElementNames.Script,isVoid:false, [new Attribute("src", src)])
 	{
 	}
 
-	public Script(Attribute[] attributes) : base(ElementNames.Script, attributes)
+	public Script(Attribute[] attributes) : base(ElementNames.Script,isVoid:false, attributes)
 	{
 	}
 
-	public Script(string src, string integrity, string crossorigin) : base(ElementNames.Script, [new Attribute("src", src), new Attribute("integrity", integrity), new Attribute("crossorigin", crossorigin)])
+	public Script(string src, string integrity, string crossorigin) : base(ElementNames.Script, isVoid:false, [new Attribute("src", src), new Attribute("integrity", integrity), new Attribute("crossorigin", crossorigin)])
 	{
 	}
 

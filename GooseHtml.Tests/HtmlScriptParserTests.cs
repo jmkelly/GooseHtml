@@ -22,13 +22,13 @@ public class HtmlScriptParserTests
 		var result = parser.Parse();
 
 		// Assert
-		var script = result.AsElement().ShouldBeOfType<Script>();
+		var script = result.ShouldBeOfType<Script>();
 		script.Attributes.ShouldContain(a => a.Name == "src" && a.Value == "app.js");
 		script.Attributes.ShouldContain(a => a.Name == "async");
 
 		// Verify script content is parsed as raw text
 		script.Children.ShouldHaveSingleItem();
-		var text = script.Children[0].AsElement().ShouldBeOfType<TextElement>();
+		var text = script.Children[0].ShouldBeOfType<TextElement>();
 		text.ToString().ShouldContain("alert('Hello <world>!');");
 	}
 
@@ -40,9 +40,9 @@ public class HtmlScriptParserTests
 		var parser = new HtmlParser(html);
 		var result = parser.Parse();
 
-		result.AsElement().ShouldBeOfType<Script>();
-		var script = result.AsElement();
-		var text = script.Children[0].AsElement();
+		result.ShouldBeOfType<Script>();
+		var script = result;
+		var text = script.Children[0];
 		text.ToString().ShouldBeNullOrEmpty();
 	}
 
@@ -53,10 +53,10 @@ public class HtmlScriptParserTests
 		string html = "<script>if (a < b) { /*...*/ }</script>";
 		var parser = new HtmlParser(html);
 		var result = parser.Parse();
-		var script = result.AsElement().ShouldBeOfType<Script>();
-		var text = script.Children[0].AsElement().ShouldBeOfType<TextElement>();
+		var script = result.ShouldBeOfType<Script>();
+		var text = script.Children[0].ShouldBeOfType<TextElement>();
 		text.ToString().ShouldContain("if (a < b) { /*...*/ }");
-		script.Children[0].AsElement().ToString().ShouldContain("if (a < b) { /*...*/ }");
+		script.Children[0].ToString().ShouldContain("if (a < b) { /*...*/ }");
 	}
 
 

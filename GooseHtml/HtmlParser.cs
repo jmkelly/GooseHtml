@@ -46,14 +46,14 @@ public sealed class HtmlParser(string html)
 	}
 
 	// Update line/column when advancing
-	public Either<Element, VoidElement> Parse()
+	public Element Parse()
 	{
 		SkipWhitespace();
 		int depth = 0;
 		return ParseElement(null, depth);//start with a null element
 	}
 
-	private Either<Element, VoidElement> ParseElement(Element? parent, int depth) //a void element cannot be a parent
+	private Element ParseElement(Element? parent, int depth) //a void element cannot be a parent
 	{
 
 		depth++;
@@ -84,7 +84,7 @@ public sealed class HtmlParser(string html)
 
 		if (tagName.Length <= 0) throw new Exception($"TagName is empty at {GetCurrentContext()}");
 
-		Either<Element, VoidElement> element = ElementFactory.Create(tagName.ToString());
+		Element element = ElementFactory.Create(tagName.ToString());
 
 		// Parse attributes
 		MatchAndParseAttribute(element);
@@ -100,8 +100,8 @@ public sealed class HtmlParser(string html)
 		GuardAgainstNotTagEnd();
 		Advance(); // Skip '>'
 
-		// Check if the element is a VoidElement and return immediately
-		if (element.IsVoidElement())
+		// Check if the element is a Element and return immediately
+		if (element.IsVoid)
 		{
 			//void elements can't have any children, but they may have a closing tag  even
 			//though its not valid....we will handle it just in case
@@ -111,7 +111,7 @@ public sealed class HtmlParser(string html)
 			return element;
 		}
 
-		var currentElement = element.AsElement();
+		var currentElement = element;
 		
 		parent?.Add(currentElement);
 
@@ -259,7 +259,7 @@ public sealed class HtmlParser(string html)
 		if (!Match(TagEnd)) throw new Exception($"Expected '{TagEnd}'");
 	}
 
-	private void MatchAndParseAttribute(Either<Element, VoidElement> element)
+	private void MatchAndParseAttribute(Element element)
 	{
 		//allocate a list to hold attributes, so we can add them to the element without constant resizing
 		List<Attributes.Attribute> attributes = [];
@@ -271,7 +271,7 @@ public sealed class HtmlParser(string html)
 				attributes.Add(attr);
 		}
 		
-		element.Match(e => e.AddRange(attributes), v => v.AddRange(attributes));
+		element.AddRange(attributes);
 	}
 
 	private void HandleStyle(Element currentElement)

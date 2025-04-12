@@ -1,15 +1,15 @@
 namespace GooseHtml;
 using GooseHtml.Attributes;
 
-public class Img : VoidElement
+public class Img : Element
 {
-	public Img(string src, string alt) : base(ElementNames.Img)
+	public Img(string src, string alt) : base(ElementNames.Img, isVoid: true)
 	{
 		Add(new Src(src));
 		Add(new Alt(alt));
 	}
 
-    public Img() : base(ElementNames.Img)
+    public Img() : base(ElementNames.Img, isVoid: true)
     {
     }
 }
