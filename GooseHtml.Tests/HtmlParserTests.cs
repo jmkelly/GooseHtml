@@ -344,4 +344,31 @@ public class HtmlParserTests
 			secondparagraph.ShouldBeOfType<P>();
 
 		}
+
+		[Fact]
+		[Trait("Category","parser")]
+		public void Ul_ShouldntParseProperly()
+		{
+			var html = """
+				<ul class="search-suggest">
+				  <li data-lon="143.484" data-lat="-19.986">
+				    <a href="/places/qld/woolgar/">Woolgar, QLD 4822</a>
+				  </li>
+				  <li data-lon="148.734" data-lat="-34.890">
+				    <a href="/places/nsw/woolgarlo/">Woolgarlo, NSW 2582</a>
+				  </li>
+				  <li data-lon="153.200" data-lat="-30.111">
+				    <a href="/places/nsw/woolgoolga/">Woolgoolga, NSW 2456</a>
+				  </li>
+				  <li data-lon="115.810" data-lat="-27.698">
+				    <a href="/places/wa/woolgorong/">Woolgorong, WA 6630</a>
+				  </li>
+				</ul>
+				""";
+			var parser = new HtmlParser(html);
+			var result = parser.Parse();
+			result.AsElement().Pretty().ShouldBe(html);
+			//result.ToString().ShouldMatch(html);
+		}
+
 }
