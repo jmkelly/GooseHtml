@@ -84,6 +84,14 @@ public class Element(string name)
         _elements.Remove(element);
     }
 
+	public void Remove(Attribute attribute)
+	{
+		if (_attributes is not null)
+		{
+			_attributes.Remove(attribute);
+		}
+	}
+
     public string Pretty() 
     {
         return new HtmlFormatter().Pretty(ToString());
