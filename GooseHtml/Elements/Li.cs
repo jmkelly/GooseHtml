@@ -12,6 +12,11 @@ public class Li : Element
 		Add(value);
 	}
 
+	public Li(string value): base(ElementNames.Li)
+	{
+		Add(new Text(value));
+	}
+
 	public Li(List<Either<Element, VoidElement>> elements) : base(ElementNames.Li)
 	{
 		AddRange(elements);
