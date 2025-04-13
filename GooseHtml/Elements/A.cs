@@ -4,7 +4,7 @@ using GooseHtml.Attributes;
 public class A : Element
 {
 
-    public A(Href href, Text text): base(ElementNames.A, new [] {href})
+    public A(Href href, Text text): base(ElementNames.A,isVoid:false, [href])
     {
 		Add(text);
     }

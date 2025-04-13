@@ -4,18 +4,19 @@ using System.Collections.Generic;
 using System.Text;
 using GooseHtml.Attributes;
 
-public class Element(string name)
+public class Element(string name, bool isVoid = false)
 {
     public readonly string Name = ValidateName(name);
+    public readonly bool IsVoid = isVoid;
     
     private static readonly Attribute[] EmptyAttributes = [];
-    private static readonly Either<Element, VoidElement>[] EmptyElements = [];
+    private static readonly Element[] EmptyElements = [];
 
     private List<Attribute>? _attributes;
-    private List<Either<Element, VoidElement>>? _elements;
+    private List<Element>? _elements;
 
     public IReadOnlyList<Attribute> Attributes => _attributes ?? [.. EmptyAttributes];
-    public IReadOnlyList<Either<Element, VoidElement>> Children => _elements ?? [.. EmptyElements];
+    public IReadOnlyList<Element> Children => _elements ?? [.. EmptyElements];
 
     public string TagStart()
     {
@@ -27,7 +28,7 @@ public class Element(string name)
         return  $"</{Name}>";
     }
 
-    public Element(string name, params Attribute[] attributes) : this(name)
+    public Element(string name,  bool isVoid = false, params Attribute[] attributes) : this(name, isVoid)
     {
         _attributes ??= [];
         _attributes.AddRange(attributes);
@@ -42,7 +43,7 @@ public class Element(string name)
     }
 
 
-    public void Add(Either<Element, VoidElement> element)
+    public void Add(Element element)
     {
         _elements ??= [];
         _elements.Add(element);
@@ -52,12 +53,6 @@ public class Element(string name)
     {
         _elements ??= [];
         _elements.Add(new TextElement(text.Value));
-    }
-
-    public void Add(Class @class)
-    {
-        _attributes ??= [];
-        _attributes.Add(@class);
     }
 
     public void Add(Attribute attribute)
@@ -72,25 +67,30 @@ public class Element(string name)
 		_attributes.AddRange(attributes);
 	}
 
-    public void AddRange(IEnumerable<Either<Element, VoidElement>> elements)
+    public void AddRange(IEnumerable<Element> elements)
     {
         _elements ??= [];
         _elements.AddRange(elements);
     }
 
-    public void Remove(Either<Element, VoidElement> element)
+    public void Remove(Element element)
     {
-        _elements ??= [];
-        _elements.Remove(element);
+        _elements?.Remove(element);
     }
 
 	public void Remove(Attribute attribute)
 	{
-		if (_attributes is not null)
-		{
-			_attributes.Remove(attribute);
-		}
+		_attributes?.Remove(attribute);
 	}
+    public void ClearAttributes()
+    {
+        _attributes?.Clear();
+    }
+
+    public void ClearChildren()
+    {
+        _elements?.Clear();
+    }
 
     public string Pretty() 
     {
@@ -99,11 +99,15 @@ public class Element(string name)
 
     public override string ToString()
     {
-        //var sb = new StringBuilder();
         var sb = StringBuilderPool.Shared.Rent();
         
         sb.Append('<').Append(Name);
         AppendAttributes(sb);
+        if (IsVoid)
+        {
+            sb.Append('>');
+            return StringBuilderPool.Shared.GetStringAndReturn(sb);
+        }
         sb.Append('>');
         if (_elements is not null)
         {
@@ -111,7 +115,6 @@ public class Element(string name)
         }
         sb.Append("</").Append(Name).Append('>');
         return StringBuilderPool.Shared.GetStringAndReturn(sb);
-        //return sb.ToString();
     }
 
     private void AppendAttributes(StringBuilder sb)

@@ -17,7 +17,7 @@ public class Li : Element
 		Add(new Text(value));
 	}
 
-	public Li(List<Either<Element, VoidElement>> elements) : base(ElementNames.Li)
+	public Li(List<Element> elements) : base(ElementNames.Li)
 	{
 		AddRange(elements);
 	}

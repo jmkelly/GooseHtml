@@ -2,7 +2,7 @@ namespace GooseHtml;
 
 public interface IParser
 {
-	Either<Element, VoidElement> Parse();
+	Either<Element, Element> Parse();
 }
 
 

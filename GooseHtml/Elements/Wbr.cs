@@ -1,7 +1,7 @@
 namespace GooseHtml;
-public class Wbr : VoidElement
+public class Wbr : Element
 {
-    public Wbr(bool selfClosing = false) : base("wbr", selfClosing)
+    public Wbr() : base("wbr", isVoid: true)
     {
     }
 }

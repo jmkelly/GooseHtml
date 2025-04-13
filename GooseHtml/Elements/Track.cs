@@ -1,4 +1,4 @@
 namespace GooseHtml;
-public class Track() : VoidElement(ElementNames.Track)
+public class Track() : Element(ElementNames.Track, isVoid: true)
 {
 }

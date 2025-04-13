@@ -1,6 +1,6 @@
 namespace GooseHtml;
 
-public class Meta() : VoidElement(ElementNames.Meta)
+public class Meta() : Element(ElementNames.Meta, isVoid: true)
 {
 }
 
