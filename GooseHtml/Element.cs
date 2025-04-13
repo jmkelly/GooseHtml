@@ -55,12 +55,6 @@ public class Element(string name, bool isVoid = false)
         _elements.Add(new TextElement(text.Value));
     }
 
-    public void Add(Class @class)
-    {
-        _attributes ??= [];
-        _attributes.Add(@class);
-    }
-
     public void Add(Attribute attribute)
     {
         _attributes ??= [];
@@ -81,17 +75,22 @@ public class Element(string name, bool isVoid = false)
 
     public void Remove(Element element)
     {
-        _elements ??= [];
-        _elements.Remove(element);
+        _elements?.Remove(element);
     }
 
 	public void Remove(Attribute attribute)
 	{
-		if (_attributes is not null)
-		{
-			_attributes.Remove(attribute);
-		}
+		_attributes?.Remove(attribute);
 	}
+    public void ClearAttributes()
+    {
+        _attributes?.Clear();
+    }
+
+    public void ClearChildren()
+    {
+        _elements?.Clear();
+    }
 
     public string Pretty() 
     {
@@ -100,14 +99,13 @@ public class Element(string name, bool isVoid = false)
 
     public override string ToString()
     {
-        //var sb = new StringBuilder();
         var sb = StringBuilderPool.Shared.Rent();
         
         sb.Append('<').Append(Name);
         AppendAttributes(sb);
         if (IsVoid)
         {
-            sb.Append(">");
+            sb.Append('>');
             return StringBuilderPool.Shared.GetStringAndReturn(sb);
         }
         sb.Append('>');
@@ -117,7 +115,6 @@ public class Element(string name, bool isVoid = false)
         }
         sb.Append("</").Append(Name).Append('>');
         return StringBuilderPool.Shared.GetStringAndReturn(sb);
-        //return sb.ToString();
     }
 
     private void AppendAttributes(StringBuilder sb)
