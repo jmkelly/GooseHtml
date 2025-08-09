@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace GooseHtml;
 
 public class TextElement: Element
@@ -18,14 +20,23 @@ public class TextElement: Element
         this.htmlEncode = htmlEncode;
     }
 
-	public override string ToString()
+	public override void WriteTo(StringBuilder sb)
 	{
 		if (htmlEncode)
 		{
-			return System.Net.WebUtility.HtmlEncode(text);
+			sb.Append(System.Net.WebUtility.HtmlEncode(text));
 		}
-		return text.ToString();
+		else
+		{
+			sb.Append(text);
+		}
+	}
+
+	public override string ToString()
+	{
+		var sb = StringBuilderPool.Shared.Rent();
+		WriteTo(sb);
+		return StringBuilderPool.Shared.GetStringAndReturn(sb);
 	}
 
 }
-

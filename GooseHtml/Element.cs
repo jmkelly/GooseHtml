@@ -97,16 +97,14 @@ public class Element(string name, bool isVoid = false)
         return new HtmlFormatter().Pretty(ToString());
     }
 
-    public override string ToString()
+    public virtual void WriteTo(StringBuilder sb)
     {
-        var sb = StringBuilderPool.Shared.Rent();
-        
         sb.Append('<').Append(Name);
         AppendAttributes(sb);
         if (IsVoid)
         {
             sb.Append('>');
-            return StringBuilderPool.Shared.GetStringAndReturn(sb);
+            return;
         }
         sb.Append('>');
         if (_elements is not null)
@@ -114,6 +112,12 @@ public class Element(string name, bool isVoid = false)
             AppendChildren(sb);
         }
         sb.Append("</").Append(Name).Append('>');
+    }
+
+    public override string ToString()
+    {
+        var sb = StringBuilderPool.Shared.Rent();
+        WriteTo(sb);
         return StringBuilderPool.Shared.GetStringAndReturn(sb);
     }
 
@@ -132,7 +136,7 @@ public class Element(string name, bool isVoid = false)
         if (_elements is null) return;
         foreach (var element in _elements)
         {
-            sb.Append(element);
+            element.WriteTo(sb);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Text;
 
 namespace GooseHtml;
 
@@ -7,10 +8,16 @@ public class Html : Element
 	{
 	}
 
+    public override void WriteTo(StringBuilder sb)
+    {
+        sb.Append("<!DOCTYPE html>");
+        base.WriteTo(sb);
+    }
+
     public override string ToString()
     {
-		//add the html doctype
-		return  base.ToString().Insert(0, "<!DOCTYPE html>");
+        var sb = StringBuilderPool.Shared.Rent();
+        WriteTo(sb);
+        return StringBuilderPool.Shared.GetStringAndReturn(sb);
     }
 }
-
