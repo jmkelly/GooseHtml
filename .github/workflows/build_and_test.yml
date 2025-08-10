@@ -25,4 +25,8 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: |
+        # Run tests using xUnit v3 executable (recommended)
+        find ./GooseHtml.Tests/bin/Debug/net9.0 -type f -executable -name "GooseHtml.Tests*" -exec {} \;
+        # Or fallback to dotnet test for compatibility
+        dotnet test --no-build --verbosity normal

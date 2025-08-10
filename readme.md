@@ -14,6 +14,15 @@ Why Choose GooseHtml?
 - Seamless Integration: Easily integrate with your existing C# projects and start generating HTML right away.
 - Enhanced Testing: Because your html views are c# classes, you can easily unit test them without requiring any additional libraries
 
+### Running Tests (xUnit v3)
+
+- Build the test project: `dotnet build GooseHtml.Tests`
+- Run tests directly: `./bin/Debug/net9.0/GooseHtml.Tests.exe`
+- Or use the CLI: `dotnet test GooseHtml.Tests`
+- To generate an XML report: `./bin/Debug/net9.0/GooseHtml.Tests.exe -xml results.xml`
+
+See [xUnit v3 migration guide](https://xunit.net/docs/getting-started/v3/migration) for details.
+
 ### Key Features
 
 - Fluent API: Chain methods together to build HTML elements intuitively.
