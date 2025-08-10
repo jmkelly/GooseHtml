@@ -12,7 +12,7 @@ class Program
     }
 }
 
-[EtwProfiler] 
+//[EtwProfiler] this can only be used on windows
 [MemoryDiagnoser]
 public class HtmlParserBenchmark
 {
